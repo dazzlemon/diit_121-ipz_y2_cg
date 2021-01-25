@@ -27,8 +27,8 @@ class Plot:
 
         while True:
             self.surface.fill(self.bgColor)
-            self.axises()
-            self.function()
+            rangeY = self.function()
+            self.axises(rangeY)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -37,7 +37,7 @@ class Plot:
                 pygame.display.update()
 
         
-    def axises(self):
+    def function(self):
         points = [(x, self.f(x)) for x in arange(self.range_[0], self.range_[1], (self.range_[1] - self.range_[0]) / self.surface.get_width())]
         rangeY = reduce(
                 lambda old, point: (min(old[0], point[0]), max(old[1], point[1])),
@@ -65,20 +65,26 @@ class Plot:
                 list(points),
                 10
                 )
+        return rangeY
 
 
-    def function(self):
-        pygame.draw.lines(
+    def axises(self, rangeY):
+        zeroY = self.surface.get_height() - linear_map(0, rangeY, (0, self.surface.get_height()))
+        zeroX = linear_map(0, self.range_, (0, self.surface.get_width()))
+        pygame.draw.line(
                 self.surface,
                 self.axisesColor,
-                False,
-                (
-                    (0, 0),
-                    (0, self.surface.get_height()),
-                    self.surface.get_size()
-                    ),
+                (zeroX, 0),
+                (zeroX, self.surface.get_height()),
                 10
-                )
+            )
+        pygame.draw.line(
+                self.surface,
+                self.axisesColor,
+                (0, zeroY),
+                (self.surface.get_width(), zeroY),
+                10
+            )
 
 
 def main():
