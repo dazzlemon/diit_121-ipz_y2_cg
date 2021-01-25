@@ -1,4 +1,5 @@
 import pygame
+import pygame_gui
 from numpy import arange
 from functools import reduce
 from math import sin
@@ -94,23 +95,11 @@ class Plot:
         self.surface.blit(textMinY, (zeroX - self.lineWidth - self.fontSize * 3, self.surface.get_height() - self.fontSize))
 
 
-class UI:
-    def __init__(self):
-        return
-
-
-    def update(self, size, delta):
-        return
-
-
-    def process_events(self, event):
-        return
-
-
 def main():
+    initSize = (800, 600)
     pygame.init()
 
-    canvas = pygame.display.set_mode((800, 600))
+    canvas = pygame.display.set_mode(initSize)
     pygame.display.set_caption("diit_pz1921_cg1_safonov")
 
     plot_ = Plot(
@@ -123,7 +112,18 @@ def main():
                 lineWidth = 4,
                 fontSize = 16
             )
-    ui = UI()
+    ui = pygame_gui.UIManager(initSize)
+
+    buttonSize = (200, 100)
+
+    button = pygame_gui.elements.UIButton(
+                relative_rect = pygame.Rect(
+                    (0, 0), 
+                    buttonSize
+                ),
+                text = "test",
+                manager = ui
+            )
 
     clock = pygame.time.Clock()
     isRunning = True
@@ -132,11 +132,19 @@ def main():
 
         for event in pygame.event.get():
             isRunning = event.type != pygame.QUIT
-            ui.process_events(event)
+            if event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == button:
+                plot_.funColor = (255, 0, 255)
 
+        button.relative_rect = pygame.Rect(
+                    (10, canvas.get_height() - 10 - buttonSize[1]),
+                    buttonSize
+                )
+
+        ui.process_events(event)
         plot_.update(canvas.get_size())
-        ui.update(canvas.get_size(), delta)
+        ui.update(delta)
         canvas.blit(plot_.surface, (0, 0))
+        ui.draw_ui(canvas)
         pygame.display.update()
 
 
