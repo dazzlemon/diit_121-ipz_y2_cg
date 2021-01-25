@@ -12,8 +12,7 @@ def virtual_map(height):
 
 
 class Plot:
-    def __init__(self, displaySize, bgColor, axisesColor, funColor, textColor, range_, lineWidth, fontSize, f):
-        self.displaySize = displaySize
+    def __init__(self, bgColor, axisesColor, funColor, textColor, range_, lineWidth, fontSize, f):
         self.bgColor = bgColor
         self.axisesColor = axisesColor
         self.funColor = funColor
@@ -22,26 +21,16 @@ class Plot:
         self.f = f
         self.lineWidth = lineWidth
         self.fontSize = fontSize
-
-
-    def plot(self):
-        pygame.init()
         self.font = pygame.font.Font("font.ttf", self.fontSize)
-        self.surface = pygame.display.set_mode(self.displaySize)
-        pygame.display.set_caption("diit_pz1911_y2_cg1_safonov")
 
-        while True:
-            self.surface.fill(self.bgColor)
-            rangeY = self.function()
-            self.axises(rangeY)
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-                pygame.display.update()
+    def update(self, size):
+        self.surface = pygame.Surface(size)
+        self.surface.fill(self.bgColor)
+        rangeY = self.function()
+        self.axises(rangeY)
 
-        
+
     def function(self):
         points = [(x, self.f(x)) for x in arange(self.range_[0], self.range_[1], (self.range_[1] - self.range_[0]) / self.surface.get_width())]
         rangeY = reduce(
@@ -105,9 +94,26 @@ class Plot:
         self.surface.blit(textMinY, (zeroX - self.lineWidth - self.fontSize * 3, self.surface.get_height() - self.fontSize))
 
 
+class UI:
+    def __init__(self):
+        return
+
+
+    def update(self, size, delta):
+        return
+
+
+    def process_events(self, event):
+        return
+
+
 def main():
+    pygame.init()
+
+    canvas = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption("diit_pz1921_cg1_safonov")
+
     plot_ = Plot(
-                displaySize = (800, 600),
                 bgColor = (255, 255, 255),
                 axisesColor = (0, 255, 0),
                 funColor = (0, 0, 255),
@@ -117,7 +123,21 @@ def main():
                 lineWidth = 4,
                 fontSize = 16
             )
-    plot_.plot() 
+    ui = UI()
+
+    clock = pygame.time.Clock()
+    isRunning = True
+    while isRunning:
+        delta = clock.tick(60) / 1000.0
+
+        for event in pygame.event.get():
+            isRunning = event.type != pygame.QUIT
+            ui.process_events(event)
+
+        plot_.update(canvas.get_size())
+        ui.update(canvas.get_size(), delta)
+        canvas.blit(plot_.surface, (0, 0))
+        pygame.display.update()
 
 
 if __name__ == "__main__":
