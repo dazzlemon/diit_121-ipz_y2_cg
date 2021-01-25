@@ -1,12 +1,20 @@
 import pygame
+from numpy import arange
+from functools import reduce
+
+
+def linear_map(x, from_, to):
+    return to[0] + (to[1] - to[0]) * ((x - from_[0]) / (from_[1] - from_[0]))
 
 
 class Plot:
-    def __init__(self, displaySize, bgColor, axisesColor, range_):
+    def __init__(self, displaySize, bgColor, axisesColor, funColor, range_, f):
         self.displaySize = displaySize
         self.bgColor = bgColor
         self.axisesColor = axisesColor
+        self.funColor = funColor
         self.range_ = range_
+        self.f = f
 
 
     def plot(self):
@@ -27,7 +35,28 @@ class Plot:
 
         
     def axises(self):
-        return
+        points = [(x, self.f(x)) for x in arange(self.range_[0], self.range_[1], (self.range_[1] - self.range_[0]) / self.surface.get_width())]
+        rangeY = reduce(
+                lambda old, point: (min(old[0], point[0]), max(old[1], point[1])),
+                points,
+                (points[0][1], points[0][1])
+            )
+
+        points = map(
+                lambda point: (
+                    int(linear_map(point[0], self.range_, (0, self.surface.get_width()))),
+                    int(linear_map(point[1], rangeY, (0, self.surface.get_height())))
+                ),
+                points
+            )
+
+        pygame.draw.lines(
+                self.surface,
+                self.funColor,
+                False,
+                list(points),
+                10
+                )
 
 
     def function(self):
@@ -49,7 +78,9 @@ def main():
                 (800, 600),
                 (255, 255, 255),
                 (0, 0, 0),
-                (-10, 10)
+                (0, 0, 0),
+                (-10, 10),
+                lambda x: x
             )
     plot_.plot() 
 
