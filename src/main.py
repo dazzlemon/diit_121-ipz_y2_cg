@@ -22,6 +22,7 @@ class Plot:
 
     def plot(self):
         pygame.init()
+        self.font = pygame.font.Font("font.ttf", 32)
         self.surface = pygame.display.set_mode(self.displaySize)
         pygame.display.set_caption("diit_pz1911_y2_cg1_safonov")
 
@@ -85,6 +86,13 @@ class Plot:
                 (self.surface.get_width(), zeroY),
                 10
             )
+        textX = self.font.render("x", True, self.axisesColor)
+        textY = self.font.render("y", True, self.axisesColor)
+        textZero = self.font.render("0", True, self.axisesColor)
+
+        self.surface.blit(textY, (zeroX + 10, 0))
+        self.surface.blit(textX, (self.surface.get_width() - 32, zeroY - 10 - 32))
+        self.surface.blit(textZero, (zeroX + 10, zeroY - 10 - 32))
 
 
 def main():
