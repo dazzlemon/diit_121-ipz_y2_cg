@@ -4,10 +4,12 @@ from numpy import arange
 from functools import reduce
 from math import sin
 from pygame_gui.windows import UIColourPickerDialog
+from enum import Enum, auto
 
 
 def linear_map(x, from_, to):
     return to[0] + (to[1] - to[0]) * ((x - from_[0]) / (from_[1] - from_[0]))
+
 
 def virtual_map(height):
     return lambda point: (point[0], height - point[1])
@@ -36,31 +38,31 @@ class Plot:
     def draw_function(self):
         points = [(x, self.f(x)) for x in arange(self.range_[0], self.range_[1], (self.range_[1] - self.range_[0]) / self.surface.get_width())]
         rangeY = reduce(
-                lambda old, point: (min(old[0], point[1]), max(old[1], point[1])),
-                points,
-                (points[0][1], points[0][1])
-            )
+            lambda old, point: (min(old[0], point[1]), max(old[1], point[1])),
+            points,
+            (points[0][1], points[0][1])
+        )
 
         points = map(
-                lambda point: (
-                    int(linear_map(point[0], self.range_, (0, self.surface.get_width()))),
-                    int(linear_map(point[1], rangeY, (0, self.surface.get_height())))
-                ),
-                points
-            )
+            lambda point: (
+                int(linear_map(point[0], self.range_, (0, self.surface.get_width()))),
+                int(linear_map(point[1], rangeY, (0, self.surface.get_height())))
+            ),
+            points
+        )
 
         points = map(
-                virtual_map(self.surface.get_height()),
-                points
-            )
+            virtual_map(self.surface.get_height()),
+            points
+        )
 
         pygame.draw.lines(
-                self.surface,
-                self.funColor,
-                False,
-                list(points),
-                self.lineWidth
-                )
+            self.surface,
+            self.funColor,
+            False,
+            list(points),
+            self.lineWidth
+        )
 
         return rangeY
 
@@ -69,19 +71,20 @@ class Plot:
         zeroY = self.surface.get_height() - linear_map(0, rangeY, (0, self.surface.get_height()))
         zeroX = linear_map(0, self.range_, (0, self.surface.get_width()))
         pygame.draw.line(
-                self.surface,
-                self.axesColor,
-                (zeroX, 0),
-                (zeroX, self.surface.get_height()),
-                self.lineWidth
-            )
+            self.surface,
+            self.axesColor,
+            (zeroX, 0),
+            (zeroX, self.surface.get_height()),
+            self.lineWidth
+        )
+
         pygame.draw.line(
-                self.surface,
-                self.axesColor,
-                (0, zeroY),
-                (self.surface.get_width(), zeroY),
-                self.lineWidth
-            )
+            self.surface,
+            self.axesColor,
+            (0, zeroY),
+            (self.surface.get_width(), zeroY),
+            self.lineWidth
+        )
 
         textX = self.font.render("x", True, self.textColor)
         textY = self.font.render("y", True, self.textColor)
@@ -97,6 +100,14 @@ class Plot:
 
 
 class PlotUI:
+    class State(Enum):
+        DEF = auto()
+        CHOOSING_FUN = auto()
+        CHOOSING_BG = auto()
+        CHOOSING_TXT = auto()
+        CHOOSING_MARKS = auto()
+
+
     def __init__(self):
         pygame.init()
 
@@ -117,7 +128,7 @@ class PlotUI:
         )
         self.ui = pygame_gui.UIManager(initSize)
 
-        self.buttonSize = (100, 60)
+        self.buttonSize = (200, 60)
 
         self.buttonFunColour = pygame_gui.elements.UIButton(
             relative_rect = pygame.Rect(
@@ -128,6 +139,27 @@ class PlotUI:
             manager = self.ui
         )
 
+        self.buttonBgColour = pygame_gui.elements.UIButton(
+            relative_rect = pygame.Rect(
+                (0, self.buttonSize[1]),
+                self.buttonSize
+            ),
+            text = "Change background colour",
+            manager = self.ui
+        )
+
+        self.state = PlotUI.State.DEF
+
+
+    def disable_buttons(self):
+        self.buttonBgColour.disable()
+        self.buttonFunColour.disable()
+
+    
+    def enable_buttons(self):
+        self.buttonBgColour.enable()
+        self.buttonFunColour.enable()
+
 
     def run(self):
         clock = pygame.time.Clock()
@@ -137,41 +169,44 @@ class PlotUI:
 
             for event in pygame.event.get():
                 isRunning = event.type != pygame.QUIT
-
-                if (
-                    event.type == pygame.USEREVENT and
-                    event.user_type == pygame_gui.UI_BUTTON_PRESSED and
-                    event.ui_element == self.buttonFunColour
-                ):
-                    self.colourPicker = UIColourPickerDialog(
-                        pygame.Rect(160, 50, 420, 400),
-                        self.ui,
-                        window_title = "Choose colour",
-                        initial_colour = pygame.Color(self.plot.funColor)
-                    )
-                    self.buttonFunColour.disable()
                 
-                if (
-                    event.type == pygame.USEREVENT and
-                    event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED
-                ):
-                    self.plot.funColor = (event.colour.r, event.colour.g, event.colour.b)
+                if event.type == pygame.USEREVENT:
+                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == self.buttonFunColour:
+                            self.colourPicker = UIColourPickerDialog(
+                                pygame.Rect(160, 50, 420, 400),
+                                self.ui,
+                                window_title = "Choose colour",
+                                initial_colour = pygame.Color(self.plot.funColor)
+                            )
+                            self.disable_buttons()
+                            self.state = PlotUI.State.CHOOSING_FUN
+                        if event.ui_element == self.buttonBgColour:
+                            self.colourPicker = UIColourPickerDialog(
+                                pygame.Rect(160, 50, 420, 400),
+                                self.ui,
+                                window_title = "Choose colour",
+                                initial_colour = pygame.Color(self.plot.bgColor)
+                            )
+                            self.disable_buttons()
+                            self.state = PlotUI.State.CHOOSING_BG
+                        
 
-                if (
-                    event.type == pygame.USEREVENT and
-                    event.user_type == pygame_gui.UI_WINDOW_CLOSE and
-                    event.ui_element == self.colourPicker
-                ):
-                    self.buttonFunColour.enable()
-                    self.colourPicker = None
+                    if event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
+                        if self.state == PlotUI.State.CHOOSING_FUN:
+                            self.plot.funColor = (event.colour.r, event.colour.g, event.colour.b)
+                        if self.state == PlotUI.State.CHOOSING_BG:
+                            self.plot.bgColor = event.colour
+                        
+
+                    if (event.user_type == pygame_gui.UI_WINDOW_CLOSE and
+                            event.ui_element == self.colourPicker):
+                        self.enable_buttons()
+                        self.colourPicker = None
+                        self.state = PlotUI.State.DEF
 
                 self.ui.process_events(event)
                 
-            self.buttonFunColour.relative_rect = pygame.Rect(
-                (10, self.canvas.get_height() - 10 - self.buttonSize[1]),
-                self.buttonSize
-            )
-
             self.plot.update(self.canvas.get_size())
             self.ui.update(delta)
             self.canvas.blit(self.plot.surface, (0, 0))
