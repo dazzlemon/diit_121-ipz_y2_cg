@@ -3,6 +3,7 @@ import pygame_gui
 from numpy import arange
 from functools import reduce
 from math import sin
+from pygame_gui.windows import UIColourPickerDialog
 
 
 def linear_map(x, from_, to):
@@ -13,9 +14,9 @@ def virtual_map(height):
 
 
 class Plot:
-    def __init__(self, bgColor, axisesColor, funColor, textColor, range_, lineWidth, fontSize, f):
+    def __init__(self, bgColor, axesColor, funColor, textColor, range_, lineWidth, fontSize, f):
         self.bgColor = bgColor
-        self.axisesColor = axisesColor
+        self.axesColor = axesColor
         self.funColor = funColor
         self.textColor = textColor
         self.range_ = range_
@@ -28,11 +29,11 @@ class Plot:
     def update(self, size):
         self.surface = pygame.Surface(size)
         self.surface.fill(self.bgColor)
-        rangeY = self.function()
-        self.axises(rangeY)
+        rangeY = self.draw_function()
+        self.draw_axes(rangeY)
 
 
-    def function(self):
+    def draw_function(self):
         points = [(x, self.f(x)) for x in arange(self.range_[0], self.range_[1], (self.range_[1] - self.range_[0]) / self.surface.get_width())]
         rangeY = reduce(
                 lambda old, point: (min(old[0], point[1]), max(old[1], point[1])),
@@ -64,19 +65,19 @@ class Plot:
         return rangeY
 
 
-    def axises(self, rangeY):
+    def draw_axes(self, rangeY):
         zeroY = self.surface.get_height() - linear_map(0, rangeY, (0, self.surface.get_height()))
         zeroX = linear_map(0, self.range_, (0, self.surface.get_width()))
         pygame.draw.line(
                 self.surface,
-                self.axisesColor,
+                self.axesColor,
                 (zeroX, 0),
                 (zeroX, self.surface.get_height()),
                 self.lineWidth
             )
         pygame.draw.line(
                 self.surface,
-                self.axisesColor,
+                self.axesColor,
                 (0, zeroY),
                 (self.surface.get_width(), zeroY),
                 self.lineWidth
@@ -95,58 +96,92 @@ class Plot:
         self.surface.blit(textMinY, (zeroX - self.lineWidth - self.fontSize * 3, self.surface.get_height() - self.fontSize))
 
 
+class PlotUI:
+    def __init__(self):
+        pygame.init()
+
+        initSize = (800, 600)
+
+        self.canvas = pygame.display.set_mode(initSize)
+        pygame.display.set_caption("diit_pz1921_cg1_safonov")
+
+        self.plot = Plot(
+            bgColor = (255, 255, 255),
+            axesColor = (0, 255, 0),
+            funColor = (0, 0, 255),
+            textColor = (255, 0, 0),
+            range_ = (-10, 10),
+            f = sin,
+            lineWidth = 4,
+            fontSize = 16
+        )
+        self.ui = pygame_gui.UIManager(initSize)
+
+        self.buttonSize = (100, 60)
+
+        self.buttonFunColour = pygame_gui.elements.UIButton(
+            relative_rect = pygame.Rect(
+                (0, 0), 
+                self.buttonSize
+            ),
+            text = "Change function colour",
+            manager = self.ui
+        )
+
+
+    def run(self):
+        clock = pygame.time.Clock()
+        isRunning = True
+        while isRunning:
+            delta = clock.tick(60) / 1000.0
+
+            for event in pygame.event.get():
+                isRunning = event.type != pygame.QUIT
+
+                if (
+                    event.type == pygame.USEREVENT and
+                    event.user_type == pygame_gui.UI_BUTTON_PRESSED and
+                    event.ui_element == self.buttonFunColour
+                ):
+                    self.colourPicker = UIColourPickerDialog(
+                        pygame.Rect(160, 50, 420, 400),
+                        self.ui,
+                        window_title = "Choose colour",
+                        initial_colour = pygame.Color(self.plot.funColor)
+                    )
+                    self.buttonFunColour.disable()
+                
+                if (
+                    event.type == pygame.USEREVENT and
+                    event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED
+                ):
+                    self.plot.funColor = (event.colour.r, event.colour.g, event.colour.b)
+
+                if (
+                    event.type == pygame.USEREVENT and
+                    event.user_type == pygame_gui.UI_WINDOW_CLOSE and
+                    event.ui_element == self.colourPicker
+                ):
+                    self.buttonFunColour.enable()
+                    self.colourPicker = None
+
+                self.ui.process_events(event)
+                
+            self.buttonFunColour.relative_rect = pygame.Rect(
+                (10, self.canvas.get_height() - 10 - self.buttonSize[1]),
+                self.buttonSize
+            )
+
+            self.plot.update(self.canvas.get_size())
+            self.ui.update(delta)
+            self.canvas.blit(self.plot.surface, (0, 0))
+            self.ui.draw_ui(self.canvas)
+            pygame.display.update()
+
+
 def main():
-    initSize = (800, 600)
-    pygame.init()
-
-    canvas = pygame.display.set_mode(initSize)
-    pygame.display.set_caption("diit_pz1921_cg1_safonov")
-
-    plot_ = Plot(
-                bgColor = (255, 255, 255),
-                axisesColor = (0, 255, 0),
-                funColor = (0, 0, 255),
-                textColor = (255, 0, 0),
-                range_ = (-10, 10),
-                f = sin,
-                lineWidth = 4,
-                fontSize = 16
-            )
-    ui = pygame_gui.UIManager(initSize)
-
-    buttonSize = (200, 100)
-
-    button = pygame_gui.elements.UIButton(
-                relative_rect = pygame.Rect(
-                    (0, 0), 
-                    buttonSize
-                ),
-                text = "test",
-                manager = ui
-            )
-
-    clock = pygame.time.Clock()
-    isRunning = True
-    while isRunning:
-        delta = clock.tick(60) / 1000.0
-
-        for event in pygame.event.get():
-            isRunning = event.type != pygame.QUIT
-            if event.type == pygame.USEREVENT and event.user_type == pygame_gui.UI_BUTTON_PRESSED and event.ui_element == button:
-                plot_.funColor = (255, 0, 255)
-
-        button.relative_rect = pygame.Rect(
-                    (10, canvas.get_height() - 10 - buttonSize[1]),
-                    buttonSize
-                )
-
-        ui.process_events(event)
-        plot_.update(canvas.get_size())
-        ui.update(delta)
-        canvas.blit(plot_.surface, (0, 0))
-        ui.draw_ui(canvas)
-        pygame.display.update()
-
+    plotUi = PlotUI()
+    plotUi.run()
 
 if __name__ == "__main__":
     main()
