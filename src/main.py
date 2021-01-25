@@ -6,6 +6,9 @@ from functools import reduce
 def linear_map(x, from_, to):
     return to[0] + (to[1] - to[0]) * ((x - from_[0]) / (from_[1] - from_[0]))
 
+def virtual_map(height):
+    return lambda point: (point[0], height - point[1])
+
 
 class Plot:
     def __init__(self, displaySize, bgColor, axisesColor, funColor, range_, f):
@@ -47,6 +50,11 @@ class Plot:
                     int(linear_map(point[0], self.range_, (0, self.surface.get_width()))),
                     int(linear_map(point[1], rangeY, (0, self.surface.get_height())))
                 ),
+                points
+            )
+
+        points = map(
+                virtual_map(self.surface.get_height()),
                 points
             )
 
