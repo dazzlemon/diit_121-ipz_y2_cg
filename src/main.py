@@ -12,7 +12,7 @@ def virtual_map(height):
 
 
 class Plot:
-    def __init__(self, displaySize, bgColor, axisesColor, funColor, textColor, range_, f):
+    def __init__(self, displaySize, bgColor, axisesColor, funColor, textColor, range_, lineWidth, fontSize, f):
         self.displaySize = displaySize
         self.bgColor = bgColor
         self.axisesColor = axisesColor
@@ -20,11 +20,13 @@ class Plot:
         self.textColor = textColor
         self.range_ = range_
         self.f = f
+        self.lineWidth = lineWidth
+        self.fontSize = fontSize
 
 
     def plot(self):
         pygame.init()
-        self.font = pygame.font.Font("font.ttf", 32)
+        self.font = pygame.font.Font("font.ttf", self.fontSize)
         self.surface = pygame.display.set_mode(self.displaySize)
         pygame.display.set_caption("diit_pz1911_y2_cg1_safonov")
 
@@ -66,9 +68,9 @@ class Plot:
                 self.funColor,
                 False,
                 list(points),
-                10
+                self.lineWidth
                 )
-        #print("rangeY( " + str(rangeY[0]) + " , " + str(rangeY[1]) + " )")
+
         return rangeY
 
 
@@ -80,23 +82,27 @@ class Plot:
                 self.axisesColor,
                 (zeroX, 0),
                 (zeroX, self.surface.get_height()),
-                10
+                self.lineWidth
             )
         pygame.draw.line(
                 self.surface,
                 self.axisesColor,
                 (0, zeroY),
                 (self.surface.get_width(), zeroY),
-                10
+                self.lineWidth
             )
 
         textX = self.font.render("x", True, self.textColor)
         textY = self.font.render("y", True, self.textColor)
         textZero = self.font.render("0", True, self.textColor)
+        textMaxY = self.font.render(str(round(rangeY[1], 3)), True, self.textColor)
+        textMinY = self.font.render(str(round(rangeY[0], 3)), True, self.textColor)
 
-        self.surface.blit(textY, (zeroX + 10, 0))
-        self.surface.blit(textX, (self.surface.get_width() - 32, zeroY - 10 - 32))
-        self.surface.blit(textZero, (zeroX + 10, zeroY - 10 - 32))
+        self.surface.blit(textY, (zeroX + self.lineWidth, 0))
+        self.surface.blit(textX, (self.surface.get_width() - self.fontSize, zeroY - self.lineWidth - self.fontSize))
+        self.surface.blit(textZero, (zeroX + self.lineWidth, zeroY - self.lineWidth - self.fontSize)) 
+        self.surface.blit(textMaxY, (zeroX - self.lineWidth - self.fontSize * 3, 0))
+        self.surface.blit(textMinY, (zeroX - self.lineWidth - self.fontSize * 3, self.surface.get_height() - self.fontSize))
 
 
 def main():
@@ -107,7 +113,9 @@ def main():
                 funColor = (0, 0, 255),
                 textColor = (255, 0, 0),
                 range_ = (-10, 10),
-                f = sin
+                f = sin,
+                lineWidth = 4,
+                fontSize = 16
             )
     plot_.plot() 
 
