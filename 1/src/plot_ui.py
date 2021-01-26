@@ -38,11 +38,8 @@ class PlotUI:
         self.plot = Plot(
             bgColor = (255, 255, 255),
             axesColor = (0, 255, 0),
-            funColor = (0, 0, 255),
+            axesWidth = 4,
             textColor = (255, 0, 0),
-            range_ = (-10, 10),
-            f = sin,
-            lineWidth = 4,
             fontSize = 16
         )
         self.ui = pygame_gui.UIManager(initSize)
@@ -57,7 +54,15 @@ class PlotUI:
                 ),
                 text = "Plot new function",
                 manager = self.ui,
-                handle = lambda event: print("plot new func")
+                handle = lambda event: self.plot.plot(
+                    xs = arange(-10, 10, 0.1),
+                    ys = list(map(
+                        lambda x: sin(x),
+                        arange(-10, 10, 0.1)
+                    )),
+                    color = (0, 0, 255),
+                    width = 4
+                )
             ),
             ButtonHandled(
                 relative_rect = pygame.Rect(

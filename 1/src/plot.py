@@ -11,36 +11,85 @@ def virtual_map(height):
 
 
 class Plot:
-    def __init__(self, bgColor, axesColor, funColor, textColor, range_, lineWidth, fontSize, f):
+    def __init__(self, bgColor, axesColor, textColor, axesWidth, fontSize):
         self.bgColor = bgColor
         self.axesColor = axesColor
-        self.funColor = funColor
+        self.axesWidth = axesWidth
         self.textColor = textColor
-        self.range_ = range_
-        self.f = f
-        self.lineWidth = lineWidth
         self.fontSize = fontSize
         self.font = pygame.font.Font("font.ttf", self.fontSize)
+        self.funs = []
+
+
+    def plot(self, xs, ys, color, width):
+        self.funs.append((xs, ys, color, width))
+
+    
+    def clear(self):
+        self.funs.clear()
 
 
     def update(self, size):
         self.surface = pygame.Surface(size)
         self.surface.fill(self.bgColor)
-        rangeY = self.draw_function()
-        self.draw_axes(rangeY)
+        
+        if len(self.funs) > 0:
+            rangeX = self.range_x()
+            rangeY = self.range_y()
+
+            for f in self.funs:
+                self.draw_func(f[0], f[1], rangeX, rangeY, f[2], f[3])
+
+            self.draw_axes(rangeX, rangeY)
 
 
-    def draw_function(self):
-        points = [(x, self.f(x)) for x in arange(self.range_[0], self.range_[1], (self.range_[1] - self.range_[0]) / self.surface.get_width())]
-        rangeY = reduce(
-            lambda old, point: (min(old[0], point[1]), max(old[1], point[1])),
-            points,
-            (points[0][1], points[0][1])
+    def range_x(self):
+        minmaxs = list(map(
+            lambda points: (points[0][0], points[0][-1]),
+            self.funs
+        ))
+
+        rangeX = reduce(
+            lambda accum, minmax: (
+                min(accum[0], minmax[0]),
+                max(accum[1], minmax[1])
+            ),
+            minmaxs
         )
 
+        return rangeX
+
+
+    def range_y(self):
+        yss = list(map(
+            lambda points: list(points[1]),
+            self.funs
+        ))
+ 
+        for ys in yss:
+            ys.sort()
+
+        minmaxs = list(map(
+            lambda points: (points[0], points[-1]),
+            yss
+        ))
+
+        rangeY = reduce(
+            lambda accum, minmax: (
+                min(accum[0], minmax[0]),
+                max(accum[1], minmax[1])
+            ),
+            minmaxs
+        )
+        return rangeY
+
+
+
+    def draw_func(self, xs, ys, rangeX, rangeY, color, width):
+        points = zip(xs, ys)
         points = map(
             lambda point: (
-                int(linear_map(point[0], self.range_, (0, self.surface.get_width()))),
+                int(linear_map(point[0], rangeX, (0, self.surface.get_width()))),
                 int(linear_map(point[1], rangeY, (0, self.surface.get_height())))
             ),
             points
@@ -53,61 +102,12 @@ class Plot:
 
         pygame.draw.lines(
             self.surface,
-            self.funColor,
+            color,
             False,
             list(points),
-            self.lineWidth
+            width
         )
 
-        return rangeY
 
-
-    def draw_axes(self, rangeY):
-        zeroY = self.surface.get_height() - linear_map(0, rangeY, (0, self.surface.get_height()))
-        zeroX = linear_map(0, self.range_, (0, self.surface.get_width()))
-        pygame.draw.line(
-            self.surface,
-            self.axesColor,
-            (zeroX, 0),
-            (zeroX, self.surface.get_height()),
-            self.lineWidth
-        )
-
-        pygame.draw.line(
-            self.surface,
-            self.axesColor,
-            (0, zeroY),
-            (self.surface.get_width(), zeroY),
-            self.lineWidth
-        )
-
-        textX = self.font.render("x", True, self.textColor)
-        textY = self.font.render("y", True, self.textColor)
-        textZero = self.font.render("0", True, self.textColor)
-        textMaxY = self.font.render(str(round(rangeY[1], 3)), True, self.textColor)
-        textMinY = self.font.render(str(round(rangeY[0], 3)), True, self.textColor)
-
-        self.surface.blit(textY, (zeroX + self.lineWidth, 0))
-        self.surface.blit(textX, (self.surface.get_width() - self.fontSize, zeroY - self.lineWidth - self.fontSize))
-        self.surface.blit(textZero, (zeroX + self.lineWidth, zeroY - self.lineWidth - self.fontSize)) 
-        self.surface.blit(textMaxY, (zeroX - self.lineWidth - self.fontSize * 3, 0))
-        self.surface.blit(textMinY, (zeroX - self.lineWidth - self.fontSize * 3, self.surface.get_height() - self.fontSize))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def draw_axes(self, rangeX, rangeY):
+        pass
