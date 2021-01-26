@@ -110,4 +110,32 @@ class Plot:
 
 
     def draw_axes(self, rangeX, rangeY):
-        pass
+        zeroY = self.surface.get_height() - linear_map(0, rangeY, (0, self.surface.get_height()))
+        zeroX = linear_map(0, rangeX, (0, self.surface.get_width()))
+        pygame.draw.line(
+            self.surface,
+            self.axesColor,
+            (zeroX, 0),
+            (zeroX, self.surface.get_height()),
+            self.axesWidth
+        )
+
+        pygame.draw.line(
+            self.surface,
+            self.axesColor,
+            (0, zeroY),
+            (self.surface.get_width(), zeroY),
+            self.axesWidth
+        )
+
+        textX = self.font.render("x", True, self.textColor)
+        textY = self.font.render("y", True, self.textColor)
+        textZero = self.font.render("0", True, self.textColor)
+        textMaxY = self.font.render(str(round(rangeY[1], 3)), True, self.textColor)
+        textMinY = self.font.render(str(round(rangeY[0], 3)), True, self.textColor)
+
+        self.surface.blit(textY, (zeroX + self.axesWidth, 0))
+        self.surface.blit(textX, (self.surface.get_width() - self.fontSize, zeroY - self.axesWidth - self.fontSize))
+        self.surface.blit(textZero, (zeroX + self.axesWidth, zeroY - self.axesWidth - self.fontSize)) 
+        self.surface.blit(textMaxY, (zeroX - self.axesWidth - self.fontSize * 3, 0))
+        self.surface.blit(textMinY, (zeroX - self.axesWidth - self.fontSize * 3, self.surface.get_height() - self.fontSize))
