@@ -71,7 +71,7 @@ class PlotUI:
                 ),
                 text = "Clear",
                 manager = self.ui,
-                handle = lambda event: print("clear")
+                handle = lambda event: self.plot.clear()
 
             ),
             ButtonHandled(
