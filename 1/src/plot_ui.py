@@ -21,10 +21,8 @@ class ButtonHandled:
 class PlotUI:
     class State(Enum):
         DEF = auto()
-        CHOOSING_FUN = auto()
-        CHOOSING_BG = auto()
-        CHOOSING_TXT = auto()
-        CHOOSING_MARKS = auto()
+        NEW_FUN = auto()
+        SETTINGS = auto()
 
 
     def __init__(self):
@@ -81,12 +79,47 @@ class PlotUI:
                 ),
                 text = "Settings",
                 manager = self.ui,
-                handle = lambda event: print("settings")
+                handle = lambda event: self.setState(PlotUI.State.SETTINGS)
 
             )
         ]
 
+        self.uiSettings = pygame_gui.UIManager(initSize)
+        self.settings = [
+            ButtonHandled(
+                relative_rect = pygame.Rect(
+                    (0, 0),
+                    self.buttonSize
+                ),
+                text = "Axes Color",
+                manager = self.uiSettings,
+                handle = lambda event: 0
+            ),
+            ButtonHandled(
+                relative_rect = pygame.Rect(
+                    (0, self.buttonSize[1]),
+                    self.buttonSize
+                ),
+                text = "Axes Width",
+                manager = self.uiSettings,
+                handle = lambda event: 0
+
+            ),
+            ButtonHandled(
+                relative_rect = pygame.Rect(
+                    (0, self.buttonSize[1] * 2),
+                    self.buttonSize
+                ),
+                text = "Return",
+                manager = self.uiSettings,
+                handle = lambda event: self.setState(PlotUI.State.DEF)
+            )
+        ]
+        
         self.state = PlotUI.State.DEF
+
+    def setState(self, state):
+        self.state = state
 
 
     def disable_buttons(self):
@@ -111,11 +144,23 @@ class PlotUI:
                         for bh in self.buttons:
                             if event.ui_element == bh.button:
                                 bh.handle(event)
-
-                self.ui.process_events(event)
+                        for bh in self.settings:
+                            if event.ui_element == bh.button:
+                                bh.handle(event)
+                
+                if self.state == PlotUI.State.DEF:
+                    self.ui.process_events(event)
+                elif self.state == PlotUI.State.SETTINGS:
+                    self.uiSettings.process_events(event)
                 
             self.plot.update(self.canvas.get_size())
-            self.ui.update(delta)
             self.canvas.blit(self.plot.surface, (0, 0))
-            self.ui.draw_ui(self.canvas)
+            
+            if self.state == PlotUI.State.DEF:
+                self.ui.update(delta)
+                self.ui.draw_ui(self.canvas)
+            elif self.state == PlotUI.State.SETTINGS:
+                self.uiSettings.update(delta)
+                self.uiSettings.draw_ui(self.canvas)
+            
             pygame.display.update()
