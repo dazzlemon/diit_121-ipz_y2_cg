@@ -6,6 +6,18 @@ from pygame_gui.windows import UIColourPickerDialog
 from enum import Enum, auto
 from plot import Plot
 
+
+class ButtonHandled:
+    def __init__(self, relative_rect, text, manager, handle):
+        self.button = pygame_gui.elements.UIButton(
+            relative_rect = relative_rect,
+            text = text,
+            manager = manager
+        )
+
+        self.handle = handle
+
+
 class PlotUI:
     class State(Enum):
         DEF = auto()
@@ -37,35 +49,47 @@ class PlotUI:
 
         self.buttonSize = (200, 60)
 
-        self.buttonFunColour = pygame_gui.elements.UIButton(
-            relative_rect = pygame.Rect(
-                (0, 0), 
-                self.buttonSize
+        self.buttons = [
+            ButtonHandled(
+                relative_rect = pygame.Rect(
+                    (0, 0),
+                    self.buttonSize
+                ),
+                text = "Plot new function",
+                manager = self.ui,
+                handle = lambda event: print("plot new func")
             ),
-            text = "Change function colour",
-            manager = self.ui
-        )
+            ButtonHandled(
+                relative_rect = pygame.Rect(
+                    (0, self.buttonSize[1]),
+                    self.buttonSize
+                ),
+                text = "Clear",
+                manager = self.ui,
+                handle = lambda event: print("clear")
 
-        self.buttonBgColour = pygame_gui.elements.UIButton(
-            relative_rect = pygame.Rect(
-                (0, self.buttonSize[1]),
-                self.buttonSize
             ),
-            text = "Change background colour",
-            manager = self.ui
-        )
+            ButtonHandled(
+                relative_rect = pygame.Rect(
+                    (0, self.buttonSize[1] * 2),
+                    self.buttonSize
+                ),
+                text = "Settings",
+                manager = self.ui,
+                handle = lambda event: print("settings")
+
+            )
+        ]
 
         self.state = PlotUI.State.DEF
 
 
     def disable_buttons(self):
-        self.buttonBgColour.disable()
-        self.buttonFunColour.disable()
+        pass
 
     
     def enable_buttons(self):
-        self.buttonBgColour.enable()
-        self.buttonFunColour.enable()
+        pass
 
 
     def run(self):
@@ -79,38 +103,9 @@ class PlotUI:
                 
                 if event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                        if event.ui_element == self.buttonFunColour:
-                            self.colourPicker = UIColourPickerDialog(
-                                pygame.Rect(160, 50, 420, 400),
-                                self.ui,
-                                window_title = "Choose colour",
-                                initial_colour = pygame.Color(self.plot.funColor)
-                            )
-                            self.disable_buttons()
-                            self.state = PlotUI.State.CHOOSING_FUN
-                        if event.ui_element == self.buttonBgColour:
-                            self.colourPicker = UIColourPickerDialog(
-                                pygame.Rect(160, 50, 420, 400),
-                                self.ui,
-                                window_title = "Choose colour",
-                                initial_colour = pygame.Color(self.plot.bgColor)
-                            )
-                            self.disable_buttons()
-                            self.state = PlotUI.State.CHOOSING_BG
-                        
-
-                    if event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
-                        if self.state == PlotUI.State.CHOOSING_FUN:
-                            self.plot.funColor = (event.colour.r, event.colour.g, event.colour.b)
-                        if self.state == PlotUI.State.CHOOSING_BG:
-                            self.plot.bgColor = event.colour
-                        
-
-                    if (event.user_type == pygame_gui.UI_WINDOW_CLOSE and
-                            event.ui_element == self.colourPicker):
-                        self.enable_buttons()
-                        self.colourPicker = None
-                        self.state = PlotUI.State.DEF
+                        for bh in self.buttons:
+                            if event.ui_element == bh.button:
+                                bh.handle(event)
 
                 self.ui.process_events(event)
                 
