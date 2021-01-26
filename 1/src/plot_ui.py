@@ -25,6 +25,12 @@ class PlotUI:
         SETTINGS = auto()
 
 
+    class ColorState(Enum):
+        DEF = auto()
+        AXES = auto()
+        TEXT = auto()
+
+
     def __init__(self):
         pygame.init()
 
@@ -93,7 +99,15 @@ class PlotUI:
                 ),
                 text = "Axes Color",
                 manager = self.uiSettings,
-                handle = lambda event: 0
+                handle = lambda event: self.setColourPicker(
+                    UIColourPickerDialog(
+                        pygame.Rect(160, 50, 420, 400),
+                        self.uiSettings,
+                        window_title = "Choose colour",
+                        initial_colour = pygame.Color(self.plot.axesColor)
+                    ),
+                    PlotUI.ColorState.AXES
+                )
             ),
             ButtonHandled(
                 relative_rect = pygame.Rect(
@@ -117,9 +131,16 @@ class PlotUI:
         ]
         
         self.state = PlotUI.State.DEF
+        self.colourState = PlotUI.ColorState.DEF
+
 
     def setState(self, state):
         self.state = state
+
+    
+    def setColourPicker(self, cp, state):
+        self.colourPicker = cp
+        self.colourState = state
 
 
     def disable_buttons(self):
@@ -147,7 +168,14 @@ class PlotUI:
                         for bh in self.settings:
                             if event.ui_element == bh.button:
                                 bh.handle(event)
-                
+                    if event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
+                        if self.colourState == PlotUI.ColorState.AXES:
+                            self.plot.axesColor = event.colour
+                    if (event.user_type == pygame_gui.UI_WINDOW_CLOSE and
+                            event.ui_element == self.colourPicker):
+                        self.colourPIcker = None
+                        self.colourState = PlotUI.ColorState.DEF
+
                 if self.state == PlotUI.State.DEF:
                     self.ui.process_events(event)
                 elif self.state == PlotUI.State.SETTINGS:
