@@ -29,6 +29,7 @@ class PlotUI:
         DEF = auto()
         AXES = auto()
         TEXT = auto()
+        BG = auto()
 
 
     def __init__(self):
@@ -97,6 +98,23 @@ class PlotUI:
                     (0, 0),
                     self.buttonSize
                 ),
+                text = "Background Color",
+                manager = self.uiSettings,
+                handle = lambda event: self.setColourPicker(
+                    UIColourPickerDialog(
+                        pygame.Rect(160, 50, 420, 400),
+                        self.uiSettings,
+                        window_title = "Choose colour",
+                        initial_colour = pygame.Color(self.plot.bgColor)
+                    ),
+                    PlotUI.ColorState.BG
+                )
+            ),
+            ButtonHandled(
+                relative_rect = pygame.Rect(
+                    (0, self.buttonSize[1]),
+                    self.buttonSize
+                ),
                 text = "Axes Color",
                 manager = self.uiSettings,
                 handle = lambda event: self.setColourPicker(
@@ -111,7 +129,7 @@ class PlotUI:
             ),
             ButtonHandled(
                 relative_rect = pygame.Rect(
-                    (0, self.buttonSize[1]),
+                    (0, self.buttonSize[1] * 2),
                     self.buttonSize
                 ),
                 text = "Axes Width",
@@ -121,7 +139,7 @@ class PlotUI:
             ),
             ButtonHandled(
                 relative_rect = pygame.Rect(
-                    (0, self.buttonSize[1] * 2),
+                    (0, self.buttonSize[1] * 3),
                     self.buttonSize
                 ),
                 text = "Return",
@@ -171,9 +189,11 @@ class PlotUI:
                     if event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
                         if self.colourState == PlotUI.ColorState.AXES:
                             self.plot.axesColor = event.colour
+                        if self.colourState == PlotUI.ColorState.BG:
+                            self.plot.bgColor = event.colour
                     if (event.user_type == pygame_gui.UI_WINDOW_CLOSE and
                             event.ui_element == self.colourPicker):
-                        self.colourPIcker = None
+                        self.colourPicker = None
                         self.colourState = PlotUI.ColorState.DEF
 
                 if self.state == PlotUI.State.DEF:
