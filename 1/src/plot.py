@@ -47,50 +47,46 @@ class Plot:
 
             for f in self.funs:
                 self.draw_func(f[0], f[1], rangeX, rangeY, f[2], f[3])
+        
+            zeroY = self.surface.get_height() - linear_map(0, rangeY, (0, self.surface.get_height()))
+            zeroX = linear_map(0, rangeX, (0, self.surface.get_width()))
+            
+            self.draw_axes(zeroX, zeroY)
+            self.draw_text(zeroX, zeroY, rangeX, rangeY)
 
-            self.draw_axes(rangeX, rangeY)
+
+    def range_seq(self, y):
+        pointss = list(map(
+            lambda points: points[y].copy(),
+            self.funs
+        ))
+
+        if y:
+            for points in pointss:
+                points.sort()
+        
+        minmaxs = list(map(
+            lambda points: (points[0], points[-1]),
+            pointss
+        ))
+
+        rangeSeq = reduce(
+            lambda accum, minmax: (
+                min(accum[0], minmax[0]),
+                max(accum[0], minmax[1])
+            ),
+            minmaxs
+        )
+        
+        return rangeSeq
 
 
     def range_x(self):
-        minmaxs = list(map(
-            lambda points: (points[0][0], points[0][-1]),
-            self.funs
-        ))
-
-        rangeX = reduce(
-            lambda accum, minmax: (
-                min(accum[0], minmax[0]),
-                max(accum[1], minmax[1])
-            ),
-            minmaxs
-        )
-
-        return rangeX
+        return self.range_seq(False)
 
 
     def range_y(self):
-        yss = list(map(
-            lambda points: list(points[1]),
-            self.funs
-        ))
- 
-        for ys in yss:
-            ys.sort()
-
-        minmaxs = list(map(
-            lambda points: (points[0], points[-1]),
-            yss
-        ))
-
-        rangeY = reduce(
-            lambda accum, minmax: (
-                min(accum[0], minmax[0]),
-                max(accum[1], minmax[1])
-            ),
-            minmaxs
-        )
-        return rangeY
-
+        return self.range_seq(True)
 
 
     def draw_func(self, xs, ys, rangeX, rangeY, color, width):
@@ -117,25 +113,28 @@ class Plot:
         )
 
 
-    def draw_axes(self, rangeX, rangeY):
-        zeroY = self.surface.get_height() - linear_map(0, rangeY, (0, self.surface.get_height()))
-        zeroX = linear_map(0, rangeX, (0, self.surface.get_width()))
-        pygame.draw.line(
-            self.surface,
-            self.axesColor,
+    def draw_axes(self, zeroX, zeroY):
+        self.draw_axis(
             (zeroX, 0),
-            (zeroX, self.surface.get_height()),
-            self.axesWidth
+            (zeroX, self.surface.get_height())
+        )
+        self.draw_axis(
+            (0, zeroY),
+            (self.surface.get_width(), zeroY)
         )
 
+
+    def draw_axis(self, start, end):
         pygame.draw.line(
             self.surface,
             self.axesColor,
-            (0, zeroY),
-            (self.surface.get_width(), zeroY),
+            start,
+            end,
             self.axesWidth
         )
 
+
+    def draw_text(self, zeroX, zeroY, rangeX, rangeY):
         textX = self.font.render("x", True, self.textColor)
         textY = self.font.render("y", True, self.textColor)
         textZero = self.font.render("0", True, self.textColor)
@@ -147,3 +146,4 @@ class Plot:
         self.surface.blit(textZero, (zeroX + self.axesWidth, zeroY - self.axesWidth - self.fontSize)) 
         self.surface.blit(textMaxY, (zeroX - self.axesWidth - self.fontSize * 3, 0))
         self.surface.blit(textMinY, (zeroX - self.axesWidth - self.fontSize * 3, self.surface.get_height() - self.fontSize))
+
