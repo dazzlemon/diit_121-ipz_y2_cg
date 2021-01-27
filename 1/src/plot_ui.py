@@ -50,6 +50,27 @@ class PlotUI:
         self.ui = pygame_gui.UIManager(initSize)
 
         self.buttonSize = (200, 60)
+        
+        def plot_two(event):
+            self.plot.plot(
+                xs = arange(-10, 10, 0.1),
+                ys = list(map(
+                    lambda x: sin(x),
+                    arange(-10, 10, 0.1)
+                )),
+                color = (0, 0, 255),
+                width = 4
+            )
+            self.plot.plot(
+                xs = arange(0, 20, 0.1),
+                ys = list(map(
+                    lambda x: 2*x,
+                    arange(0, 20, 0.1)
+                )),
+                color = (0, 255, 255),
+                width = 2
+            )
+
 
         self.buttons = [
             ButtonHandled(
@@ -59,15 +80,7 @@ class PlotUI:
                 ),
                 text = "Plot new function",
                 manager = self.ui,
-                handle = lambda event: self.plot.plot(
-                    xs = arange(-10, 10, 0.1),
-                    ys = list(map(
-                        lambda x: sin(x),
-                        arange(-10, 10, 0.1)
-                    )),
-                    color = (0, 0, 255),
-                    width = 4
-                )
+                handle = plot_two
             ),
             ButtonHandled(
                 relative_rect = pygame.Rect(
