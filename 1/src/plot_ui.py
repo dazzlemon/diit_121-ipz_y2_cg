@@ -8,6 +8,38 @@ from plot import Plot
 from ui_handled import ButtonHandled, ColourPickerHandled
 
 
+class ButtonHandledFactory:
+    def __init__(self, size, manager):
+        self.manager = manager
+        self.size = size
+
+
+    def make(self, pos, text, handle):
+        return ButtonHandled(
+            relative_rect = pygame.Rect(pos, self.size),
+            text = text,
+            manager = self.manager,
+            handle = handle
+        )
+
+
+class ColourPickerHandledFactory:
+    def __init__(self, size, text, manager):
+        self.size = size
+        self.text = text
+        self.manager = manager
+
+
+    def make(self, colour, handle):
+        return ColourPickerHandled(
+            self.size,
+            self.manager,
+            self.text,
+            colour,
+            handle
+        )
+
+
 class PlotUI:
     class State(Enum):
         DEF = auto()
@@ -57,35 +89,24 @@ class PlotUI:
                 color = (0, 255, 255),
                 width = 2
             )
-
+        
+        bhf = ButtonHandledFactory(self.buttonSize, self.ui)
 
         self.buttons = [
-            ButtonHandled(
-                relative_rect = pygame.Rect(
-                    (0, 0),
-                    self.buttonSize
-                ),
+            bhf.make(
+                pos = (0, 0),
                 text = "Plot new function",
-                manager = self.ui,
                 handle = plot_two
             ),
-            ButtonHandled(
-                relative_rect = pygame.Rect(
-                    (0, self.buttonSize[1]),
-                    self.buttonSize
-                ),
+            bhf.make(
+                (0, self.buttonSize[1]),
                 text = "Clear",
-                manager = self.ui,
                 handle = lambda event: self.plot.clear()
 
             ),
-            ButtonHandled(
-                relative_rect = pygame.Rect(
-                    (0, self.buttonSize[1] * 2),
-                    self.buttonSize
-                ),
+            bhf.make(
+                (0, self.buttonSize[1] * 2),
                 text = "Settings",
-                manager = self.ui,
                 handle = lambda event: self.setState(PlotUI.State.SETTINGS)
 
             )
@@ -93,8 +114,14 @@ class PlotUI:
 
 
     def init_settings(self, initSize):
-        cpSize = pygame.Rect(100, 50, 420, 400)
         self.uiSettings = pygame_gui.UIManager(initSize)
+        cphf = ColourPickerHandledFactory(
+            pygame.Rect(100 ,50, 420, 400),
+            "Choose colour",
+            self.uiSettings
+        )
+
+        cpSize = pygame.Rect(100, 50, 420, 400)
         self.settings = [
             ButtonHandled(
                 relative_rect = pygame.Rect(
@@ -104,12 +131,9 @@ class PlotUI:
                 text = "Background Color",
                 manager = self.uiSettings,
                 handle = lambda event: self.setColourPicker(
-                    ColourPickerHandled(
-                        cpSize,
-                        self.uiSettings,
-                        "Choose colour",
+                    cphf.make(
                         pygame.Color(self.plot.bgColor),
-                        handle = lambda event: self.plot.set_bg_color(event.colour)
+                        lambda event: self.plot.set_bg_color(event.colour)
                     )
                 )
             ),
@@ -121,10 +145,7 @@ class PlotUI:
                 text = "Axes Color",
                 manager = self.uiSettings,
                 handle = lambda event: self.setColourPicker(
-                    ColourPickerHandled(
-                        cpSize,
-                        self.uiSettings,
-                        "Choose colour",
+                    cphf.make(
                         pygame.Color(self.plot.axesColor),
                         handle = lambda event: self.plot.set_axes_color(event.colour)
                     )
