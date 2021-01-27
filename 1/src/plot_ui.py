@@ -34,11 +34,13 @@ class PlotUI:
 
     def __init__(self):
         pygame.init()
-
         initSize = (800, 600)
-
         self.canvas = pygame.display.set_mode(initSize)
         pygame.display.set_caption("diit_pz1921_cg1_safonov")
+        
+        self.buttonSize = (200, 60)
+        self.init_menu(initSize)
+        self.init_settings(initSize)
 
         self.plot = Plot(
             bgColor = (255, 255, 255),
@@ -47,10 +49,13 @@ class PlotUI:
             textColor = (255, 0, 0),
             fontSize = 16
         )
+        self.state = PlotUI.State.DEF
+        self.colourState = PlotUI.ColorState.DEF
+
+    
+    def init_menu(self, initSize):
         self.ui = pygame_gui.UIManager(initSize)
 
-        self.buttonSize = (200, 60)
-        
         def plot_two(event):
             self.plot.plot(
                 xs = arange(-10, 10, 0.1),
@@ -104,6 +109,8 @@ class PlotUI:
             )
         ]
 
+
+    def init_settings(self, initSize):
         self.uiSettings = pygame_gui.UIManager(initSize)
         self.settings = [
             ButtonHandled(
@@ -159,10 +166,7 @@ class PlotUI:
                 manager = self.uiSettings,
                 handle = lambda event: self.setState(PlotUI.State.DEF)
             )
-        ]
-        
-        self.state = PlotUI.State.DEF
-        self.colourState = PlotUI.ColorState.DEF
+        ] 
 
 
     def setState(self, state):
@@ -182,38 +186,39 @@ class PlotUI:
         pass
 
 
+    def process_events(self, event):
+        self.isRunning = event.type != pygame.QUIT
+        if event.type == pygame.USEREVENT:
+            if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                for bh in self.buttons:
+                    if event.ui_element == bh.button:
+                        bh.handle(event)
+                for bh in self.settings:
+                    if event.ui_element == bh.button:
+                        bh.handle(event)
+            if event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
+                if self.colourState == PlotUI.ColorState.AXES:
+                    self.plot.axesColor = event.colour
+                if self.colourState == PlotUI.ColorState.BG:
+                    self.plot.bgColor = event.colour
+            if (event.user_type == pygame_gui.UI_WINDOW_CLOSE and
+                    event.ui_element == self.colourPicker):
+                self.colourPicker = None
+                self.colourState = PlotUI.ColorState.DEF
+
+        if self.state == PlotUI.State.DEF:
+            self.ui.process_events(event)
+        elif self.state == PlotUI.State.SETTINGS:
+            self.uiSettings.process_events(event)
+
+
     def run(self):
         clock = pygame.time.Clock()
-        isRunning = True
-        while isRunning:
+        self.isRunning = True
+        while self.isRunning:
             delta = clock.tick(60) / 1000.0
-
             for event in pygame.event.get():
-                isRunning = event.type != pygame.QUIT
-                
-                if event.type == pygame.USEREVENT:
-                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                        for bh in self.buttons:
-                            if event.ui_element == bh.button:
-                                bh.handle(event)
-                        for bh in self.settings:
-                            if event.ui_element == bh.button:
-                                bh.handle(event)
-                    if event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
-                        if self.colourState == PlotUI.ColorState.AXES:
-                            self.plot.axesColor = event.colour
-                        if self.colourState == PlotUI.ColorState.BG:
-                            self.plot.bgColor = event.colour
-                    if (event.user_type == pygame_gui.UI_WINDOW_CLOSE and
-                            event.ui_element == self.colourPicker):
-                        self.colourPicker = None
-                        self.colourState = PlotUI.ColorState.DEF
-
-                if self.state == PlotUI.State.DEF:
-                    self.ui.process_events(event)
-                elif self.state == PlotUI.State.SETTINGS:
-                    self.uiSettings.process_events(event)
-                
+                self.process_events(event)
             self.plot.update(self.canvas.get_size())
             self.canvas.blit(self.plot.surface, (0, 0))
             
