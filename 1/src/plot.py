@@ -21,6 +21,14 @@ class Plot:
         self.funs = []
 
 
+    def set_bg_color(self, color):
+        self.bgColor = color
+
+    
+    def set_axes_color(self, color):
+        self.axesColor = color
+
+
     def plot(self, xs, ys, color, width):
         self.funs.append((xs, ys, color, width))
 

@@ -5,17 +5,7 @@ from math import sin
 from pygame_gui.windows import UIColourPickerDialog
 from enum import Enum, auto
 from plot import Plot
-
-
-class ButtonHandled:
-    def __init__(self, relative_rect, text, manager, handle):
-        self.button = pygame_gui.elements.UIButton(
-            relative_rect = relative_rect,
-            text = text,
-            manager = manager
-        )
-
-        self.handle = handle
+from ui_handled import ButtonHandled, ColourPickerHandled
 
 
 class PlotUI:
@@ -23,13 +13,6 @@ class PlotUI:
         DEF = auto()
         NEW_FUN = auto()
         SETTINGS = auto()
-
-
-    class ColorState(Enum):
-        DEF = auto()
-        AXES = auto()
-        TEXT = auto()
-        BG = auto()
 
 
     def __init__(self):
@@ -50,7 +33,6 @@ class PlotUI:
             fontSize = 16
         )
         self.state = PlotUI.State.DEF
-        self.colourState = PlotUI.ColorState.DEF
 
     
     def init_menu(self, initSize):
@@ -111,6 +93,7 @@ class PlotUI:
 
 
     def init_settings(self, initSize):
+        cpSize = pygame.Rect(100, 50, 420, 400)
         self.uiSettings = pygame_gui.UIManager(initSize)
         self.settings = [
             ButtonHandled(
@@ -121,13 +104,13 @@ class PlotUI:
                 text = "Background Color",
                 manager = self.uiSettings,
                 handle = lambda event: self.setColourPicker(
-                    UIColourPickerDialog(
-                        pygame.Rect(160, 50, 420, 400),
+                    ColourPickerHandled(
+                        cpSize,
                         self.uiSettings,
-                        window_title = "Choose colour",
-                        initial_colour = pygame.Color(self.plot.bgColor)
-                    ),
-                    PlotUI.ColorState.BG
+                        "Choose colour",
+                        pygame.Color(self.plot.bgColor),
+                        handle = lambda event: self.plot.set_bg_color(event.colour)
+                    )
                 )
             ),
             ButtonHandled(
@@ -138,13 +121,13 @@ class PlotUI:
                 text = "Axes Color",
                 manager = self.uiSettings,
                 handle = lambda event: self.setColourPicker(
-                    UIColourPickerDialog(
-                        pygame.Rect(160, 50, 420, 400),
+                    ColourPickerHandled(
+                        cpSize,
                         self.uiSettings,
-                        window_title = "Choose colour",
-                        initial_colour = pygame.Color(self.plot.axesColor)
-                    ),
-                    PlotUI.ColorState.AXES
+                        "Choose colour",
+                        pygame.Color(self.plot.axesColor),
+                        handle = lambda event: self.plot.set_axes_color(event.colour)
+                    )
                 )
             ),
             ButtonHandled(
@@ -173,9 +156,8 @@ class PlotUI:
         self.state = state
 
     
-    def setColourPicker(self, cp, state):
+    def setColourPicker(self, cp):
         self.colourPicker = cp
-        self.colourState = state
 
 
     def disable_buttons(self):
@@ -197,14 +179,10 @@ class PlotUI:
                     if event.ui_element == bh.button:
                         bh.handle(event)
             if event.user_type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
-                if self.colourState == PlotUI.ColorState.AXES:
-                    self.plot.axesColor = event.colour
-                if self.colourState == PlotUI.ColorState.BG:
-                    self.plot.bgColor = event.colour
+                self.colourPicker.handle(event)
             if (event.user_type == pygame_gui.UI_WINDOW_CLOSE and
                     event.ui_element == self.colourPicker):
                 self.colourPicker = None
-                self.colourState = PlotUI.ColorState.DEF
 
         if self.state == PlotUI.State.DEF:
             self.ui.process_events(event)
