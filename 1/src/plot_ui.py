@@ -115,6 +115,7 @@ class PlotUI:
 
     def init_settings(self, initSize):
         self.uiSettings = pygame_gui.UIManager(initSize)
+        bhf = ButtonHandledFactory(self.buttonSize, self.uiSettings)
         cphf = ColourPickerHandledFactory(
             pygame.Rect(100 ,50, 420, 400),
             "Choose colour",
@@ -123,13 +124,9 @@ class PlotUI:
 
         cpSize = pygame.Rect(100, 50, 420, 400)
         self.settings = [
-            ButtonHandled(
-                relative_rect = pygame.Rect(
-                    (0, 0),
-                    self.buttonSize
-                ),
+            bhf.make(
+                (0, 0),
                 text = "Background Color",
-                manager = self.uiSettings,
                 handle = lambda event: self.setColourPicker(
                     cphf.make(
                         pygame.Color(self.plot.bgColor),
@@ -137,13 +134,9 @@ class PlotUI:
                     )
                 )
             ),
-            ButtonHandled(
-                relative_rect = pygame.Rect(
-                    (0, self.buttonSize[1]),
-                    self.buttonSize
-                ),
+            bhf.make(
+                (0, self.buttonSize[1]),
                 text = "Axes Color",
-                manager = self.uiSettings,
                 handle = lambda event: self.setColourPicker(
                     cphf.make(
                         pygame.Color(self.plot.axesColor),
@@ -151,23 +144,20 @@ class PlotUI:
                     )
                 )
             ),
-            ButtonHandled(
-                relative_rect = pygame.Rect(
-                    (0, self.buttonSize[1] * 2),
-                    self.buttonSize
-                ),
-                text = "Axes Width",
-                manager = self.uiSettings,
-                handle = lambda event: 0
+            bhf.make(
+                (0, self.buttonSize[1] * 2),
+                text = "Text Color",
+                handle = lambda event: self.setColourPicker(
+                    cphf.make(
+                        pygame.Color(self.plot.textColor),
+                        handle = lambda event: self.plot.set_text_color(event.colour)
+                    )
+                )
 
             ),
-            ButtonHandled(
-                relative_rect = pygame.Rect(
-                    (0, self.buttonSize[1] * 3),
-                    self.buttonSize
-                ),
+            bhf.make(
+                (0, self.buttonSize[1] * 3),
                 text = "Return",
-                manager = self.uiSettings,
                 handle = lambda event: self.setState(PlotUI.State.DEF)
             )
         ] 

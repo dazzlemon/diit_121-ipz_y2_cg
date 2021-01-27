@@ -29,6 +29,10 @@ class Plot:
         self.axesColor = color
 
 
+    def set_text_color(self, color):
+        self.textColor = color
+
+
     def plot(self, xs, ys, color, width):
         self.funs.append((xs, ys, color, width))
 
