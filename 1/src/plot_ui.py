@@ -118,25 +118,27 @@ class PlotUI:
             self.uiFun
         )
 
-        def plot_with(start, end, step, f, color, width):
+        def plot_handle(event):
+            start = float(self.minXLine.get_text())
+            end = float(self.maxXLine.get_text())
+            step = 0.001
+
+            a = float(self.aLine.get_text())
+            b = float(self.bLine.get_text())
+
             xs = arange(start, end, step)
-            return lambda event: self.plot.plot(
-                xs = xs,
-                ys = list(map(f, xs)),
-                color = color,
-                width = width
+            f = lambda x: abs(x) + a * cos(b * x)
+            ys = list(map(f, xs))
+
+            color = (255, 255, 0)
+            width = int(self.widthLine.get_text())
+
+            self.plot.plot(
+                xs,
+                ys,
+                color,
+                width
             )
-
-
-        def fun(a, b):
-            return lambda x: abs(x) + a * cos(b * x)
-
-
-        def plot_adapter(event):
-            return fun(
-                float(self.aLine.get_text()),
-                float(self.bLine.get_text())
-            )(event)
 
 
         self.minXLine = pygame_gui.elements.UITextEntryLine(
@@ -186,14 +188,7 @@ class PlotUI:
             bhf.make(
                 pos = (0, 0),
                 text = "Plot",
-                handle = plot_with(
-                    start = -3,
-                    end = 3,
-                    step = 0.01,
-                    f = plot_adapter,
-                    color = (255, 255, 0),
-                    width = 4
-                )
+                handle = plot_handle
             ),
             bhf.make(
                 pos = (0, self.buttonSize[1]),
