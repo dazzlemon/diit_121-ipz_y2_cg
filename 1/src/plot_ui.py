@@ -131,37 +131,79 @@ class PlotUI:
         def fun(a, b):
             return lambda x: abs(x) + a * cos(b * x)
 
+
+        def plot_adapter(event):
+            return fun(
+                float(self.aLine.get_text()),
+                float(self.bLine.get_text())
+            )(event)
+
+
+        self.minXLine = pygame_gui.elements.UITextEntryLine(
+            relative_rect = pygame.Rect(
+                (self.buttonSize[0], 0),
+                self.buttonSize
+            ),
+            manager = self.uiFun
+        )
+
+        self.maxXLine = pygame_gui.elements.UITextEntryLine(
+            relative_rect = pygame.Rect(
+                (self.buttonSize[0], self.buttonSize[1]),
+                self.buttonSize
+            ),
+            manager = self.uiFun
+        )
+
+        self.aLine = pygame_gui.elements.UITextEntryLine(
+            relative_rect = pygame.Rect(
+                (self.buttonSize[0], self.buttonSize[1] * 2),
+                self.buttonSize
+            ),
+            manager = self.uiFun
+        )
+
+
+        self.bLine = pygame_gui.elements.UITextEntryLine(
+            relative_rect = pygame.Rect(
+                (self.buttonSize[0], self.buttonSize[1] * 3),
+                self.buttonSize
+            ),
+            manager = self.uiFun
+        )
+
+
+        self.widthLine = pygame_gui.elements.UITextEntryLine(
+            relative_rect = pygame.Rect(
+                (self.buttonSize[0], self.buttonSize[1] * 4),
+                self.buttonSize
+            ),
+            manager = self.uiFun
+        )
+
+
         self.funButtons = [
             bhf.make(
                 pos = (0, 0),
-                text = "f1",
+                text = "Plot",
                 handle = plot_with(
                     start = -3,
                     end = 3,
                     step = 0.01,
-                    f = fun(2, -1),
-                    color = (0, 0, 255),
+                    f = plot_adapter,
+                    color = (255, 255, 0),
                     width = 4
                 )
             ),
             bhf.make(
-                pos = (0, self.buttonSize[1] * 1),
-                text = "f2",
-                handle = plot_with(
-                    start = -6,
-                    end = 0,
-                    step = 0.01,
-                    f = fun(1, -2),
-                    color = (255, 255, 0),
-                    width = 2
-                )
-            ),
-            bhf.make(
-                pos = (0, self.buttonSize[1] * 2),
+                pos = (0, self.buttonSize[1]),
                 text = "Return",
                 handle = lambda event: self.setState(PlotUI.State.DEF)
             )
         ]
+
+        
+
 
     def setState(self, state):
         self.state = state
