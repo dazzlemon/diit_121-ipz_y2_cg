@@ -5,6 +5,7 @@ from math import cos
 from enum import Enum, auto
 from plot import Plot
 from factories import ButtonHandledFactory, ColourPickerHandledFactory
+from button_handled_stack import button_handled_stack
 
 
 class PlotUI:
@@ -37,27 +38,23 @@ class PlotUI:
     
     def init_menu(self, initSize):
         self.ui = pygame_gui.UIManager(initSize)        
-        bhf = ButtonHandledFactory(self.buttonSize, self.ui)
-
-        self.buttons = [
-            bhf.make(
-                pos = (0, 0),
-                text = "Plot new function",
-                handle = lambda event: self.setState(PlotUI.State.NEW_FUN)
-            ),
-            bhf.make(
-                (0, self.buttonSize[1]),
-                text = "Clear",
-                handle = lambda event: self.plot.clear()
-
-            ),
-            bhf.make(
-                (0, self.buttonSize[1] * 2),
-                text = "Settings",
-                handle = lambda event: self.setState(PlotUI.State.SETTINGS)
-
-            )
-        ]
+        self.buttons = button_handled_stack(
+            self.buttonSize,
+            self.ui,
+            [
+                (
+                    "Plot new function",
+                    lambda event: self.setState(PlotUI.State.NEW_FUN)
+                ), (
+                    "Clear",
+                    lambda event: self.plot.clear()
+                ), (
+                    "Settings",
+                    lambda event: self.setState(PlotUI.State.SETTINGS)
+                ),
+            ],
+            (0, 0)
+        )
 
 
     def init_settings(self, initSize):
