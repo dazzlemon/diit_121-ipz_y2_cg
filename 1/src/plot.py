@@ -64,20 +64,16 @@ class Plot:
             lambda points: points[y].copy(),
             self.funs
         ))
-
-        if y:
-            for points in pointss:
-                points.sort()
         
         minmaxs = list(map(
-            lambda points: (points[0], points[-1]),
+            lambda points: (min(points), max(points)),
             pointss
         ))
 
         rangeSeq = reduce(
             lambda accum, minmax: (
                 min(accum[0], minmax[0]),
-                max(accum[0], minmax[1])
+                max(accum[1], minmax[1])
             ),
             minmaxs
         )
