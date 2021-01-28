@@ -206,24 +206,28 @@ class PlotUI:
             self.uiFun.process_events(event)
 
 
+    def update(self, delta):
+        self.plot.update(self.canvas.get_size())
+        self.canvas.blit(self.plot.surface, (0, 0))
+            
+        if self.state == PlotUI.State.DEF:
+            self.ui.update(delta)
+            self.ui.draw_ui(self.canvas)
+        elif self.state == PlotUI.State.SETTINGS:
+            self.uiSettings.update(delta)
+            self.uiSettings.draw_ui(self.canvas)
+        elif self.state == PlotUI.State.NEW_FUN:
+            self.uiFun.update(delta)
+            self.uiFun.draw_ui(self.canvas)
+            
+        pygame.display.update()
+
+
     def run(self):
         clock = pygame.time.Clock()
         self.isRunning = True
         while self.isRunning:
-            delta = clock.tick(60) / 1000.0
             for event in pygame.event.get():
                 self.process_events(event)
-            self.plot.update(self.canvas.get_size())
-            self.canvas.blit(self.plot.surface, (0, 0))
+            self.update(clock.tick(60) / 1000.0)
             
-            if self.state == PlotUI.State.DEF:
-                self.ui.update(delta)
-                self.ui.draw_ui(self.canvas)
-            elif self.state == PlotUI.State.SETTINGS:
-                self.uiSettings.update(delta)
-                self.uiSettings.draw_ui(self.canvas)
-            elif self.state == PlotUI.State.NEW_FUN:
-                self.uiFun.update(delta)
-                self.uiFun.draw_ui(self.canvas)
-            
-            pygame.display.update()
