@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
 from numpy import arange
-from math import sin
+from math import cos
 from enum import Enum, auto
 from plot import Plot
 from factories import ButtonHandledFactory, ColourPickerHandledFactory
@@ -37,25 +37,19 @@ class PlotUI:
     def init_menu(self, initSize):
         self.ui = pygame_gui.UIManager(initSize)
 
-        def plot_two(event):
-            self.plot.plot(
-                xs = arange(-10, 10, 0.1),
-                ys = list(map(
-                    lambda x: sin(x),
-                    arange(-10, 10, 0.1)
-                )),
-                color = (0, 0, 255),
-                width = 4
+        def plot_with(start, end, step, f, color, width):
+            xs = arange(start, end, step)
+            return lambda event: self.plot.plot(
+                xs = xs,
+                ys = list(map(f, xs)),
+                color = color,
+                width = width
             )
-            self.plot.plot(
-                xs = arange(0, 20, 0.1),
-                ys = list(map(
-                    lambda x: 2*x,
-                    arange(0, 20, 0.1)
-                )),
-                color = (0, 255, 255),
-                width = 2
-            )
+
+
+        def fun(a, b):
+            return lambda x: abs(x) + a * cos(b * x)
+
         
         bhf = ButtonHandledFactory(self.buttonSize, self.ui)
 
@@ -63,7 +57,14 @@ class PlotUI:
             bhf.make(
                 pos = (0, 0),
                 text = "Plot new function",
-                handle = plot_two
+                handle = plot_with(
+                    start = -3,
+                    end = 3,
+                    step = 0.01,
+                    f = fun(2, -1),
+                    color = (0, 0, 255),
+                    width = 4
+                )
             ),
             bhf.make(
                 (0, self.buttonSize[1]),
