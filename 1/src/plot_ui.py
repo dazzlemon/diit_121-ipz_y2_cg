@@ -20,7 +20,7 @@ class PlotUI:
         self.canvas = pygame.display.set_mode(initSize)
         pygame.display.set_caption("diit_pz1921_cg1_safonov")
         
-        self.buttonSize = (200, 60)
+        self.buttonSize = (240, 60)
         self.init_menu(initSize)
         self.init_settings(initSize)
         self.init_new_fun(initSize)
@@ -130,7 +130,7 @@ class PlotUI:
             f = lambda x: abs(x) + a * cos(b * x)
             ys = list(map(f, xs))
 
-            color = (255, 255, 0)
+            color = self.funColor
             width = int(self.widthLine.get_text())
 
             self.plot.plot(
@@ -184,20 +184,88 @@ class PlotUI:
         )
 
 
+        self.labelMinX = pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect(
+                (0, self.buttonSize[1] * 0),
+                self.buttonSize
+            ),
+            text = "x1",
+            manager = self.uiFun
+        )
+
+        self.labelMinY = pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect(
+                (0, self.buttonSize[1] * 1),
+                self.buttonSize
+            ),
+            text = "x2",
+            manager = self.uiFun
+        )
+
+        self.labelA =pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect(
+                (0, self.buttonSize[1] * 2),
+                self.buttonSize
+            ),
+            text = "a",
+            manager = self.uiFun
+        )
+
+        self.labelB = pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect(
+                (0, self.buttonSize[1] * 3),
+                self.buttonSize
+            ),
+            text = "b",
+            manager = self.uiFun
+        )
+
+        self.labelWidth = pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect(
+                (0, self.buttonSize[1] * 4),
+                self.buttonSize
+            ),
+            text = "width",
+            manager = self.uiFun
+        )
+
+        self.labelFun = pygame_gui.elements.UILabel(
+            relative_rect = pygame.Rect(
+                (0, self.buttonSize[1] * 5),
+                self.buttonSize
+            ),
+            text = "y(x) = |x| + a * sin(b * x)",
+            manager = self.uiFun
+        )
+
+
+        self.funColor = (255, 255, 0)
+
+        def set_fun_color(color):
+            self.funColor = color
+
         self.funButtons = [
             bhf.make(
-                pos = (0, 0),
+                pos = (0, self.buttonSize[1] * 6),
                 text = "Plot",
                 handle = plot_handle
             ),
             bhf.make(
-                pos = (0, self.buttonSize[1]),
+                pos = (0, self.buttonSize[1] * 7),
+                text = "Choose colour",
+                handle = lambda event: self.setColourPicker(
+                    cphf.make(
+                        pygame.Color(self.funColor),
+                        handle = lambda event: set_fun_color(event.colour)
+                    )
+                )
+            ),
+            bhf.make(
+                pos = (0, self.buttonSize[1] * 8),
                 text = "Return",
                 handle = lambda event: self.setState(PlotUI.State.DEF)
             )
         ]
-
-        
 
 
     def setState(self, state):
@@ -256,6 +324,7 @@ class PlotUI:
         elif self.state == PlotUI.State.NEW_FUN:
             self.uiFun.update(delta)
             self.uiFun.draw_ui(self.canvas)
+           
             
         pygame.display.update()
 
