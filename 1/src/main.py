@@ -32,13 +32,24 @@ class Cg1:
  
         self.scene = QtWidgets.QGraphicsScene()
         self.mainUi.canvas.setScene(self.scene)
-
-        self.draw()
+        self.mainUi.canvas.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
+        
+        def draw_(event):
+            self.draw()
+        self.mainUi.canvas.resizeEvent = draw_
 
 
     def draw(self):
-        self.scene.addLine(QtCore.QLineF(0, 0, 100, 100))
+        x = self.mainUi.canvas.width()
+        y = self.mainUi.canvas.height()
 
+        self.scene.setSceneRect(0, 0, x, y)
+
+        self.scene.clear()
+
+        self.scene.addLine(QtCore.QLineF(0, 0, x, y))
+        self.scene.addLine(QtCore.QLineF(0, y, x, 0))
+        self.scene.update()
 
     def run(self):
         self.mainWindow.show()
