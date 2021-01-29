@@ -28,15 +28,15 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
-        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.verticalLayout.addWidget(self.pushButton_2)
-        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.verticalLayout.addWidget(self.pushButton_3)
+        self.plotButton = QtWidgets.QPushButton(self.centralwidget)
+        self.plotButton.setObjectName("plotButton")
+        self.verticalLayout.addWidget(self.plotButton)
+        self.clearButton = QtWidgets.QPushButton(self.centralwidget)
+        self.clearButton.setObjectName("clearButton")
+        self.verticalLayout.addWidget(self.clearButton)
+        self.settingsButton = QtWidgets.QPushButton(self.centralwidget)
+        self.settingsButton.setObjectName("settingsButton")
+        self.verticalLayout.addWidget(self.settingsButton)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -51,10 +51,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "PushButton"))
-        self.pushButton_2.setText(_translate("MainWindow", "PushButton"))
-        self.pushButton_3.setText(_translate("MainWindow", "PushButton"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Safonov CG1"))
+        self.plotButton.setText(_translate("MainWindow", "Plot new function"))
+        self.clearButton.setText(_translate("MainWindow", "Clear canvas"))
+        self.settingsButton.setText(_translate("MainWindow", "Canvas settings"))
 
 
 if __name__ == "__main__":

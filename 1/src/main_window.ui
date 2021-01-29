@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Safonov CG1</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -26,23 +26,23 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="plotButton">
           <property name="text">
-           <string>PushButton</string>
+           <string>Plot new function</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="clearButton">
           <property name="text">
-           <string>PushButton</string>
+           <string>Clear canvas</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="settingsButton">
           <property name="text">
-           <string>PushButton</string>
+           <string>Canvas settings</string>
           </property>
          </widget>
         </item>
