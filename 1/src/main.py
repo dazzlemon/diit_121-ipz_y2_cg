@@ -9,9 +9,17 @@ class Cg1:
         self.widget = None
         self.uiWidget = None
         
-        def settings_clicked(): open_widget(Ui_SettingsWindow())
+        def settings_clicked():
+            markVariants = [
+                "Square",
+                "Triangle",
+                "Circle"
+            ]
+            open_widget(Ui_SettingsWindow())
+            self.uiWidget.marksStyleComboBox.addItems(markVariants)
+        
+        def plot_clicked(): open_widget(Ui_PlotWindow()) 
         def clear_clicked(): print("clear pressed")
-        def plot_clicked(): open_widget(Ui_PlotWindow())
         def close(event): self.widget and self.widget.close()
         def open_widget(uiWidget):
             def widget_closed(event):
@@ -34,22 +42,21 @@ class Cg1:
         self.mainUi.canvas.setScene(self.scene)
         self.mainUi.canvas.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
         
-        def draw_(event):
-            self.draw()
-        self.mainUi.canvas.resizeEvent = draw_
+        def draw(event):
+            x = self.mainUi.canvas.width()
+            y = self.mainUi.canvas.height()
 
+            self.scene.setSceneRect(0, 0, x, y)
+            self.mainUi.canvas.fitInView(self.scene.sceneRect(), QtCore.Qt.IgnoreAspectRatio)#still leaves some gaps on sides, seems like a bug
 
-    def draw(self):
-        x = self.mainUi.canvas.width()
-        y = self.mainUi.canvas.height()
+            self.scene.clear()
 
-        self.scene.setSceneRect(0, 0, x, y)
+            self.scene.addLine(QtCore.QLineF(0, 0, x, y))
+            self.scene.addLine(QtCore.QLineF(0, y, x, 0))
+            self.scene.update()
 
-        self.scene.clear()
-
-        self.scene.addLine(QtCore.QLineF(0, 0, x, y))
-        self.scene.addLine(QtCore.QLineF(0, y, x, 0))
-        self.scene.update()
+        self.mainUi.canvas.resizeEvent = draw
+    
 
     def run(self):
         self.mainWindow.show()
