@@ -11,12 +11,25 @@ class Cg1:
 
         self.widget = None
         self.uiWidget = None
-        
+
+        def widget_closed(event):
+            self.widget = None
+            self.uiWidget = None
+
+
+        def close(event):
+            if self.widget:
+                self.widget.close()
+
+
         def open_widget(uiWidget):
             if self.widget == None:
                 self.widget = QtWidgets.QWidget()
                 self.uiWidget = uiWidget
                 self.uiWidget.setupUi(self.widget)
+
+                self.widget.closeEvent = widget_closed
+
                 self.widget.show()
         
 
@@ -36,6 +49,7 @@ class Cg1:
         self.mainUi.settingsButton.clicked.connect(settings_clicked(self.mainUi))
         self.mainUi.plotButton.clicked.connect(plot_clicked(self.mainUi))
         self.mainUi.clearButton.clicked.connect(clear_clicked)
+        self.mainWindow.closeEvent = close
 
 
     def run(self):
