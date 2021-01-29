@@ -62,7 +62,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QGraphicsView" name="graphicsView"/>
+       <widget class="QGraphicsView" name="canvas"/>
       </item>
      </layout>
     </item>

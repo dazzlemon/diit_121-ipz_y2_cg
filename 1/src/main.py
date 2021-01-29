@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets, QtCore, QtGui
 from forms_py import *
 
 class Cg1:
@@ -28,9 +28,20 @@ class Cg1:
         self.mainUi.settingsButton.clicked.connect(settings_clicked)
         self.mainUi.plotButton.clicked.connect(plot_clicked)
         self.mainUi.clearButton.clicked.connect(clear_clicked)
-        self.mainWindow.closeEvent = close
+        self.mainWindow.closeEvent = close 
+ 
+        self.scene = QtWidgets.QGraphicsScene()
+        self.mainUi.canvas.setScene(self.scene)
 
-    def run(self): self.mainWindow.show()
+        self.draw()
+
+
+    def draw(self):
+        self.scene.addLine(QtCore.QLineF(0, 0, 100, 100))
+
+
+    def run(self):
+        self.mainWindow.show()
 
 
 if __name__ == "__main__":
