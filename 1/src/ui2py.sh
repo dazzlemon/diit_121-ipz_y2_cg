@@ -1,3 +1,12 @@
-pyuic5 -x forms_ui/main_window.ui -o forms_py/main_window.py
-pyuic5 -x forms_ui/plot_window.ui -o forms_py/plot_window.py
-pyuic5 -x forms_ui/settings_window.ui -o forms_py/settings_window.py
+source_dir="$1"
+target_dir="$2"
+
+for source_file in $source_dir/*.ui
+do	
+	target_file=${source_file#"$source_dir"}
+	target_file=${target_file%".ui"}
+
+	target_file="$target_dir$target_file.py"
+
+	pyuic5 -x "$source_file" -o $target_file
+done
