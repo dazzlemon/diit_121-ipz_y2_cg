@@ -1,7 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from main_window import Ui_MainWindow
-from settings_window import Ui_SettingsWindow
-from plot_window import Ui_PlotWindow
+from forms_py import *
 
 
 class Cg1:
