@@ -1,63 +1,41 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from forms_py import *
 
-
 class Cg1:
-    def __init__(self, args):
-        self.main_ = QtWidgets.QApplication(sys.argv)
+    def __init__(self):
         self.mainWindow = QtWidgets.QMainWindow()
         self.mainUi = Ui_MainWindow()
         self.mainUi.setupUi(self.mainWindow)
-
         self.widget = None
         self.uiWidget = None
-
-        def widget_closed(event):
-            self.widget = None
-            self.uiWidget = None
-
-
-        def close(event):
-            if self.widget:
-                self.widget.close()
-
-
+        
+        def settings_clicked(): open_widget(Ui_SettingsWindow())
+        def clear_clicked(): print("clear pressed")
+        def plot_clicked(): open_widget(Ui_PlotWindow())
+        def close(event): self.widget and self.widget.close()
         def open_widget(uiWidget):
+            def widget_closed(event):
+                self.widget = None
+                self.uiWidget = None
+
             if self.widget == None:
                 self.widget = QtWidgets.QWidget()
                 self.uiWidget = uiWidget
                 self.uiWidget.setupUi(self.widget)
-
                 self.widget.closeEvent = widget_closed
+                self.widget.show() 
 
-                self.widget.show()
-        
-
-        def settings_clicked(mw):
-            def sc(): open_widget(Ui_SettingsWindow())
-            return sc
-
-
-        def clear_clicked(): print("clear pressed")
-
-
-        def plot_clicked(mw):
-            def pc(): open_widget(Ui_PlotWindow())
-            return pc
-
-
-        self.mainUi.settingsButton.clicked.connect(settings_clicked(self.mainUi))
-        self.mainUi.plotButton.clicked.connect(plot_clicked(self.mainUi))
+        self.mainUi.settingsButton.clicked.connect(settings_clicked)
+        self.mainUi.plotButton.clicked.connect(plot_clicked)
         self.mainUi.clearButton.clicked.connect(clear_clicked)
         self.mainWindow.closeEvent = close
 
-
-    def run(self):
-        self.mainWindow.show()
-        sys.exit(self.main_.exec_())
+    def run(self): self.mainWindow.show()
 
 
 if __name__ == "__main__":
     import sys
-    app = Cg1(sys.argv)
+    main_ = QtWidgets.QApplication(sys.argv)
+    app = Cg1()
     app.run()
+    sys.exit(main_.exec_())
