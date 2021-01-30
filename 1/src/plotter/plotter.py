@@ -28,14 +28,10 @@ class Plotter:
     def plot(self, scene):
         scene.clear()
 
-        x = scene.width()
-        y = scene.height()
-
-        # tmp
-        #scene.addRect(0, 0, x, y, QtGui.QPen(), QtGui.QBrush(QtGui.QColor(255, 255, 0)))
-        #scene.addLine(QtCore.QLineF(0, 0, x, y))
-        #scene.addLine(QtCore.QLineF(0, y, x, 0))
-        # tmp
+        self._w = scene.width()
+        self._h = scene.height()
+        self._rangeX = (0, 1)# tmp val
+        self._rangeY = (0, 1)# tmp val
 
         self._fill_bg(scene)
         self._draw_funcs(scene)
@@ -47,13 +43,12 @@ class Plotter:
 
 
     def _fill_bg(self, scene):
-        x = scene.width()
-        y = scene.height()
-        scene.addRect(0, 0, x, y, QtGui.QPen(), QtGui.QBrush(self.bgColor))
+        scene.addRect(0, 0, self._w, self._h, QtGui.QPen(), QtGui.QBrush(self.bgColor))
 
 
     def _draw_funcs(self, scene):
-        pass
+        for func in funcs:
+            points = func.points
 
 
     def _draw_axes(self, scene):

@@ -1,4 +1,4 @@
-from numpy import arange
+from numpy import linspace
 
 class PlottableFunction:
     def __init__(self):
@@ -7,7 +7,7 @@ class PlottableFunction:
         self.f = None
 
 
-    def points(self, step):
-        xs = arange(x[0], x[1], step)
+    def points(self, num):
+        xs = linspace(x[0], x[1], num = num)
         ys = map(f, xs)
         return zip(xs, ys)
