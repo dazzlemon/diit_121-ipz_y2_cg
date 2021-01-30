@@ -37,32 +37,32 @@ class Plotter:
         #scene.addLine(QtCore.QLineF(0, y, x, 0))
         # tmp
 
-        self.fill_bg(scene)
-        self.draw_funcs(scene)
-        self.draw_axes(scene)
-        self.draw_intersections(scene)
-        self.draw_markup(scene)
+        self._fill_bg(scene)
+        self._draw_funcs(scene)
+        self._draw_axes(scene)
+        self._draw_intersections(scene)
+        self._draw_markup(scene)
 
         scene.update()
 
 
-    def fill_bg(self, scene):
+    def _fill_bg(self, scene):
         x = scene.width()
         y = scene.height()
         scene.addRect(0, 0, x, y, QtGui.QPen(), QtGui.QBrush(self.bgColor))
 
 
-    def draw_funcs(self, scene):
+    def _draw_funcs(self, scene):
         pass
 
 
-    def draw_axes(self, scene):
+    def _draw_axes(self, scene):
         pass
 
 
-    def draw_intersections(self, scene):
+    def _draw_intersections(self, scene):
         pass
 
 
-    def draw_markup(self, scene):
+    def _draw_markup(self, scene):
         pass
