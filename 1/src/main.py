@@ -11,6 +11,12 @@ class Cg1(QtWidgets.QApplication):
         self._widget = None
         self._uiWidget = None
         self._plotter = Plotter(QtGui.QColor(0, 255, 0), QtGui.QColor(0, 0, 255), 4)
+        
+        self._new_function()
+
+
+    def _new_function(self):
+        self._function = PlottableFunction(QtGui.QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x))
                      
 
     def _init_main_window(self):
@@ -51,11 +57,29 @@ class Cg1(QtWidgets.QApplication):
             self._uiWidget.funcStyleComboBox.addItems(styleVariants)
 
             def plot_clicked():
-                self._plotter.add_func(PlottableFunction(QtGui.QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x)))# tmp
-                self._plotter.add_func(PlottableFunction(QtGui.QColor(255, 0, 255), 4, (0, 6), lambda x: abs(x) - cos(2 * x), PlottableFunction.Style.DOTTED))# tmp
+                self._function.rangeX = (
+                    self._uiWidget.xMinDoubleSpinBox.value(),
+                    self._uiWidget.xMaxDoubleSpinBox.value()
+                )
+
+                a = self._uiWidget.aDoubleSpinBox.value()
+                b = self._uiWidget.bDoubleSpinBox.value()
+                self._function.f = lambda x: abs(x) + a * cos(b * x)
+                
+                self._plotter.add_func(self._function)
+                self._new_function()
+
                 self._plotter.plot(self._scene)
 
+            def color_clicked():
+                colorDialog = QtWidgets.QColorDialog()
+                newColor = colorDialog.getColor(self._function.color)
+                if newColor.isValid():
+                    self._function.color = newColor
+
             self._uiWidget.plotButton.clicked.connect(plot_clicked)
+            self._uiWidget.colorButton.clicked.connect(color_clicked)
+
 
     def _open_settings(self):
         markVariants = [
