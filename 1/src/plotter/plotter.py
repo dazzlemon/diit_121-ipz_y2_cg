@@ -58,26 +58,28 @@ class Plotter:
     def _draw_funcs(self, scene):
         for func in self.funcs:
             points = list(map(
-                lambda point: self.linear_map_2d(point, self._frame, (0, self._h, self._w, 0)),
+                lambda point: self._map_to_frame(point),
                 func.points(self._w)
             ))
+            brush = QtGui.QBrush(func.color)
+
             if func.style == PlottableFunction.Style.NORMAL:
                 for i in range(len(points) - 1):
-                    scene.addLine(QtCore.QLineF(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1]), QtGui.QPen(QtGui.QBrush(func.color), func.width))
+                    scene.addLine(QtCore.QLineF(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1]), QPen(brush, func.width))
             elif func.style == PlottableFunction.Style.DOTTED:
                 for i in range(0, len(points), 10):
                     point = points[i]
-                    scene.addEllipse(point[0], point[1], func.width, func.width, QtGui.QPen(QtGui.QColorConstants.Transparent), QtGui.QBrush(func.color))
+                    scene.addEllipse(point[0], point[1], func.width, func.width, QPen(QtGui.QColorConstants.Transparent), brush)
 
 
     def _draw_axes(self, scene):
-        zero = (
-            self.linear_map(0, (self._frame[0], self._frame[2]), (0, self._w)),
-            self.linear_map(0, (self._frame[1], self._frame[3]), (self._h, 0))
-        )
-
+        zero = self._map_to_frame((0, 0))
         scene.addLine(QtCore.QLineF(0, zero[1], self._w, zero[1]), QPen(QBrush(self.axesColor), self.axesWidth))
         scene.addLine(QtCore.QLineF(zero[0], 0, zero[0], self._h), QPen(QBrush(self.axesColor), self.axesWidth))
+
+
+    def _map_to_frame(self, point):
+        return self.linear_map_2d(point, self._frame, (0, self._h, self._w, 0))
 
 
     def _draw_intersections(self, scene):
