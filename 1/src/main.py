@@ -7,15 +7,15 @@ class Cg1(QtWidgets.QApplication):
         QtWidgets.QApplication.__init__(self, argv)
 
         self._init_main_window() 
-        self.widget = None
-        self.uiWidget = None
-        self.plotter = Plotter()
+        self._widget = None
+        self._uiWidget = None
+        self._plotter = Plotter()
              
 
     def _init_main_window(self):
-        self.mainWindow = QtWidgets.QMainWindow()
-        self.mainUi = Ui_MainWindow()
-        self.mainUi.setupUi(self.mainWindow)
+        self._mainWindow = QtWidgets.QMainWindow()
+        self._mainUi = Ui_MainWindow()
+        self._mainUi.setupUi(self._mainWindow)
 
         self._init_canvas()
         self._init_main_window_events() 
@@ -23,23 +23,23 @@ class Cg1(QtWidgets.QApplication):
 
     def _init_main_window_events(self):
         def canvas_resized(event):
-            self.resize_scene()
-            self.plotter.plot(self.scene)
+            self._resize_scene()
+            self._plotter.plot(self._scene)
 
         def settings_clicked(): self._open_settings()
         def plot_clicked(): self._open_plot()
         def clear_clicked(): print("clear pressed")
-        def close(event): self.widget and self.widget.close()
+        def close(event): self._widget and self._widget.close()
 
-        self.mainUi.settingsButton.clicked.connect(settings_clicked)
-        self.mainUi.plotButton.clicked.connect(plot_clicked)
-        self.mainUi.clearButton.clicked.connect(clear_clicked)
-        self.mainUi.canvas.resizeEvent = canvas_resized
-        self.mainWindow.closeEvent = close
+        self._mainUi.settingsButton.clicked.connect(settings_clicked)
+        self._mainUi.plotButton.clicked.connect(plot_clicked)
+        self._mainUi.clearButton.clicked.connect(clear_clicked)
+        self._mainUi.canvas.resizeEvent = canvas_resized
+        self._mainWindow.closeEvent = close
 
 
     def _open_plot(self):
-        self.open_widget(Ui_PlotWindow())
+        self._open_widget(Ui_PlotWindow())
 
 
     def _open_settings(self):
@@ -48,39 +48,39 @@ class Cg1(QtWidgets.QApplication):
             "Triangle",
             "Circle"
         ]
-        self.open_widget(Ui_SettingsWindow())
-        if isinstance(self.uiWidget, Ui_SettingsWindow):
-            self.uiWidget.marksStyleComboBox.addItems(markVariants)
+        self._open_widget(Ui_SettingsWindow())
+        if isinstance(self._uiWidget, Ui_SettingsWindow):
+            self._uiWidget.marksStyleComboBox.addItems(markVariants)
 
 
     def _init_canvas(self):
-        self.scene = QtWidgets.QGraphicsScene()
-        self.mainUi.canvas.setScene(self.scene)
-        self.mainUi.canvas.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
+        self._scene = QtWidgets.QGraphicsScene()
+        self._mainUi.canvas.setScene(self._scene)
+        self._mainUi.canvas.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
 
 
-    def open_widget(self, uiWidget):
+    def _open_widget(self, uiWidget):
         def widget_closed(event):
-            self.widget = None
-            self.uiWidget = None
+            self._widget = None
+            self._uiWidget = None
 
-        if self.widget == None:
-            self.widget = QtWidgets.QWidget()
-            self.uiWidget = uiWidget
-            self.uiWidget.setupUi(self.widget)
-            self.widget.closeEvent = widget_closed
-            self.widget.show() 
+        if self._widget == None:
+            self._widget = QtWidgets.QWidget()
+            self._uiWidget = uiWidget
+            self._uiWidget.setupUi(self._widget)
+            self._widget.closeEvent = widget_closed
+            self._widget.show() 
 
 
-    def resize_scene(self):
-        x = self.mainUi.canvas.width()
-        y = self.mainUi.canvas.height()
-        self.scene.setSceneRect(0, 0, x, y)
-        self.mainUi.canvas.fitInView(self.scene.sceneRect(), QtCore.Qt.IgnoreAspectRatio)#still leaves some gaps on sides, seems like a bug
+    def _resize_scene(self):
+        x = self._mainUi.canvas.width()
+        y = self._mainUi.canvas.height()
+        self._scene.setSceneRect(0, 0, x, y)
+        self._mainUi.canvas.fitInView(self._scene.sceneRect(), QtCore.Qt.IgnoreAspectRatio)#still leaves some gaps on sides, seems like a bug
 
 
     def exec_(self):
-        self.mainWindow.show()
+        self._mainWindow.show()
         QtWidgets.QApplication.exec_()
 
 
