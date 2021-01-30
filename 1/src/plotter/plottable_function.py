@@ -11,4 +11,4 @@ class PlottableFunction:
     def points(self, num):
         xs = linspace(self.rangeX[0], self.rangeX[1], num = num)
         ys = map(self.f, xs)
-        return zip(xs, ys)
+        return list(zip(xs, ys))
