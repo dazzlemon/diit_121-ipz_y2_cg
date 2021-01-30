@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from forms_py import *
 from plotter import *
+from math import cos
 
 class Cg1(QtWidgets.QApplication):
     def __init__(self, argv):
@@ -10,6 +11,7 @@ class Cg1(QtWidgets.QApplication):
         self._widget = None
         self._uiWidget = None
         self._plotter = Plotter(QtGui.QColor(0, 255, 0))
+        self._plotter.add_func(PlottableFunction(QtGui.QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x)))# tmp
              
 
     def _init_main_window(self):

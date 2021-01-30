@@ -28,10 +28,10 @@ class Plotter:
     def plot(self, scene):
         scene.clear()
 
-        self._w = scene.width()
-        self._h = scene.height()
-        self._rangeX = (0, 1)# tmp val
-        self._rangeY = (0, 1)# tmp val
+        self._w = int(scene.width())
+        self._h = int(scene.height())
+        self._rangeX = (-3, 3)# tmp val
+        self._rangeY = (-1, 5)# tmp val
 
         self._fill_bg(scene)
         self._draw_funcs(scene)
@@ -47,8 +47,17 @@ class Plotter:
 
 
     def _draw_funcs(self, scene):
-        for func in funcs:
-            points = func.points
+        for func in self.funcs:
+            points = map(
+                lambda point: (
+                    self.linear_map(point[0], self._rangeX, (0, self._w)),
+                    self.linear_map(point[1], self._rangeY, (self._h, 0))
+                ),
+                func.points(self._w)
+            )
+
+            for point in points:
+                scene.addEllipse(point[0], point[1], func.width, func.width, QtGui.QPen(), QtGui.QBrush(func.color))
 
 
     def _draw_axes(self, scene):
@@ -61,3 +70,8 @@ class Plotter:
 
     def _draw_markup(self, scene):
         pass
+
+    
+    @staticmethod
+    def linear_map(x, from_, to):
+        return to[0] + (to[1] - to[0]) * ((x - from_[0]) / (from_[1] - from_[0]))
