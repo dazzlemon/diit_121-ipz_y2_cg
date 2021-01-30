@@ -9,7 +9,7 @@ class Cg1(QtWidgets.QApplication):
         self._init_main_window() 
         self._widget = None
         self._uiWidget = None
-        self._plotter = Plotter()
+        self._plotter = Plotter(QtGui.QColor(0, 255, 0))
              
 
     def _init_main_window(self):
