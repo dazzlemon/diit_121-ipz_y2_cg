@@ -31,7 +31,7 @@ class Cg1(QtWidgets.QApplication):
 
         def settings_clicked(): self._open_settings()
         def plot_clicked(): self._open_plot()
-        def clear_clicked(): print("clear pressed")
+        def clear_clicked(): print("clear clicked")
         def close(event): self._widget and self._widget.close()
 
         self._mainUi.settingsButton.clicked.connect(settings_clicked)
@@ -60,6 +60,23 @@ class Cg1(QtWidgets.QApplication):
         self._open_widget(Ui_SettingsWindow())
         if isinstance(self._uiWidget, Ui_SettingsWindow):
             self._uiWidget.marksStyleComboBox.addItems(markVariants)
+            
+            def axes_color_clicked():
+                colorDialog = QtWidgets.QColorDialog()
+                newColor = colorDialog.getColor(self._plotter.axesColor)
+                if newColor.isValid():
+                    self._plotter.axesColor = newColor
+                    self._plotter.plot(self._scene)
+            
+            def bg_color_clicked():
+                colorDialog = QtWidgets.QColorDialog()
+                newColor = colorDialog.getColor(self._plotter.bgColor)
+                if newColor.isValid():
+                    self._plotter.bgColor = newColor
+                    self._plotter.plot(self._scene)
+                
+            self._uiWidget.axesColorButton.clicked.connect(axes_color_clicked)
+            self._uiWidget.bgColorButton.clicked.connect(bg_color_clicked)
 
 
     def _init_canvas(self):
