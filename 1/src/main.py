@@ -13,48 +13,57 @@ class Cg1(QtWidgets.QApplication):
              
 
     def _init_main_window(self):
+        self.mainWindow = QtWidgets.QMainWindow()
+        self.mainUi = Ui_MainWindow()
+        self.mainUi.setupUi(self.mainWindow)
+
+        self._init_canvas()
+        self._init_main_window_events() 
+
+
+    def _init_main_window_events(self):
         def settings_clicked():
             markVariants = [
                 "Square",
                 "Triangle",
                 "Circle"
             ]
-            open_widget(Ui_SettingsWindow())
-            self.uiWidget.marksStyleComboBox.addItems(markVariants)
+            self.open_widget(Ui_SettingsWindow())
+            if isinstance(self.uiWidget, Ui_SettingsWindow):
+                self.uiWidget.marksStyleComboBox.addItems(markVariants)
         
-        def plot_clicked(): open_widget(Ui_PlotWindow()) 
-        def clear_clicked(): print("clear pressed")
-        def close(event): self.widget and self.widget.close()
-        def open_widget(uiWidget):
-            def widget_closed(event):
-                self.widget = None
-                self.uiWidget = None
-
-            if self.widget == None:
-                self.widget = QtWidgets.QWidget()
-                self.uiWidget = uiWidget
-                self.uiWidget.setupUi(self.widget)
-                self.widget.closeEvent = widget_closed
-                self.widget.show() 
-
-        self.mainWindow = QtWidgets.QMainWindow()
-        self.mainUi = Ui_MainWindow()
-        self.mainUi.setupUi(self.mainWindow)
-
-        self.mainUi.settingsButton.clicked.connect(settings_clicked)
-        self.mainUi.plotButton.clicked.connect(plot_clicked)
-        self.mainUi.clearButton.clicked.connect(clear_clicked)
-        self.mainWindow.closeEvent = close 
- 
-        self.scene = QtWidgets.QGraphicsScene()
-        self.mainUi.canvas.setScene(self.scene)
-        self.mainUi.canvas.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
-
         def canvas_resized(event):
             self.resize_scene()
             self.plotter.plot(self.scene)
 
+        def plot_clicked(): self.open_widget(Ui_PlotWindow()) 
+        def clear_clicked(): print("clear pressed")
+        def close(event): self.widget and self.widget.close()
+
+        self.mainUi.settingsButton.clicked.connect(settings_clicked)
+        self.mainUi.plotButton.clicked.connect(plot_clicked)
+        self.mainUi.clearButton.clicked.connect(clear_clicked)
         self.mainUi.canvas.resizeEvent = canvas_resized
+        self.mainWindow.closeEvent = close
+
+
+    def _init_canvas(self):
+        self.scene = QtWidgets.QGraphicsScene()
+        self.mainUi.canvas.setScene(self.scene)
+        self.mainUi.canvas.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
+
+
+    def open_widget(self, uiWidget):
+        def widget_closed(event):
+            self.widget = None
+            self.uiWidget = None
+
+        if self.widget == None:
+            self.widget = QtWidgets.QWidget()
+            self.uiWidget = uiWidget
+            self.uiWidget.setupUi(self.widget)
+            self.widget.closeEvent = widget_closed
+            self.widget.show() 
 
 
     def resize_scene(self):
