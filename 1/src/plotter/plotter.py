@@ -57,7 +57,10 @@ class Plotter:
 
     def _draw_funcs(self, scene):
         for func in self.funcs:
-            points = list(self.linear_map_2d(func.points(self._w), self._frame, (0, 0, self._w, self._h)))
+            points = list(map(
+                lambda point: self.linear_map_2d(point, self._frame, (0, self._h, self._w, 0)),
+                func.points(self._w)
+            ))
             if func.style == PlottableFunction.Style.NORMAL:
                 for i in range(len(points) - 1):
                     scene.addLine(QtCore.QLineF(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1]), QtGui.QPen(QtGui.QBrush(func.color), func.width))
@@ -86,13 +89,10 @@ class Plotter:
 
     
     @staticmethod
-    def linear_map_2d(points, from_frame, to_frame):
-        return map(
-            lambda point: (
-                Plotter.linear_map(point[0], (from_frame[0], from_frame[2]), (to_frame[0], to_frame[2])),
-                Plotter.linear_map(point[1], (from_frame[1], from_frame[3]), (to_frame[0], to_frame[3]))
-            ),
-            points
+    def linear_map_2d(point, from_frame, to_frame):
+        return (
+            Plotter.linear_map(point[0], (from_frame[0], from_frame[2]), (to_frame[0], to_frame[2])),
+            Plotter.linear_map(point[1], (from_frame[1], from_frame[3]), (to_frame[1], to_frame[3]))
         )
 
 

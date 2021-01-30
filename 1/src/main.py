@@ -12,7 +12,7 @@ class Cg1(QtWidgets.QApplication):
         self._uiWidget = None
         self._plotter = Plotter(QtGui.QColor(0, 255, 0), QtGui.QColor(0, 0, 255), 4)
         self._plotter.add_func(PlottableFunction(QtGui.QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x)))# tmp
-        self._plotter.add_func(PlottableFunction(QtGui.QColor(255, 0, 255), 4, (0, 6), lambda x: abs(x) - cos(2 * x), PlottableFunction.Style.DOTTED))# tmp
+        #self._plotter.add_func(PlottableFunction(QtGui.QColor(255, 0, 255), 4, (0, 6), lambda x: abs(x) - cos(2 * x), PlottableFunction.Style.DOTTED))# tmp
              
 
     def _init_main_window(self):
