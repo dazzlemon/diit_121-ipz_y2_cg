@@ -2,8 +2,10 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from forms_py import *
 from plotter import Plotter
 
-class Cg1:
-    def __init__(self):
+class Cg1(QtWidgets.QApplication):
+    def __init__(self, argv):
+        QtWidgets.QApplication.__init__(self, argv)
+
         self._init_main_window() 
         self.widget = None
         self.uiWidget = None
@@ -54,6 +56,7 @@ class Cg1:
 
         self.mainUi.canvas.resizeEvent = canvas_resized
 
+
     def resize_scene(self):
         x = self.mainUi.canvas.width()
         y = self.mainUi.canvas.height()
@@ -61,13 +64,12 @@ class Cg1:
         self.mainUi.canvas.fitInView(self.scene.sceneRect(), QtCore.Qt.IgnoreAspectRatio)#still leaves some gaps on sides, seems like a bug
 
 
-    def run(self):
+    def exec_(self):
         self.mainWindow.show()
+        QtWidgets.QApplication.exec_()
 
 
 if __name__ == "__main__":
     import sys
-    main_ = QtWidgets.QApplication(sys.argv)
-    app = Cg1()
-    app.run()
-    sys.exit(main_.exec_())
+    app = Cg1(sys.argv)
+    sys.exit(app.exec_())
