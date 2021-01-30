@@ -15,6 +15,11 @@ class Ui_PlotWindow(object):
     def setupUi(self, PlotWindow):
         PlotWindow.setObjectName("PlotWindow")
         PlotWindow.resize(493, 489)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(PlotWindow.sizePolicy().hasHeightForWidth())
+        PlotWindow.setSizePolicy(sizePolicy)
         self.gridLayout = QtWidgets.QGridLayout(PlotWindow)
         self.gridLayout.setObjectName("gridLayout")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)

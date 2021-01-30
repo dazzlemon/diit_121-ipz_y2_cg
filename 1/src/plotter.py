@@ -3,10 +3,13 @@ from PyQt5 import QtCore
 class Plotter:
     def __init__(self):
         self.bgColor = None
+        
         self.axesColor = None
         self.axesWidth = None
+
         self.textColor = None
         self.textSize = None
+
         self.marksColor = None
         self.marksStyle = None
         self.marksSize = None
