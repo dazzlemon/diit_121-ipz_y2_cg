@@ -1,9 +1,10 @@
 from PyQt5 import QtCore, QtGui
+from PyQt5.QtGui import QPen, QBrush
 from functools import reduce
 from .plottable_function import PlottableFunction
 
 class Plotter:
-    def __init__(self, bgColor, axesColor = None, axesWidth = None, textColor = None, textSize = None, marksColor = None, marksStyle = None, marksSize = None):
+    def __init__(self, bgColor, axesColor, axesWidth, textColor = None, textSize = None, marksColor = None, marksStyle = None, marksSize = None):
         self.bgColor = bgColor
         
         self.axesColor = axesColor
@@ -46,7 +47,6 @@ class Plotter:
     
     def _calculate_frame(self):
         funcs_points = [func.points(self._w) for func in self.funcs]# [[(x, y)]]
-
         frames = map(self.points_frame, funcs_points)# [(minX, minY, maxX, minY)]
         self._frame = reduce(self.widest_frame, frames)# (minX, minY, maxX, maxY)
 
@@ -68,7 +68,13 @@ class Plotter:
 
 
     def _draw_axes(self, scene):
-        pass
+        zero = (
+            self.linear_map(0, (self._frame[0], self._frame[2]), (0, self._w)),
+            self.linear_map(0, (self._frame[1], self._frame[3]), (self._h, 0))
+        )
+
+        scene.addLine(QtCore.QLineF(0, zero[1], self._w, zero[1]), QPen(QBrush(self.axesColor), self.axesWidth))
+        scene.addLine(QtCore.QLineF(zero[0], 0, zero[0], self._h), QPen(QBrush(self.axesColor), self.axesWidth))
 
 
     def _draw_intersections(self, scene):
