@@ -145,6 +145,20 @@
       </layout>
      </item>
      <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Style</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="funcStyleComboBox"/>
+       </item>
+      </layout>
+     </item>
+     <item>
       <widget class="QPushButton" name="plotButton">
        <property name="text">
         <string>Plot</string>

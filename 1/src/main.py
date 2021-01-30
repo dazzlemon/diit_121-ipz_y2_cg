@@ -42,7 +42,13 @@ class Cg1(QtWidgets.QApplication):
 
 
     def _open_plot(self):
+        styleVariants = [
+            "Normal",
+            "Dotted"
+        ]
         self._open_widget(Ui_PlotWindow())
+        if isinstance(self._uiWidget, Ui_PlotWindow):
+            self._uiWidget.funcStyleComboBox.addItems(styleVariants)
 
 
     def _open_settings(self):

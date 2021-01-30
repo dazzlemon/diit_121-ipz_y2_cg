@@ -80,6 +80,15 @@ class Ui_PlotWindow(object):
         self.bDoubleSpinBox.setObjectName("bDoubleSpinBox")
         self.horizontalLayout_2.addWidget(self.bDoubleSpinBox)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.label_5 = QtWidgets.QLabel(PlotWindow)
+        self.label_5.setObjectName("label_5")
+        self.horizontalLayout_4.addWidget(self.label_5)
+        self.funcStyleComboBox = QtWidgets.QComboBox(PlotWindow)
+        self.funcStyleComboBox.setObjectName("funcStyleComboBox")
+        self.horizontalLayout_4.addWidget(self.funcStyleComboBox)
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
         self.plotButton = QtWidgets.QPushButton(PlotWindow)
         self.plotButton.setObjectName("plotButton")
         self.verticalLayout.addWidget(self.plotButton)
@@ -98,6 +107,7 @@ class Ui_PlotWindow(object):
         self.label.setText(_translate("PlotWindow", "x2"))
         self.label_3.setText(_translate("PlotWindow", "a"))
         self.label_4.setText(_translate("PlotWindow", "b"))
+        self.label_5.setText(_translate("PlotWindow", "Style"))
         self.plotButton.setText(_translate("PlotWindow", "Plot"))
 
 
