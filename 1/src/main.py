@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from forms_py import *
-from plotter import Plotter
+from plotter import *
 
 class Cg1(QtWidgets.QApplication):
     def __init__(self, argv):
