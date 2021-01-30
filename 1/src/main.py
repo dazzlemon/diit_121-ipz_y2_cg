@@ -22,21 +22,12 @@ class Cg1(QtWidgets.QApplication):
 
 
     def _init_main_window_events(self):
-        def settings_clicked():
-            markVariants = [
-                "Square",
-                "Triangle",
-                "Circle"
-            ]
-            self.open_widget(Ui_SettingsWindow())
-            if isinstance(self.uiWidget, Ui_SettingsWindow):
-                self.uiWidget.marksStyleComboBox.addItems(markVariants)
-        
         def canvas_resized(event):
             self.resize_scene()
             self.plotter.plot(self.scene)
 
-        def plot_clicked(): self.open_widget(Ui_PlotWindow()) 
+        def settings_clicked(): self._open_settings()
+        def plot_clicked(): self._open_plot()
         def clear_clicked(): print("clear pressed")
         def close(event): self.widget and self.widget.close()
 
@@ -45,6 +36,21 @@ class Cg1(QtWidgets.QApplication):
         self.mainUi.clearButton.clicked.connect(clear_clicked)
         self.mainUi.canvas.resizeEvent = canvas_resized
         self.mainWindow.closeEvent = close
+
+
+    def _open_plot(self):
+        self.open_widget(Ui_PlotWindow())
+
+
+    def _open_settings(self):
+        markVariants = [
+            "Square",
+            "Triangle",
+            "Circle"
+        ]
+        self.open_widget(Ui_SettingsWindow())
+        if isinstance(self.uiWidget, Ui_SettingsWindow):
+            self.uiWidget.marksStyleComboBox.addItems(markVariants)
 
 
     def _init_canvas(self):
