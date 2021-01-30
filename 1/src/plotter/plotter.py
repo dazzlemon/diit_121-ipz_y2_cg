@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui
 from functools import reduce
+from .plottable_function import PlottableFunction
 
 class Plotter:
     def __init__(self, bgColor, axesColor = None, axesWidth = None, textColor = None, textSize = None, marksColor = None, marksStyle = None, marksSize = None):
@@ -56,14 +57,14 @@ class Plotter:
 
     def _draw_funcs(self, scene):
         for func in self.funcs:
-            points = list(self.map_frames(func.points(self._w), self._frame, (0, 0, self._w, self._h)))
-            
-            for i in range(len(points) - 1):
-                scene.addLine(QtCore.QLineF(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1]), QtGui.QPen(QtGui.QBrush(func.color), func.width))
-
-            # dots
-            #for point in points:
-                #scene.addEllipse(point[0], point[1], func.width, func.width, QtGui.QPen(), QtGui.QBrush(func.color))
+            points = list(self.linear_map_2d(func.points(self._w), self._frame, (0, 0, self._w, self._h)))
+            if func.style == PlottableFunction.Style.NORMAL:
+                for i in range(len(points) - 1):
+                    scene.addLine(QtCore.QLineF(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1]), QtGui.QPen(QtGui.QBrush(func.color), func.width))
+            elif func.style == PlottableFunction.Style.DOTTED:
+                for i in range(0, len(points), 10):
+                    point = points[i]
+                    scene.addEllipse(point[0], point[1], func.width, func.width, QtGui.QPen(QtGui.QColorConstants.Transparent), QtGui.QBrush(func.color))
 
 
     def _draw_axes(self, scene):
@@ -79,7 +80,7 @@ class Plotter:
 
     
     @staticmethod
-    def map_frames(points, from_frame, to_frame):
+    def linear_map_2d(points, from_frame, to_frame):
         return map(
             lambda point: (
                 Plotter.linear_map(point[0], (from_frame[0], from_frame[2]), (to_frame[0], to_frame[2])),

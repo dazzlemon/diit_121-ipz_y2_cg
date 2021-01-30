@@ -1,11 +1,17 @@
 from numpy import linspace
+from enum import Enum, auto
 
 class PlottableFunction:
-    def __init__(self, color, width, rangeX, f):
+    class Style(Enum):
+        DOTTED = auto()
+        NORMAL = auto()
+
+    def __init__(self, color, width, rangeX, f, style = Style.NORMAL):
         self.color = color
         self.width = width
         self.rangeX = rangeX
         self.f = f
+        self.style = style
 
 
     def points(self, num):
