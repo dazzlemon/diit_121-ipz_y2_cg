@@ -7,7 +7,7 @@ from .math_2d import linear_map_2d, points_frame, widest_frame, linear_map
 import numpy as np
 
 class Plotter:
-    def __init__(self, bgColor, axesColor, axesWidth, textColor = None, textSize = None, marksColor = None, marksStyle = None, marksSize = None):
+    def __init__(self, bgColor, axesColor, axesWidth, marksColor, marksSize, marksStyle = None, textColor = None, textSize = None):
         self.bgColor = bgColor
         
         self.axesColor = axesColor
@@ -89,6 +89,7 @@ class Plotter:
     def _map_to_frame_y(self, y):
         return linear_map(y, (self._frame[1], self._frame[3]), (self._h, 0))
 
+
     def _draw_intersections(self, scene, func):
         points = func.points(self._w)
         intersection_idx = self._intersections_x(points)
@@ -100,13 +101,13 @@ class Plotter:
         zeroY = self._map_to_frame_y(0)
 
         pen = QPen(QColorConstants.Transparent)
-        brush = QBrush(QColorConstants.Red)
+        brush = QBrush(self.marksColor)
         for x in virtual_intersections:
-            self.add_circle(scene, (x, zeroY), 10, pen, brush)
+            self.add_circle(scene, (x, zeroY), self.marksSize, pen, brush)
 
         if func.rangeX[0] <= 0 <= func.rangeX[1]:
             point = self._map_to_frame((0, func.f(0)))
-            self.add_circle(scene, point, 10, pen, brush)
+            self.add_circle(scene, point, self.marksSize, pen, brush)
             
 
 

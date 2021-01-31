@@ -11,7 +11,13 @@ class Cg1(QApplication):
 
         self._init_main_window() 
         self._widget = None
-        self._plotter = Plotter(QColor(0, 255, 0), QColor(0, 0, 255), 4)
+        self._plotter = Plotter(
+            bgColor = QColor(0, 255, 0),
+            axesColor = QColor(0, 0, 255),
+            axesWidth = 4,
+            marksColor = QColor(255, 0, 0),
+            marksSize = 10
+        )
         
         self._funcs = []
          
