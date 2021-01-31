@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
-from forms_py import *
+from forms_py import Ui_MainWindow
 from plotter import *
-from forms_managed import FunctionPickerDialog, PlotterPickerDialog
+from dialogs import *
 
 class Cg1(QtWidgets.QApplication):
     def __init__(self, argv):

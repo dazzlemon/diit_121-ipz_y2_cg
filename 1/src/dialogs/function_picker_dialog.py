@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui
-from forms_py import *
+from forms_py.plot_window import Ui_PlotWindow
 from plotter.plottable_function import PlottableFunction
 from math import cos
 
@@ -52,48 +52,5 @@ class FunctionPickerDialog:
         self.widget.show()
 
     
-    def close(self):
-        self.widget.close()
-
-
-class PlotterPickerDialog:
-    def __init__(self, closeEvent, parent):
-        self.widget = QtWidgets.QWidget()
-        self.ui = Ui_SettingsWindow()
-        self.ui.setupUi(self.widget)
-        self.widget.closeEvent = closeEvent
-
-        self.parent = parent
-        
-        markVariants = [
-            "Square",
-            "Triangle",
-            "Circle"
-        ]
-
-        self.ui.marksStyleComboBox.addItems(markVariants)
-
-        def axes_color_clicked():
-            colorDialog = QtWidgets.QColorDialog()
-            newColor = colorDialog.getColor(self.parent._plotter.axesColor)
-            if newColor.isValid():
-                self.parent._plotter.axesColor = newColor
-                self.parent.plot()
-            
-        def bg_color_clicked():
-            colorDialog = QtWidgets.QColorDialog()
-            newColor = colorDialog.getColor(self.parent._plotter.bgColor)
-            if newColor.isValid():
-                self.parent._plotter.bgColor = newColor
-                parent.plot()
-                
-        self.ui.axesColorButton.clicked.connect(axes_color_clicked)
-        self.ui.bgColorButton.clicked.connect(bg_color_clicked)
-
-
-    def show(self):
-        self.widget.show()
-    
-
     def close(self):
         self.widget.close()
