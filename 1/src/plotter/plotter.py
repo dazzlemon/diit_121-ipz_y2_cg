@@ -1,6 +1,8 @@
 from functools import reduce
+from more_itertools import pairwise
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import QPen, QBrush
+from PyQt5.QtCore import QLineF, QPointF
 from .plottable_function import PlottableFunction
 from .math_2d import linear_map_2d, points_frame, widest_frame
 
@@ -56,18 +58,21 @@ class Plotter:
             brush = QtGui.QBrush(func.color)
             
             if func.style == PlottableFunction.Style.NORMAL:
-                for i in range(len(points) - 1):
-                    scene.addLine(QtCore.QLineF(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1]), QPen(brush, func.width))
+                for p0, p1 in pairwise(points):
+                    point_i0 = QPointF(p0[0], p0[1])
+                    point_i1 = QPointF(p1[0], p1[1])
+                    scene.addLine(QLineF(point_i0, point_i1), QPen(brush, func.width))
             elif func.style == PlottableFunction.Style.DOTTED:
-                for i in range(0, len(points), 10):
-                    point = points[i]
-                    scene.addEllipse(point[0], point[1], func.width, func.width, QPen(QtGui.QColorConstants.Transparent), brush)
+                for point in points[::10]:
+                    self.add_circle(scene, point, func.width, QPen(QtGui.QColorConstants.Transparent), brush)
 
 
     def _draw_axes(self, scene):
         zero = self._map_to_frame((0, 0))
-        scene.addLine(QtCore.QLineF(0, zero[1], self._w, zero[1]), QPen(QBrush(self.axesColor), self.axesWidth))
-        scene.addLine(QtCore.QLineF(zero[0], 0, zero[0], self._h), QPen(QBrush(self.axesColor), self.axesWidth))
+        pen = QPen(QBrush(self.axesColor), self.axesWidth)
+
+        scene.addLine(QLineF(0, zero[1], self._w, zero[1]), pen)
+        scene.addLine(QLineF(zero[0], 0, zero[0], self._h), pen)
 
 
     def _map_to_frame(self, point):
@@ -79,4 +84,9 @@ class Plotter:
 
 
     def _draw_markup(self, scene):
-        pass 
+        pass
+
+    
+    @staticmethod
+    def add_circle(scene, point, radius, pen, brush):
+        scene.addEllipse(point[0], point[1], radius, radius, pen, brush)
