@@ -1,26 +1,23 @@
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
 from forms_py import Ui_MainWindow
 from plotter import *
 from dialogs import *
 
-class Cg1(QtWidgets.QApplication):
+class Cg1(QApplication):
     def __init__(self, argv):
-        QtWidgets.QApplication.__init__(self, argv)
+        QApplication.__init__(self, argv)
 
         self._init_main_window() 
         self._widget = None
-        self._plotter = Plotter(QtGui.QColor(0, 255, 0), QtGui.QColor(0, 0, 255), 4)
+        self._plotter = Plotter(QColor(0, 255, 0), QColor(0, 0, 255), 4)
         
         self._funcs = []
-        self._new_function()
-        
-
-    def _new_function(self):
-        self._function = PlottableFunction(QtGui.QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x))
-                     
+         
 
     def _init_main_window(self):
-        self._mainWindow = QtWidgets.QMainWindow()
+        self._mainWindow = QMainWindow()
         self._mainUi = Ui_MainWindow()
         self._mainUi.setupUi(self._mainWindow)
 
@@ -56,9 +53,9 @@ class Cg1(QtWidgets.QApplication):
 
 
     def _init_canvas(self):
-        self._scene = QtWidgets.QGraphicsScene()
+        self._scene = QGraphicsScene()
         self._mainUi.canvas.setScene(self._scene)
-        self._mainUi.canvas.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
+        self._mainUi.canvas.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
 
     def _open_widget(self, clsWidget):
@@ -72,7 +69,7 @@ class Cg1(QtWidgets.QApplication):
         x = self._mainUi.canvas.width()
         y = self._mainUi.canvas.height()
         self._scene.setSceneRect(0, 0, x, y)
-        self._mainUi.canvas.fitInView(self._scene.sceneRect(), QtCore.Qt.IgnoreAspectRatio)#still leaves some gaps on sides, seems like a bug
+        self._mainUi.canvas.fitInView(self._scene.sceneRect(), Qt.IgnoreAspectRatio)#still leaves some gaps on sides, seems like a bug
 
     
     def plot(self):
@@ -81,7 +78,7 @@ class Cg1(QtWidgets.QApplication):
 
     def exec_(self):
         self._mainWindow.show()
-        QtWidgets.QApplication.exec_()
+        QApplication.exec_()
 
 
 if __name__ == "__main__":

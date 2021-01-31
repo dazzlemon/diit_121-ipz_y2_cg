@@ -1,7 +1,6 @@
 from functools import reduce
 from more_itertools import pairwise
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtGui import QPen, QBrush
+from PyQt5.QtGui import QPen, QBrush, QColorConstants
 from PyQt5.QtCore import QLineF, QPointF
 from .plottable_function import PlottableFunction
 from .math_2d import linear_map_2d, points_frame, widest_frame
@@ -46,7 +45,7 @@ class Plotter:
 
 
     def _fill_bg(self, scene):
-        scene.addRect(0, 0, self._w, self._h, QtGui.QPen(), QtGui.QBrush(self.bgColor))
+        scene.addRect(0, 0, self._w, self._h, QPen(), QBrush(self.bgColor))
 
 
     def _draw_funcs(self, scene, funcs):
@@ -55,7 +54,7 @@ class Plotter:
                 lambda point: self._map_to_frame(point),
                 func.points(self._w)
             ))
-            brush = QtGui.QBrush(func.color)
+            brush = QBrush(func.color)
             
             if func.style == PlottableFunction.Style.NORMAL:
                 pen = QPen(brush, func.width)
@@ -65,7 +64,7 @@ class Plotter:
                     line = QLineF(point_i0, point_i1)
                     scene.addLine(line, pen)
             elif func.style == PlottableFunction.Style.DOTTED:
-                pen = QPen(QtGui.QColorConstants.Transparent)
+                pen = QPen(QColorConstants.Transparent)
                 for point in points[::10]:
                     self.add_circle(scene, point, func.width, pen, brush)
 

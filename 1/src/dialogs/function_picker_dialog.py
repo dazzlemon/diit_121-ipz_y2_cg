@@ -1,4 +1,5 @@
-from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QColor
 from forms_py import Ui_PlotWindow
 from plotter import PlottableFunction
 from math import cos
@@ -45,7 +46,7 @@ class FunctionPickerDialog:
 
 
     def _new_function(self):
-        self._function = PlottableFunction(QtGui.QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x))
+        self._function = PlottableFunction(QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x))
 
     
     def show(self):
