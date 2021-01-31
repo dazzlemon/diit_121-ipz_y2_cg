@@ -4,6 +4,7 @@ from PyQt5.QtCore import QRectF, Qt
 from forms_py import Ui_PlotWindow
 from plotter import PlottableFunction
 from math import cos
+from copy import deepcopy
 
 class FunctionPickerDialog:
     def __init__(self, closeEvent, parent):
@@ -15,7 +16,8 @@ class FunctionPickerDialog:
         self._init_color_view()
 
         self.parent = parent
-        self._new_function()
+        self._function = PlottableFunction(QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x))
+        self._color_changed()
 
         styleVariants = [
             "Normal",
@@ -39,8 +41,7 @@ class FunctionPickerDialog:
             else:
                 self._function.style = PlottableFunction.Style.DOTTED
                 
-            self.parent._funcs.append(self._function)
-            self._new_function()
+            self.parent._funcs.append(deepcopy(self._function))
 
             self.parent.plot()
 
@@ -54,11 +55,6 @@ class FunctionPickerDialog:
         self.ui.plotButton.clicked.connect(plot_clicked)
         self.ui.colorButton.clicked.connect(color_clicked)
 
-
-    def _new_function(self):
-        self._function = PlottableFunction(QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x))
-        self._color_changed()
-    
 
     def show(self):
         self.widget.show()

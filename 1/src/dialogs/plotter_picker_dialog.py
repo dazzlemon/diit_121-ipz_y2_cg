@@ -8,6 +8,8 @@ class PlotterPickerDialog:
         self.ui.setupUi(self.widget)
         self.widget.closeEvent = closeEvent
 
+        self.ui.axesWidthSpinBox.setValue(parent._plotter.axesWidth)
+
         self.parent = parent
         
         markVariants = [
@@ -31,9 +33,14 @@ class PlotterPickerDialog:
             if newColor.isValid():
                 self.parent._plotter.bgColor = newColor
                 parent.plot()
-                
+        
+        def axes_width_changed(val):
+            parent._plotter.axesWidth = val
+            parent.plot()
+
         self.ui.axesColorButton.clicked.connect(axes_color_clicked)
         self.ui.bgColorButton.clicked.connect(bg_color_clicked)
+        self.ui.axesWidthSpinBox.valueChanged.connect(axes_width_changed)
 
 
     def show(self):
