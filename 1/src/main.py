@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 from forms_py import *
 from plotter import *
-from math import cos
+from forms_managed import FunctionPickerDialog, PlotterPickerDialog
 
 class Cg1(QtWidgets.QApplication):
     def __init__(self, argv):
@@ -9,7 +9,6 @@ class Cg1(QtWidgets.QApplication):
 
         self._init_main_window() 
         self._widget = None
-        self._uiWidget = None
         self._plotter = Plotter(QtGui.QColor(0, 255, 0), QtGui.QColor(0, 0, 255), 4)
         
         self._funcs = []
@@ -49,65 +48,11 @@ class Cg1(QtWidgets.QApplication):
 
 
     def _open_plot(self):
-        styleVariants = [
-            "Normal",
-            "Dotted"
-        ]
-        self._open_widget(Ui_PlotWindow())
-        if isinstance(self._uiWidget, Ui_PlotWindow):
-            self._uiWidget.funcStyleComboBox.addItems(styleVariants)
-
-            def plot_clicked():
-                self._function.rangeX = (
-                    self._uiWidget.xMinDoubleSpinBox.value(),
-                    self._uiWidget.xMaxDoubleSpinBox.value()
-                )
-
-                a = self._uiWidget.aDoubleSpinBox.value()
-                b = self._uiWidget.bDoubleSpinBox.value()
-                self._function.f = lambda x: abs(x) + a * cos(b * x)
-                
-                self._funcs.append(self._function)
-                self._new_function()
-
-                self._plotter.plot(self._scene, self._funcs)
-
-            def color_clicked():
-                colorDialog = QtWidgets.QColorDialog()
-                newColor = colorDialog.getColor(self._function.color)
-                if newColor.isValid():
-                    self._function.color = newColor
-
-            self._uiWidget.plotButton.clicked.connect(plot_clicked)
-            self._uiWidget.colorButton.clicked.connect(color_clicked)
+        self._open_widget(FunctionPickerDialog)
 
 
     def _open_settings(self):
-        markVariants = [
-            "Square",
-            "Triangle",
-            "Circle"
-        ]
-        self._open_widget(Ui_SettingsWindow())
-        if isinstance(self._uiWidget, Ui_SettingsWindow):
-            self._uiWidget.marksStyleComboBox.addItems(markVariants)
-            
-            def axes_color_clicked():
-                colorDialog = QtWidgets.QColorDialog()
-                newColor = colorDialog.getColor(self._plotter.axesColor)
-                if newColor.isValid():
-                    self._plotter.axesColor = newColor
-                    self._plotter.plot(self._scene)
-            
-            def bg_color_clicked():
-                colorDialog = QtWidgets.QColorDialog()
-                newColor = colorDialog.getColor(self._plotter.bgColor)
-                if newColor.isValid():
-                    self._plotter.bgColor = newColor
-                    self._plotter.plot(self._scene)
-                
-            self._uiWidget.axesColorButton.clicked.connect(axes_color_clicked)
-            self._uiWidget.bgColorButton.clicked.connect(bg_color_clicked)
+        self._open_widget(PlotterPickerDialog)
 
 
     def _init_canvas(self):
@@ -116,17 +61,11 @@ class Cg1(QtWidgets.QApplication):
         self._mainUi.canvas.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
 
 
-    def _open_widget(self, uiWidget):
-        def widget_closed(event):
-            self._widget = None
-            self._uiWidget = None
-
+    def _open_widget(self, clsWidget):
         if self._widget == None:
-            self._widget = QtWidgets.QWidget()
-            self._uiWidget = uiWidget
-            self._uiWidget.setupUi(self._widget)
-            self._widget.closeEvent = widget_closed
-            self._widget.show() 
+            def widget_closed(event): self._widget = None
+            self._widget = clsWidget(widget_closed, self)
+            self._widget.show()
 
 
     def _resize_scene(self):
@@ -134,6 +73,10 @@ class Cg1(QtWidgets.QApplication):
         y = self._mainUi.canvas.height()
         self._scene.setSceneRect(0, 0, x, y)
         self._mainUi.canvas.fitInView(self._scene.sceneRect(), QtCore.Qt.IgnoreAspectRatio)#still leaves some gaps on sides, seems like a bug
+
+    
+    def plot(self):
+        self._plotter.plot(self._scene, self._funcs)
 
 
     def exec_(self):
