@@ -12,8 +12,9 @@ class Cg1(QtWidgets.QApplication):
         self._uiWidget = None
         self._plotter = Plotter(QtGui.QColor(0, 255, 0), QtGui.QColor(0, 0, 255), 4)
         
+        self._funcs = []
         self._new_function()
-
+        
 
     def _new_function(self):
         self._function = PlottableFunction(QtGui.QColor(0, 0, 0), 4, (-3, 3), lambda x: abs(x) + 2 * cos(-x))
@@ -31,14 +32,14 @@ class Cg1(QtWidgets.QApplication):
     def _init_main_window_events(self):
         def canvas_resized(event):
             self._resize_scene()
-            self._plotter.plot(self._scene)
+            self._plotter.plot(self._scene, self._funcs)
 
         def settings_clicked(): self._open_settings()
         def plot_clicked(): self._open_plot()
         def close(event): self._widget and self._widget.close()
         def clear_clicked(): 
-            self._plotter.clear()
-            self._plotter.plot(self._scene)
+            self._funcs.clear()
+            self._plotter.plot(self._scene, self._funcs)
 
         self._mainUi.settingsButton.clicked.connect(settings_clicked)
         self._mainUi.plotButton.clicked.connect(plot_clicked)
@@ -66,10 +67,10 @@ class Cg1(QtWidgets.QApplication):
                 b = self._uiWidget.bDoubleSpinBox.value()
                 self._function.f = lambda x: abs(x) + a * cos(b * x)
                 
-                self._plotter.add_func(self._function)
+                self._funcs.append(self._function)
                 self._new_function()
 
-                self._plotter.plot(self._scene)
+                self._plotter.plot(self._scene, self._funcs)
 
             def color_clicked():
                 colorDialog = QtWidgets.QColorDialog()

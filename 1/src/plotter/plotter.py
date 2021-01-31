@@ -1,7 +1,9 @@
+from functools import reduce
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import QPen, QBrush
-from functools import reduce
 from .plottable_function import PlottableFunction
+from .math_2d import linear_map_2d, points_frame, widest_frame
+
 
 class Plotter:
     def __init__(self, bgColor, axesColor, axesWidth, textColor = None, textSize = None, marksColor = None, marksStyle = None, marksSize = None):
@@ -17,27 +19,17 @@ class Plotter:
         self.marksStyle = marksStyle
         self.marksSize = marksSize
 
-        self.funcs = []
 
-
-    def add_func(self, func):
-        self.funcs.append(func)
-
-
-    def clear(self):
-        self.funcs.clear()
-
-
-    def plot(self, scene):
+    def plot(self, scene, funcs):
         scene.clear()
 
         self._w = int(scene.width())
         self._h = int(scene.height())
 
         self._fill_bg(scene)
-        if len(self.funcs) > 0:
-            self._calculate_frame()
-            self._draw_funcs(scene)
+        if len(funcs) > 0:
+            self._calculate_frame(funcs)
+            self._draw_funcs(scene, funcs)
             self._draw_axes(scene)
             self._draw_intersections(scene)
             self._draw_markup(scene)
@@ -45,18 +37,18 @@ class Plotter:
         scene.update()
 
     
-    def _calculate_frame(self):
-        funcs_points = [func.points(self._w) for func in self.funcs]# [[(x, y)]]
-        frames = map(self.points_frame, funcs_points)# [(minX, minY, maxX, minY)]
-        self._frame = reduce(self.widest_frame, frames)# (minX, minY, maxX, maxY)
+    def _calculate_frame(self, funcs):
+        funcs_points = [func.points(self._w) for func in funcs]# [[(x, y)]]
+        frames = map(points_frame, funcs_points)# [(minX, minY, maxX, minY)]
+        self._frame = reduce(widest_frame, frames)# (minX, minY, maxX, maxY)
 
 
     def _fill_bg(self, scene):
         scene.addRect(0, 0, self._w, self._h, QtGui.QPen(), QtGui.QBrush(self.bgColor))
 
 
-    def _draw_funcs(self, scene):
-        for func in self.funcs:
+    def _draw_funcs(self, scene, funcs):
+        for func in funcs:
             points = list(map(
                 lambda point: self._map_to_frame(point),
                 func.points(self._w)
@@ -79,7 +71,7 @@ class Plotter:
 
 
     def _map_to_frame(self, point):
-        return self.linear_map_2d(point, self._frame, (0, self._h, self._w, 0))
+        return linear_map_2d(point, self._frame, (0, self._h, self._w, 0))
 
 
     def _draw_intersections(self, scene):
@@ -87,46 +79,4 @@ class Plotter:
 
 
     def _draw_markup(self, scene):
-        pass
-
-    
-    @staticmethod
-    def linear_map_2d(point, from_frame, to_frame):
-        return (
-            Plotter.linear_map(point[0], (from_frame[0], from_frame[2]), (to_frame[0], to_frame[2])),
-            Plotter.linear_map(point[1], (from_frame[1], from_frame[3]), (to_frame[1], to_frame[3]))
-        )
-
-
-    @staticmethod
-    def linear_map(x, from_, to):
-        return to[0] + (to[1] - to[0]) * ((x - from_[0]) / (from_[1] - from_[0]))
-
-
-    @staticmethod
-    def points_frame(points):
-        """
-        in: [(x, y)]
-        out: (minX, minY, maxX. maxY)
-        """
-        return reduce(
-            lambda frame, point: (
-                min(frame[0], point[0]),
-                min(frame[1], point[1]),
-                max(frame[2], point[0]),
-                max(frame[3], point[1])
-            ),
-            points,
-            (points[0][0], points[0][1], points[0][0], points[0][1])
-        )
-
-
-    @staticmethod
-    def widest_frame(r1, r2):
-        return (
-            min(r1[0], r2[0]),# minX
-            min(r1[1], r2[1]),# minY
-            max(r1[2], r2[2]),# maxX
-            max(r1[3], r2[3]) # maxY
-        )
-
+        pass 
