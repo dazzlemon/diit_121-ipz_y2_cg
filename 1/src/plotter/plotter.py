@@ -1,13 +1,19 @@
+import numpy as np
 from functools import reduce
 from more_itertools import pairwise
 from PyQt5.QtGui import QPen, QBrush, QColorConstants
 from PyQt5.QtCore import QLineF, QPointF
+from enum import Enum, auto
 from .plottable_function import PlottableFunction
 from .math_2d import linear_map_2d, points_frame, widest_frame, linear_map
-import numpy as np
 
 class Plotter:
-    def __init__(self, bgColor, axesColor, axesWidth, marksColor, marksSize, marksStyle = None, textColor = None, textSize = None):
+    class MarksStyle(Enum):
+        CIRCLE = auto()
+        SQUARE = auto()
+
+
+    def __init__(self, bgColor, axesColor, axesWidth, marksColor, marksSize, marksStyle, textColor = None, textSize = None):
         self.bgColor = bgColor
         
         self.axesColor = axesColor
@@ -49,10 +55,10 @@ class Plotter:
 
     def _draw_funcs(self, scene, funcs):
         for func in funcs:
-            points = map(
+            points = list(map(
                 lambda point: self._map_to_frame(point),
                 func.points(self._w)
-            )
+            ))
             brush = QBrush(func.color)
             
             if func.style == PlottableFunction.Style.NORMAL:
@@ -99,27 +105,32 @@ class Plotter:
         )
 
         zeroY = self._map_to_frame_y(0)
-
-        pen = QPen(QColorConstants.Transparent)
-        brush = QBrush(self.marksColor)
+ 
         for x in virtual_intersections:
-            self.add_circle(scene, (x, zeroY), self.marksSize, pen, brush)
+            self._draw_mark(scene, (x, zeroY))
 
         if func.rangeX[0] <= 0 <= func.rangeX[1]:
             point = self._map_to_frame((0, func.f(0)))
-            self.add_circle(scene, point, self.marksSize, pen, brush)
-            
+            self._draw_mark(scene, point)
 
+
+    def _draw_mark(self, scene, point):
+        pen = QPen(QColorConstants.Transparent)
+        brush = QBrush(self.marksColor)
+        if self.marksStyle == Plotter.MarksStyle.CIRCLE:
+            self.add_circle(scene, point, self.marksSize, pen, brush)
+        elif self.marksStyle == Plotter.MarksStyle.SQUARE:
+            self.add_rect(scene, point, self.marksSize, pen, brush)
+    
 
     @staticmethod
     def _intersections_x(points):
         ys = list(map(lambda point: point[1], points))
-        idx = np.argwhere(np.diff(np.sign(ys))).flatten()
+        idx = np.flatnonzero(np.diff(np.sign(ys)))
         """
         1 - mapping values to -1, 0, 1 aka signs
-        2 - inner difference(if two neighbours have -1, 1 or 1, -1 than function has value zero between them(so new array has idx around that val))
-        3 - getting idx of 0s
-        4 - one dimensional arrray
+        2 - inner difference(ith - i-1th, so if diff == 0 sign didnt change(1 - 1 or -1 - -1))
+        3 - getting nonzero idxs
         """
         return idx
 
@@ -135,3 +146,12 @@ class Plotter:
             center[1] - size / 2
         )
         scene.addEllipse(origin[0], origin[1], size, size, pen, brush)
+
+
+    @staticmethod
+    def add_rect(scene, center, size, pen, brush):
+        origin = (
+            center[0] - size / 2,
+            center[1] - size / 2
+        )
+        scene.addRect(origin[0], origin[1], size, size, pen, brush)
