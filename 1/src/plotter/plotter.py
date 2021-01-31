@@ -3,8 +3,8 @@ from more_itertools import pairwise
 from PyQt5.QtGui import QPen, QBrush, QColorConstants
 from PyQt5.QtCore import QLineF, QPointF
 from .plottable_function import PlottableFunction
-from .math_2d import linear_map_2d, points_frame, widest_frame
-
+from .math_2d import linear_map_2d, points_frame, widest_frame, linear_map
+import numpy as np
 
 class Plotter:
     def __init__(self, bgColor, axesColor, axesWidth, textColor = None, textSize = None, marksColor = None, marksStyle = None, marksSize = None):
@@ -30,9 +30,8 @@ class Plotter:
         self._fill_bg(scene)
         if len(funcs) > 0:
             self._calculate_frame(funcs)
-            self._draw_funcs(scene, funcs)
             self._draw_axes(scene)
-            self._draw_intersections(scene)
+            self._draw_funcs(scene, funcs)
             self._draw_markup(scene)
 
         scene.update()
@@ -50,10 +49,10 @@ class Plotter:
 
     def _draw_funcs(self, scene, funcs):
         for func in funcs:
-            points = list(map(
+            points = map(
                 lambda point: self._map_to_frame(point),
                 func.points(self._w)
-            ))
+            )
             brush = QBrush(func.color)
             
             if func.style == PlottableFunction.Style.NORMAL:
@@ -67,6 +66,8 @@ class Plotter:
                 pen = QPen(QColorConstants.Transparent)
                 for point in points[::10]:
                     self.add_circle(scene, point, func.width, pen, brush)
+            
+            self._draw_intersections(scene, func)
 
 
     def _draw_axes(self, scene):
@@ -81,8 +82,40 @@ class Plotter:
         return linear_map_2d(point, self._frame, (0, self._h, self._w, 0))
 
 
-    def _draw_intersections(self, scene):
-        pass
+    def _map_to_frame_x(self, x):
+        return linear_map(x, (self._frame[0], self._frame[2]), (0, self._w))
+
+
+    def _map_to_frame_y(self, y):
+        return linear_map(y, (self._frame[1], self._frame[3]), (self._h, 0))
+
+    def _draw_intersections(self, scene, func):
+        points = func.points(self._w)
+        intersection_idx = self._intersections_x(points)
+        virtual_intersections = map(
+            lambda point: self._map_to_frame_x(point[0]),
+            np.array(points)[intersection_idx]
+        )
+
+        zeroY = self._map_to_frame_y(0)
+
+        pen = QPen(QColorConstants.Transparent)
+        brush = QBrush(QColorConstants.Red)
+        for x in virtual_intersections:
+            self.add_circle(scene, (x, zeroY), 10, pen, brush)
+
+
+    @staticmethod
+    def _intersections_x(points):
+        ys = list(map(lambda point: point[1], points))
+        idx = np.argwhere(np.diff(np.sign(ys))).flatten()
+        """
+        1 - mapping values to -1, 0, 1 aka signs
+        2 - inner difference(if two neighbours have -1, 1 or 1, -1 than function has value zero between them(so new array has idx around that val))
+        3 - getting idx of 0s
+        4 - one dimensional arrray
+        """
+        return idx
 
 
     def _draw_markup(self, scene):
