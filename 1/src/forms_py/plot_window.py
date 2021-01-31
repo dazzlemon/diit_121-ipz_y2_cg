@@ -26,6 +26,10 @@ class Ui_PlotWindow(object):
         self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
+        self.label_7 = QtWidgets.QLabel(PlotWindow)
+        self.label_7.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_7.setObjectName("label_7")
+        self.verticalLayout.addWidget(self.label_7)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.colorButton = QtWidgets.QPushButton(PlotWindow)
@@ -113,6 +117,7 @@ class Ui_PlotWindow(object):
     def retranslateUi(self, PlotWindow):
         _translate = QtCore.QCoreApplication.translate
         PlotWindow.setWindowTitle(_translate("PlotWindow", "Plot new function"))
+        self.label_7.setText(_translate("PlotWindow", "y(x) = |x| + a * cos(b * x)"))
         self.colorButton.setText(_translate("PlotWindow", "Color"))
         self.label_6.setText(_translate("PlotWindow", "Width"))
         self.label_5.setText(_translate("PlotWindow", "Style"))
