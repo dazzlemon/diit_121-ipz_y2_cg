@@ -58,13 +58,16 @@ class Plotter:
             brush = QtGui.QBrush(func.color)
             
             if func.style == PlottableFunction.Style.NORMAL:
+                pen = QPen(brush, func.width)
                 for p0, p1 in pairwise(points):
                     point_i0 = QPointF(p0[0], p0[1])
                     point_i1 = QPointF(p1[0], p1[1])
-                    scene.addLine(QLineF(point_i0, point_i1), QPen(brush, func.width))
+                    line = QLineF(point_i0, point_i1)
+                    scene.addLine(line, pen)
             elif func.style == PlottableFunction.Style.DOTTED:
+                pen = QPen(QtGui.QColorConstants.Transparent)
                 for point in points[::10]:
-                    self.add_circle(scene, point, func.width, QPen(QtGui.QColorConstants.Transparent), brush)
+                    self.add_circle(scene, point, func.width, pen, brush)
 
 
     def _draw_axes(self, scene):
