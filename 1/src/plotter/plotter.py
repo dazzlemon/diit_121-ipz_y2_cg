@@ -90,5 +90,9 @@ class Plotter:
 
     
     @staticmethod
-    def add_circle(scene, point, radius, pen, brush):
-        scene.addEllipse(point[0], point[1], radius, radius, pen, brush)
+    def add_circle(scene, center, size, pen, brush):
+        origin = (
+            center[0] - size / 2,
+            center[1] - size / 2
+        )
+        scene.addEllipse(origin[0], origin[1], size, size, pen, brush)

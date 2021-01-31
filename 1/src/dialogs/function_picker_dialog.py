@@ -29,6 +29,12 @@ class FunctionPickerDialog:
             a = self.ui.aDoubleSpinBox.value()
             b = self.ui.bDoubleSpinBox.value()
             self._function.f = lambda x: abs(x) + a * cos(b * x)
+            self._function.width = self.ui.widthSpinBox.value()
+
+            if self.ui.funcStyleComboBox.currentIndex() == 0:
+                self._function.style = PlottableFunction.Style.NORMAL
+            else:
+                self._function.style = PlottableFunction.Style.DOTTED
                 
             self.parent._funcs.append(self._function)
             self._new_function()

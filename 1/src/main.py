@@ -28,14 +28,14 @@ class Cg1(QApplication):
     def _init_main_window_events(self):
         def canvas_resized(event):
             self._resize_scene()
-            self._plotter.plot(self._scene, self._funcs)
+            self.plot()
 
         def settings_clicked(): self._open_settings()
         def plot_clicked(): self._open_plot()
         def close(event): self._widget and self._widget.close()
         def clear_clicked(): 
             self._funcs.clear()
-            self._plotter.plot(self._scene, self._funcs)
+            self.plot()
 
         self._mainUi.settingsButton.clicked.connect(settings_clicked)
         self._mainUi.plotButton.clicked.connect(plot_clicked)
