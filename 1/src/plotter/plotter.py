@@ -104,6 +104,11 @@ class Plotter:
         for x in virtual_intersections:
             self.add_circle(scene, (x, zeroY), 10, pen, brush)
 
+        if func.rangeX[0] <= 0 <= func.rangeX[1]:
+            point = self._map_to_frame((0, func.f(0)))
+            self.add_circle(scene, point, 10, pen, brush)
+            
+
 
     @staticmethod
     def _intersections_x(points):
