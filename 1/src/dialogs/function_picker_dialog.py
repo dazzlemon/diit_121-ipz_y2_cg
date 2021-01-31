@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtGui
-from forms_py.plot_window import Ui_PlotWindow
-from plotter.plottable_function import PlottableFunction
+from forms_py import Ui_PlotWindow
+from plotter import PlottableFunction
 from math import cos
 
 class FunctionPickerDialog:

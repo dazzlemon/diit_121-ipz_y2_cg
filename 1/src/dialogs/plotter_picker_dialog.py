@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets
-from forms_py.settings_window import Ui_SettingsWindow
+from forms_py import Ui_SettingsWindow
 
 class PlotterPickerDialog:
     def __init__(self, closeEvent, parent):
