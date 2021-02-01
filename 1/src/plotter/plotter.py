@@ -148,6 +148,7 @@ class Plotter:
 
 
     def _draw_markup(self, scene):
+        """ SOME MAGIC NUMBERS HERE, I DIDNT FIND ANY OTHER WAY TO REPOSITION TEXT """
         n = 10
         length = 10
         width = 2
@@ -163,8 +164,9 @@ class Plotter:
         xs = self.linspace_range((0, self._w), zero[0], step[0])
         for x in xs:
             self.add_line(scene, (x, zero[1]), length, 0, pen)
-            text = scene.addSimpleText("{:.2e}".format(self._map_from_frame_x(x)))
+            text = scene.addText("{:.2e}".format(self._map_from_frame_x(x)))
             text.font().setPixelSize(self.textSize)
+            text.setDefaultTextColor(self.textColor)
             text.setPos(x - self.textSize * 3, zeroText[1])
         
         ys = self.linspace_range((0, self._h), zero[1], step[1])
@@ -172,6 +174,7 @@ class Plotter:
             self.add_line(scene, (zero[0], y), length, 1, pen)
             text = scene.addText("{:.2e}".format(self._map_from_frame_y(y)))
             text.font().setPixelSize(self.textSize)
+            text.setDefaultTextColor(self.textColor)
             text.setPos(zeroText[0], y - 1.5 * self.textSize)
 
 
