@@ -136,9 +136,44 @@ class Plotter:
 
 
     def _draw_markup(self, scene):
-        pass
+        n = 10
+        length = 10
+        width = 2
+        color = QColorConstants.Black
 
-    
+        brush = QBrush(color)
+        pen = QPen(brush, width)
+        
+        zero = self._map_to_frame((0, 0))
+        step = (self._w / n, self._h / n)
+
+        xs = self.linspace_range((0, self._w), zero[0], step[0])
+        for x in xs:
+            self.add_line(scene, (x, zero[1]), length, 0, pen)
+        
+        ys = self.linspace_range((0, self._h), zero[1], step[1])
+        for y in ys:
+            self.add_line(scene, (zero[0], y), length, 1, pen)
+
+
+    @staticmethod
+    def linspace_range(range_, from_, step):
+        ps0 = np.arange(from_, range_[1], step)
+        ps1 = np.arange(from_, range_[0], -step)
+        return np.concatenate((ps0, ps1))
+
+
+    @staticmethod
+    def add_line(scene, center, length, orientation, pen):
+        if orientation == 0:
+            start = (center[0], center[1] - length / 2)
+            end = (center[0], center[1] + length / 2)
+        elif orientation == 1:
+            start = (center[0] - length / 2, center[1])
+            end = (center[0] + length / 2, center[1])
+        scene.addLine(start[0], start[1], end[0], end[1], pen)
+
+
     @staticmethod
     def add_circle(scene, center, size, pen, brush):
         origin = (
