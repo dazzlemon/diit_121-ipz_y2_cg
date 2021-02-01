@@ -17,7 +17,9 @@ class Cg1(QApplication):
             axesWidth = 4,
             marksColor = QColor(255, 0, 0),
             marksSize = 10,
-            marksStyle = Plotter.MarksStyle.CIRCLE
+            marksStyle = Plotter.MarksStyle.CIRCLE,
+            textColor = QColor(0, 0, 0),
+            textSize = 10
         )
         
         self._funcs = []
