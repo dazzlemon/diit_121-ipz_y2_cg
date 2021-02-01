@@ -96,6 +96,18 @@ class Plotter:
         return linear_map(y, (self._frame[1], self._frame[3]), (self._h, 0))
 
 
+    def _map_from_frame(self, point):
+        return linear_map_2d(point, (0, self._h, self._w, 0), self._frame)
+
+
+    def _map_from_frame_x(self, x):
+        return linear_map(x, (0, self._w), (self._frame[0], self._frame[2]))
+
+
+    def _map_from_frame_y(self, y):
+        return linear_map(y, (self._h, 0), (self._frame[1], self._frame[3]))
+
+
     def _draw_intersections(self, scene, func):
         points = func.points(self._w)
         intersection_idx = self._intersections_x(points)
@@ -150,16 +162,20 @@ class Plotter:
         xs = self.linspace_range((0, self._w), zero[0], step[0])
         for x in xs:
             self.add_line(scene, (x, zero[1]), length, 0, pen)
+            text = scene.addText("{:.2e}".format(self._map_from_frame_x(x)))
+            text.setPos(x, zero[1]) 
         
         ys = self.linspace_range((0, self._h), zero[1], step[1])
         for y in ys:
             self.add_line(scene, (zero[0], y), length, 1, pen)
+            text = scene.addText("{:.2e}".format(self._map_from_frame_y(y)))
+            text.setPos(zero[0], y)
 
 
     @staticmethod
     def linspace_range(range_, from_, step):
-        ps0 = np.arange(from_, range_[1], step)
-        ps1 = np.arange(from_, range_[0], -step)
+        ps0 = np.arange(from_ + step, range_[1], step)
+        ps1 = np.arange(from_ - step, range_[0], -step)
         return np.concatenate((ps0, ps1))
 
 
