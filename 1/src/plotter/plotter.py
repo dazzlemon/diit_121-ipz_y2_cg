@@ -13,7 +13,7 @@ class Plotter:
         SQUARE = auto()
 
 
-    def __init__(self, bgColor, axesColor, axesWidth, marksColor, marksSize, marksStyle, textColor, textSize, markupSize, markupColor):
+    def __init__(self, bgColor, axesColor, axesWidth, marksColor, marksSize, marksStyle, textColor, textSize, markupSize, markupColor, markupOn = False):
         self.bgColor = bgColor
         
         self.axesColor = axesColor
@@ -28,6 +28,7 @@ class Plotter:
 
         self.markupSize = markupSize
         self.markupColor = markupColor
+        self.markupOn = markupOn
 
 
     def plot(self, scene, funcs):
@@ -41,7 +42,8 @@ class Plotter:
             self._calculate_frame(funcs)
             self._draw_axes(scene)
             self._draw_funcs(scene, funcs)
-            self._draw_markup(scene)
+            if self.markupOn:
+                self._draw_markup(scene)
 
         scene.update()
 

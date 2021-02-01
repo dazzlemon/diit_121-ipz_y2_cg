@@ -13,6 +13,7 @@ class PlotterPickerDialog:
         self.ui.marksSizeSpinBox.setValue(parent._plotter.marksSize)
         self.ui.textSizeSpinBox.setValue(parent._plotter.textSize)
         self.ui.markupSizeSpinBox.setValue(parent._plotter.markupSize)
+        self.ui.markupCheckBox.setChecked(parent._plotter.markupOn)
 
         self.parent = parent
         
@@ -88,6 +89,10 @@ class PlotterPickerDialog:
                 self.parent._plotter.markupColor = newColor
                 parent.plot()
 
+        def markup_toggled(val):
+            parent._plotter.markupOn = val
+            parent.plot()
+
         self.ui.axesColorButton.clicked.connect(axes_color_clicked)
         self.ui.bgColorButton.clicked.connect(bg_color_clicked)
         self.ui.axesWidthSpinBox.valueChanged.connect(axes_width_changed)
@@ -98,6 +103,7 @@ class PlotterPickerDialog:
         self.ui.textColorButton.clicked.connect(text_color_clicked)
         self.ui.markupColorButton.clicked.connect(markup_color_clicked)
         self.ui.markupSizeSpinBox.valueChanged.connect(markup_size_changed)
+        self.ui.markupCheckBox.stateChanged.connect(markup_toggled)
 
 
     def show(self):
