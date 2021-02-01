@@ -128,6 +128,41 @@
       </layout>
      </item>
      <item>
+      <widget class="QPushButton" name="markupColorButton">
+       <property name="text">
+        <string>Markup color</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Markup size</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="markupSizeSpinBox">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>64</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="markupCheckBox">
+       <property name="text">
+        <string>Markup</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>

@@ -13,7 +13,7 @@ class Plotter:
         SQUARE = auto()
 
 
-    def __init__(self, bgColor, axesColor, axesWidth, marksColor, marksSize, marksStyle, textColor, textSize):
+    def __init__(self, bgColor, axesColor, axesWidth, marksColor, marksSize, marksStyle, textColor, textSize, markupSize, markupColor):
         self.bgColor = bgColor
         
         self.axesColor = axesColor
@@ -25,6 +25,9 @@ class Plotter:
         self.marksColor = marksColor
         self.marksStyle = marksStyle
         self.marksSize = marksSize
+
+        self.markupSize = markupSize
+        self.markupColor = markupColor
 
 
     def plot(self, scene, funcs):
@@ -148,30 +151,38 @@ class Plotter:
 
 
     def _draw_markup(self, scene):
-        """ SOME MAGIC NUMBERS HERE, I DIDNT FIND ANY OTHER WAY TO REPOSITION TEXT """
+        """
+        SOME MAGIC NUMBERS HERE, I DIDNT FIND ANY OTHER WAY TO REPOSITION TEXT
+        IT ACTUALLY SEEMS TO DO WITH UNSCALABLE FONT
+        IF THE COMMENT IS STILL THERE I DIDNT FIND THE FIX(EITHER BECAUSE THERE IS NONE OR I DIDNT HAVE TIME)
+        """
         n = 10
-        length = 10
         width = 2
-        color = QColorConstants.Black
 
-        brush = QBrush(color)
+        brush = QBrush(self.markupColor)
         pen = QPen(brush, width)
         
         zero = self._map_to_frame((0, 0))
-        zeroText = (zero[0] + max(self.axesWidth, length) / 2, zero[1] - 2 * self.textSize - max(self.axesWidth, length) / 2)
+        zeroText = (
+            zero[0] + max(self.axesWidth, self.markupSize) / 2,
+            zero[1] - 2 * self.textSize - max(self.axesWidth, self.markupSize) / 2
+        )
         step = (self._w / n, self._h / n)
 
         xs = self.linspace_range((0, self._w), zero[0], step[0])
         for x in xs:
-            self.add_line(scene, (x, zero[1]), length, 0, pen)
+            self.add_line(scene, (x, zero[1]), self.markupSize, 0, pen)
+            
             text = scene.addText("{:.2e}".format(self._map_from_frame_x(x)))
             text.font().setPixelSize(self.textSize)
+            text.font().setFamily("Arial")
             text.setDefaultTextColor(self.textColor)
             text.setPos(x - self.textSize * 3, zeroText[1])
         
         ys = self.linspace_range((0, self._h), zero[1], step[1])
         for y in ys:
-            self.add_line(scene, (zero[0], y), length, 1, pen)
+            self.add_line(scene, (zero[0], y), self.markupSize, 1, pen)
+            
             text = scene.addText("{:.2e}".format(self._map_from_frame_y(y)))
             text.font().setPixelSize(self.textSize)
             text.setDefaultTextColor(self.textColor)

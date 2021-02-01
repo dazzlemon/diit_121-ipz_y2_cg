@@ -12,6 +12,7 @@ class PlotterPickerDialog:
         self.ui.axesWidthSpinBox.setValue(parent._plotter.axesWidth)
         self.ui.marksSizeSpinBox.setValue(parent._plotter.marksSize)
         self.ui.textSizeSpinBox.setValue(parent._plotter.textSize)
+        self.ui.markupSizeSpinBox.setValue(parent._plotter.markupSize)
 
         self.parent = parent
         
@@ -76,6 +77,17 @@ class PlotterPickerDialog:
             parent._plotter.textSize = val
             parent.plot()
 
+        def markup_size_changed(val):
+            parent._plotter.markupSize = val
+            parent.plot()
+
+        def markup_color_clicked():
+            colorDialog = QtWidgets.QColorDialog()
+            newColor = colorDialog.getColor(self.parent._plotter.markupColor)
+            if newColor.isValid():
+                self.parent._plotter.markupColor = newColor
+                parent.plot()
+
         self.ui.axesColorButton.clicked.connect(axes_color_clicked)
         self.ui.bgColorButton.clicked.connect(bg_color_clicked)
         self.ui.axesWidthSpinBox.valueChanged.connect(axes_width_changed)
@@ -84,6 +96,8 @@ class PlotterPickerDialog:
         self.ui.marksStyleComboBox.currentIndexChanged.connect(marks_style_changed)
         self.ui.textSizeSpinBox.valueChanged.connect(text_size_changed)
         self.ui.textColorButton.clicked.connect(text_color_clicked)
+        self.ui.markupColorButton.clicked.connect(markup_color_clicked)
+        self.ui.markupSizeSpinBox.valueChanged.connect(markup_size_changed)
 
 
     def show(self):
