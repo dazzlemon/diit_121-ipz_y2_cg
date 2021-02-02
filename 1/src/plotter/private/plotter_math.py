@@ -40,3 +40,9 @@ def widest_frame(r1, r2):
 
 def intersections(ps):
     return np.flatnonzero(np.diff(np.sign(ps)))
+
+
+def linspace_range(range_, from_, step):
+        ps0 = np.arange(from_ + step, range_[1], step)
+        ps1 = np.arange(from_ - step, range_[0], -step)
+        return np.concatenate((ps0, ps1))

@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPen, QBrush, QColorConstants, QFont, QFontDatabase, QFo
 from PyQt5.QtCore import QLineF, QPointF
 from enum import Enum, auto
 from .plottable_function import PlottableFunction
-from .private.plotter_math import linear_map_2d, points_frame, widest_frame, linear_map, intersections
+from .private.plotter_math import linear_map_2d, points_frame, widest_frame, linear_map, intersections, linspace_range
 
 class Plotter:
     class MarksStyle(Enum):
@@ -164,7 +164,7 @@ class Plotter:
         )
         step = (self._w / n, self._h / n)
 
-        xs = self.linspace_range((0, self._w), zero[0], step[0])
+        xs = linspace_range((0, self._w), zero[0], step[0])
         for x in xs:
             self.add_line(scene, (x, zero[1]), self.markupSize, 0, pen)
             
@@ -177,7 +177,7 @@ class Plotter:
             text.setDefaultTextColor(self.textColor)
             text.setPos(x - self.textSize * 3, zeroText[1])
         
-        ys = self.linspace_range((0, self._h), zero[1], step[1])
+        ys = linspace_range((0, self._h), zero[1], step[1])
         for y in ys:
             self.add_line(scene, (zero[0], y), self.markupSize, 1, pen)
             
@@ -185,13 +185,6 @@ class Plotter:
             text.setFont(font)
             text.setDefaultTextColor(self.textColor)
             text.setPos(zeroText[0], y - 1.5 * self.textSize)
-
-
-    @staticmethod
-    def linspace_range(range_, from_, step):
-        ps0 = np.arange(from_ + step, range_[1], step)
-        ps1 = np.arange(from_ - step, range_[0], -step)
-        return np.concatenate((ps0, ps1))
 
 
     @staticmethod
