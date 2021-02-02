@@ -1,7 +1,7 @@
 import numpy as np
 from functools import reduce
 from more_itertools import pairwise
-from PyQt5.QtGui import QPen, QBrush, QColorConstants
+from PyQt5.QtGui import QPen, QBrush, QColorConstants, QFont, QFontDatabase, QFontMetrics
 from PyQt5.QtCore import QLineF, QPointF
 from enum import Enum, auto
 from .plottable_function import PlottableFunction
@@ -158,11 +158,15 @@ class Plotter:
         IT ACTUALLY SEEMS TO DO WITH UNSCALABLE FONT
         IF THE COMMENT IS STILL THERE I DIDNT FIND THE FIX(EITHER BECAUSE THERE IS NONE OR I DIDNT HAVE TIME)
         """
+
+        print(QFontDatabase().families())
+
         n = 10
         width = 2
 
         brush = QBrush(self.markupColor)
         pen = QPen(brush, width)
+        font = QFont("Sans Serif", self.textSize)
         
         zero = self._map_to_frame((0, 0))
         zeroText = (
@@ -176,8 +180,11 @@ class Plotter:
             self.add_line(scene, (x, zero[1]), self.markupSize, 0, pen)
             
             text = scene.addText("{:.2e}".format(self._map_from_frame_x(x)))
-            text.font().setPixelSize(self.textSize)
-            text.font().setFamily("Arial")
+            text.setFont(font)
+            #
+            metrics = QFontMetrics(text.font())
+            print(text.font().family(), text.font().pointSize())
+            #
             text.setDefaultTextColor(self.textColor)
             text.setPos(x - self.textSize * 3, zeroText[1])
         
@@ -186,7 +193,7 @@ class Plotter:
             self.add_line(scene, (zero[0], y), self.markupSize, 1, pen)
             
             text = scene.addText("{:.2e}".format(self._map_from_frame_y(y)))
-            text.font().setPixelSize(self.textSize)
+            text.setFont(font)
             text.setDefaultTextColor(self.textColor)
             text.setPos(zeroText[0], y - 1.5 * self.textSize)
 
