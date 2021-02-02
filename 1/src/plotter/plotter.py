@@ -2,7 +2,7 @@ import numpy as np
 from functools import reduce
 from more_itertools import pairwise
 from PyQt5.QtGui import QPen, QBrush, QColorConstants, QFont
-from PyQt5.QtCore import QLineF, QPointF
+from PyQt5.QtCore import QLineF, QPointF, QRectF
 from enum import Enum, auto
 from .plottable_function import PlottableFunction
 from .private.plotter_math import *
@@ -68,7 +68,8 @@ class Plotter:
             elif func.style == PlottableFunction.Style.DOTTED:
                 pen = QPen(QColorConstants.Transparent)
                 for point in points[::10]:
-                    self.add_circle(scene, point, func.width, pen, brush)
+                    o = sqr_origin(point, func.width)
+                    scene.addEllipse(o[0], o[1], func.width, func.width, pen, brush)
             
             self._draw_intersections(scene, func) 
 
@@ -109,7 +110,7 @@ class Plotter:
         points = func.points(self._w)
         intersection_idx = intersections(points[1])
         virtual_intersections = map(
-            lambda point: self._map_to_frame_x(point),
+            lambda point: self._to_frame_x(point),
             points[0][intersection_idx]
         )
 
@@ -126,10 +127,12 @@ class Plotter:
     def _draw_mark(self, scene, point):
         pen = QPen(QColorConstants.Transparent)
         brush = QBrush(self.marksColor)
+        o = sqr_origin(point, self.marksSize)
+        r = QRectF(o[0], o[1], self.marksSize, self.marksSize)
         if self.marksStyle == Plotter.MarksStyle.CIRCLE:
-            self.add_circle(scene, point, self.marksSize, pen, brush)
+            scene.addEllipse(r, pen, brush)
         elif self.marksStyle == Plotter.MarksStyle.SQUARE:
-            self.add_rect(scene, point, self.marksSize, pen, brush) 
+            scene.addRect(r, pen, brush)
 
 
     def _draw_markup(self, scene):
@@ -144,7 +147,8 @@ class Plotter:
 
         xs = linspace_range((0, self._w), zero[0], step[0])
         for x in xs:
-            self.add_line(scene, (x, zero[1]), self.markupSize, 0, pen)
+            l = line((x, zero[1]), self.markupSize, 0)
+            scene.addLine(l[0], l[1], l[2], l[3], pen)
             point = (x - self.textSize * 3, zero[1] - self.textSize - max(self.markupSize, self.axesWidth) / 2 - 10)
             #                            3 - halfbody back                                                       10 - margin to axis / markup line
             num = self._from_frame_x(x)
@@ -152,7 +156,8 @@ class Plotter:
         
         ys = linspace_range((0, self._h), zero[1], step[1])
         for y in ys:
-            self.add_line(scene, (zero[0], y), self.markupSize, 1, pen)
+            l = line((zero[0], y), self.markupSize, 1)
+            scene.addLine(l[0], l[1], l[2], l[3], pen)
             point = (zero[0] + max(self.markupSize, self.axesWidth) / 2, y - self.textSize)
             num = self._from_frame_y(y)
             self.add_axis_subscript(scene, point, num, font, self.textColor)
@@ -164,32 +169,3 @@ class Plotter:
         text.setFont(font)
         text.setDefaultTextColor(color)
         text.setPos(pos[0], pos[1])
-
-
-    @staticmethod
-    def add_line(scene, center, length, orientation, pen):
-        if orientation == 0:
-            start = (center[0], center[1] - length / 2)
-            end = (center[0], center[1] + length / 2)
-        elif orientation == 1:
-            start = (center[0] - length / 2, center[1])
-            end = (center[0] + length / 2, center[1])
-        scene.addLine(start[0], start[1], end[0], end[1], pen)
-
-
-    @staticmethod
-    def add_circle(scene, center, size, pen, brush):
-        origin = (
-            center[0] - size / 2,
-            center[1] - size / 2
-        )
-        scene.addEllipse(origin[0], origin[1], size, size, pen, brush)
-
-
-    @staticmethod
-    def add_rect(scene, center, size, pen, brush):
-        origin = (
-            center[0] - size / 2,
-            center[1] - size / 2
-        )
-        scene.addRect(origin[0], origin[1], size, size, pen, brush)

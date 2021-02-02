@@ -6,7 +6,9 @@ __all__ = [
     "linear_map",
     "intersections",
     "linspace_range",
-    "frame"
+    "frame",
+    "line",
+    "sqr_origin"
 ]
 
 def linear_map_2d(point, from_frame, to_frame):
@@ -37,4 +39,21 @@ def frame(arr3d):# [[[xs][ys]]]
         np.min(xys[1]),
         np.max(xys[0]),
         np.max(xys[1])
-    ) 
+    )
+
+def line(center, length, orientation):
+    if orientation == 0:
+        start = (center[0], center[1] - length / 2)
+        end = (center[0], center[1] + length / 2)
+    elif orientation == 1:
+        start = (center[0] - length / 2, center[1])
+        end = (center[0] + length / 2, center[1])
+    return (start[0], start[1], end[0], end[1])
+
+
+def sqr_origin(center, size):
+    return (
+        center[0] - size / 2,
+        center[1] - size / 2
+    )
+
