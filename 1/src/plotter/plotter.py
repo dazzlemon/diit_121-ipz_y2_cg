@@ -55,7 +55,7 @@ class Plotter:
     def _draw_funcs(self, scene, funcs):
         for func in funcs:
             points = list(map(
-                lambda point: self._map_to_frame(point),
+                lambda point: self._to_frame(point),
                 func.points(self._w).transpose()
             ))
             brush = QBrush(func.color)
@@ -74,34 +74,34 @@ class Plotter:
 
 
     def _draw_axes(self, scene):
-        zero = self._map_to_frame((0, 0))
+        zero = self._to_frame((0, 0))
         pen = QPen(QBrush(self.axesColor), self.axesWidth)
 
         scene.addLine(QLineF(0, zero[1], self._w, zero[1]), pen)
         scene.addLine(QLineF(zero[0], 0, zero[0], self._h), pen)
 
 
-    def _map_to_frame(self, point):
+    def _to_frame(self, point):
         return linear_map_2d(point, self._frame, (0, self._h, self._w, 0))
 
 
-    def _map_to_frame_x(self, x):
+    def _to_frame_x(self, x):
         return linear_map(x, (self._frame[0], self._frame[2]), (0, self._w))
 
 
-    def _map_to_frame_y(self, y):
+    def _to_frame_y(self, y):
         return linear_map(y, (self._frame[1], self._frame[3]), (self._h, 0))
 
 
-    def _map_from_frame(self, point):
+    def _from_frame(self, point):
         return linear_map_2d(point, (0, self._h, self._w, 0), self._frame)
 
 
-    def _map_from_frame_x(self, x):
+    def _from_frame_x(self, x):
         return linear_map(x, (0, self._w), (self._frame[0], self._frame[2]))
 
 
-    def _map_from_frame_y(self, y):
+    def _from_frame_y(self, y):
         return linear_map(y, (self._h, 0), (self._frame[1], self._frame[3]))
 
 
@@ -113,13 +113,13 @@ class Plotter:
             points[0][intersection_idx]
         )
 
-        zeroY = self._map_to_frame_y(0)
+        zeroY = self._to_frame_y(0)
  
         for x in virtual_intersections:
             self._draw_mark(scene, (x, zeroY))
 
         if func.rangeX[0] <= 0 <= func.rangeX[1]:
-            point = self._map_to_frame((0, func.f(0)))
+            point = self._to_frame((0, func.f(0)))
             self._draw_mark(scene, point)
 
 
@@ -133,14 +133,13 @@ class Plotter:
 
 
     def _draw_markup(self, scene):
-        n = 10
         width = 2
-        brush = QBrush(self.markupColor)
-        pen = QPen(brush, width)
+        pen = QPen(QBrush(self.markupColor), width)
         font = QFont("Sans Serif")
         font.setPixelSize(self.textSize)
         
-        zero = self._map_to_frame((0, 0))
+        zero = self._to_frame((0, 0))
+        n = 10
         step = (self._w / n, self._h / n)
 
         xs = linspace_range((0, self._w), zero[0], step[0])
@@ -148,14 +147,14 @@ class Plotter:
             self.add_line(scene, (x, zero[1]), self.markupSize, 0, pen)
             point = (x - self.textSize * 3, zero[1] - self.textSize - max(self.markupSize, self.axesWidth) / 2 - 10)
             #                            3 - halfbody back                                                       10 - margin to axis / markup line
-            num = self._map_from_frame_x(x)
+            num = self._from_frame_x(x)
             self.add_axis_subscript(scene, point, num, font, self.textColor)
         
         ys = linspace_range((0, self._h), zero[1], step[1])
         for y in ys:
             self.add_line(scene, (zero[0], y), self.markupSize, 1, pen)
             point = (zero[0] + max(self.markupSize, self.axesWidth) / 2, y - self.textSize)
-            num = self._map_from_frame_y(y)
+            num = self._from_frame_y(y)
             self.add_axis_subscript(scene, point, num, font, self.textColor)
 
 
