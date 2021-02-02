@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPen, QBrush, QColorConstants, QFont
 from PyQt5.QtCore import QLineF, QPointF
 from enum import Enum, auto
 from .plottable_function import PlottableFunction
-from .private.plotter_math import linear_map_2d, points_frame, widest_frame, linear_map, intersections, linspace_range
+from .private.plotter_math import *
 
 class Plotter:
     class MarksStyle(Enum):
@@ -39,25 +39,13 @@ class Plotter:
 
         self._fill_bg(scene)
         if len(funcs) > 0:
-            self._calculate_frame(funcs)
+            self._frame = frame(np.array([f.points(self._w) for f in funcs]))
             self._draw_axes(scene)
             self._draw_funcs(scene, funcs)
             if self.markupOn:
                 self._draw_markup(scene)
 
         scene.update()
-
-    
-    def _calculate_frame(self, funcs):
-        fs = np.array([f.points(self._w) for f in funcs])
-        fs_flat = np.transpose(fs, (1, 0, 2)).reshape((2, -1))#[0] - xs, [1] - ys
-        self._frame = (
-            np.min(fs_flat[0]),
-            np.min(fs_flat[1]),
-            np.max(fs_flat[0]),
-            np.max(fs_flat[1])
-        )
-        
 
 
     def _fill_bg(self, scene):
@@ -177,6 +165,7 @@ class Plotter:
         text.setFont(font)
         text.setDefaultTextColor(color)
         text.setPos(pos[0], pos[1])
+
 
     @staticmethod
     def add_line(scene, center, length, orientation, pen):
