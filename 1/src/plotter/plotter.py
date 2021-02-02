@@ -1,7 +1,7 @@
 import numpy as np
 from functools import reduce
 from more_itertools import pairwise
-from PyQt5.QtGui import QPen, QBrush, QColorConstants, QFont, QFontDatabase, QFontMetrics
+from PyQt5.QtGui import QPen, QBrush, QColorConstants, QFont
 from PyQt5.QtCore import QLineF, QPointF
 from enum import Enum, auto
 from .plottable_function import PlottableFunction
@@ -75,9 +75,7 @@ class Plotter:
             if func.style == PlottableFunction.Style.NORMAL:
                 pen = QPen(brush, func.width)
                 for p0, p1 in pairwise(points):
-                    point_i0 = QPointF(p0[0], p0[1])
-                    point_i1 = QPointF(p1[0], p1[1])
-                    line = QLineF(point_i0, point_i1)
+                    line = QLineF(p0[0], p0[1], p1[0], p1[1])
                     scene.addLine(line, pen)
             elif func.style == PlottableFunction.Style.DOTTED:
                 pen = QPen(QColorConstants.Transparent)
@@ -147,45 +145,38 @@ class Plotter:
 
 
     def _draw_markup(self, scene):
-        """
-        MAGIC NUMBERS TO FIX
-        """
         n = 10
         width = 2
-
         brush = QBrush(self.markupColor)
         pen = QPen(brush, width)
-        font = QFont("Sans Serif", self.textSize)
+        font = QFont("Sans Serif")
+        font.setPixelSize(self.textSize)
         
         zero = self._map_to_frame((0, 0))
-        zeroText = (
-            zero[0] + max(self.axesWidth, self.markupSize) / 2,
-            zero[1] - 2 * self.textSize - max(self.axesWidth, self.markupSize) / 2
-        )
         step = (self._w / n, self._h / n)
 
         xs = linspace_range((0, self._w), zero[0], step[0])
         for x in xs:
             self.add_line(scene, (x, zero[1]), self.markupSize, 0, pen)
-            
-            text = scene.addText("{:.2e}".format(self._map_from_frame_x(x)))
-            text.setFont(font)
-            #
-            metrics = QFontMetrics(text.font())
-            print(text.font().family(), text.font().pointSize())
-            #
-            text.setDefaultTextColor(self.textColor)
-            text.setPos(x - self.textSize * 3, zeroText[1])
+            point = (x - self.textSize * 3, zero[1] - self.textSize - max(self.markupSize, self.axesWidth) / 2 - 10)
+            #                            3 - halfbody back                                                       10 - margin to axis / markup line
+            num = self._map_from_frame_x(x)
+            self.add_axis_subscript(scene, point, num, font, self.textColor)
         
         ys = linspace_range((0, self._h), zero[1], step[1])
         for y in ys:
             self.add_line(scene, (zero[0], y), self.markupSize, 1, pen)
-            
-            text = scene.addText("{:.2e}".format(self._map_from_frame_y(y)))
-            text.setFont(font)
-            text.setDefaultTextColor(self.textColor)
-            text.setPos(zeroText[0], y - 1.5 * self.textSize)
+            point = (zero[0] + max(self.markupSize, self.axesWidth) / 2, y - self.textSize)
+            num = self._map_from_frame_y(y)
+            self.add_axis_subscript(scene, point, num, font, self.textColor)
 
+
+    @staticmethod
+    def add_axis_subscript(scene, pos, num, font, color):
+        text = scene.addText("{:.2e}".format(num))
+        text.setFont(font)
+        text.setDefaultTextColor(color)
+        text.setPos(pos[0], pos[1])
 
     @staticmethod
     def add_line(scene, center, length, orientation, pen):
