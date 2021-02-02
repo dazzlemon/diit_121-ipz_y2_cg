@@ -49,9 +49,15 @@ class Plotter:
 
     
     def _calculate_frame(self, funcs):
-        funcs_points = [func.points(self._w) for func in funcs]# [[(x, y)]]
-        frames = map(points_frame, funcs_points)# [(minX, minY, maxX, minY)]
-        self._frame = reduce(widest_frame, frames)# (minX, minY, maxX, maxY)
+        fs = np.array([f.points(self._w) for f in funcs])
+        fs_flat = np.transpose(fs, (1, 0, 2)).reshape((2, -1))#[0] - xs, [1] - ys
+        self._frame = (
+            np.min(fs_flat[0]),
+            np.min(fs_flat[1]),
+            np.max(fs_flat[0]),
+            np.max(fs_flat[1])
+        )
+        
 
 
     def _fill_bg(self, scene):
@@ -62,7 +68,7 @@ class Plotter:
         for func in funcs:
             points = list(map(
                 lambda point: self._map_to_frame(point),
-                func.points(self._w)
+                func.points(self._w).transpose()
             ))
             brush = QBrush(func.color)
             
@@ -78,7 +84,7 @@ class Plotter:
                 for point in points[::10]:
                     self.add_circle(scene, point, func.width, pen, brush)
             
-            self._draw_intersections(scene, func)
+            self._draw_intersections(scene, func) 
 
 
     def _draw_axes(self, scene):
@@ -115,11 +121,10 @@ class Plotter:
 
     def _draw_intersections(self, scene, func):
         points = func.points(self._w)
-        ys = list(map(lambda point: point[1], points))
-        intersection_idx = intersections(ys)
+        intersection_idx = intersections(points[1])
         virtual_intersections = map(
-            lambda point: self._map_to_frame_x(point[0]),
-            np.array(points)[intersection_idx]
+            lambda point: self._map_to_frame_x(point),
+            points[0][intersection_idx]
         )
 
         zeroY = self._map_to_frame_y(0)
@@ -143,13 +148,8 @@ class Plotter:
 
     def _draw_markup(self, scene):
         """
-        SOME MAGIC NUMBERS HERE, I DIDNT FIND ANY OTHER WAY TO REPOSITION TEXT
-        IT ACTUALLY SEEMS TO DO WITH UNSCALABLE FONT
-        IF THE COMMENT IS STILL THERE I DIDNT FIND THE FIX(EITHER BECAUSE THERE IS NONE OR I DIDNT HAVE TIME)
+        MAGIC NUMBERS TO FIX
         """
-
-        print(QFontDatabase().families())
-
         n = 10
         width = 2
 

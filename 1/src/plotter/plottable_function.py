@@ -1,4 +1,4 @@
-from numpy import linspace
+import numpy as np
 from enum import Enum, auto
 
 class PlottableFunction:
@@ -15,6 +15,7 @@ class PlottableFunction:
 
 
     def points(self, num):
-        xs = linspace(self.rangeX[0], self.rangeX[1], num = num)
-        ys = map(self.f, xs)
-        return list(zip(xs, ys))
+        _f = np.vectorize(self.f)
+        xs = np.linspace(self.rangeX[0], self.rangeX[1], num = num)
+        ys = _f(xs)
+        return np.array((xs, ys))
