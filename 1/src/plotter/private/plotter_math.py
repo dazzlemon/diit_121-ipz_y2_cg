@@ -1,4 +1,5 @@
 from functools import reduce
+import numpy as np
 
 def linear_map_2d(point, from_frame, to_frame):
     return (
@@ -36,3 +37,6 @@ def widest_frame(r1, r2):
         max(r1[3], r2[3]) # maxY
     )
 
+
+def intersections(ps):
+    return np.flatnonzero(np.diff(np.sign(ps)))

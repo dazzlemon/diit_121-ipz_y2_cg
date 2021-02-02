@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPen, QBrush, QColorConstants, QFont, QFontDatabase, QFo
 from PyQt5.QtCore import QLineF, QPointF
 from enum import Enum, auto
 from .plottable_function import PlottableFunction
-from .math_2d import linear_map_2d, points_frame, widest_frame, linear_map
+from .private.plotter_math import linear_map_2d, points_frame, widest_frame, linear_map, intersections
 
 class Plotter:
     class MarksStyle(Enum):
@@ -115,7 +115,8 @@ class Plotter:
 
     def _draw_intersections(self, scene, func):
         points = func.points(self._w)
-        intersection_idx = self._intersections_x(points)
+        ys = list(map(lambda point: point[1], points))
+        intersection_idx = intersections(ys)
         virtual_intersections = map(
             lambda point: self._map_to_frame_x(point[0]),
             np.array(points)[intersection_idx]
@@ -137,19 +138,7 @@ class Plotter:
         if self.marksStyle == Plotter.MarksStyle.CIRCLE:
             self.add_circle(scene, point, self.marksSize, pen, brush)
         elif self.marksStyle == Plotter.MarksStyle.SQUARE:
-            self.add_rect(scene, point, self.marksSize, pen, brush)
-    
-
-    @staticmethod
-    def _intersections_x(points):
-        ys = list(map(lambda point: point[1], points))
-        idx = np.flatnonzero(np.diff(np.sign(ys)))
-        """
-        1 - mapping values to -1, 0, 1 aka signs
-        2 - inner difference(ith - i-1th, so if diff == 0 sign didnt change(1 - 1 or -1 - -1))
-        3 - getting nonzero idxs
-        """
-        return idx
+            self.add_rect(scene, point, self.marksSize, pen, brush) 
 
 
     def _draw_markup(self, scene):
