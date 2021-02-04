@@ -142,6 +142,13 @@ class Plotter:
         font.setPixelSize(self.textSize)
         
         zero = self._to_frame((0, 0))
+
+        if self._frame[0] > 0 or self._frame[2] < 0:
+            zero = (0, zero[1])
+
+        if self._frame[1] > 0 or self._frame[3] < 0:
+            zero = (zero[0], self._h)
+
         n = 10
         step = (self._w / n, self._h / n)
 
