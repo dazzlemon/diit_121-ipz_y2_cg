@@ -1,19 +1,27 @@
 """
-CG2
+IGraphicsItem to use with ICanvas, and its extensions
 """
-from typing import List
-from PyQt5.QtWidgets import QGraphicsScene
+from canvas import ICanvas
 
-class ICanvas:
-    """
-    A canvas that can execute simple drawing operations(drawing polygon and filling it)
-    """
-    def draw_lines(self, lines: List[GraphicsPoint]):
-        """draws lines between i-th and (i-1)-th points"""
+class IPoint:
+    @property
+    def x(self):
+        """returns x component of point"""
 
 
-    def fill(self, lines: List[GraphicsPoint]):
-        """fills all pixels in space closed by lines between i-th and (i-1)-th points"""
+    @property
+    def y(self):
+        """returns y component of point"""
+
+
+    @x.setter
+    def x(self, value):
+        """sets x component of point"""
+
+
+    @y.setter
+    def y(self, value):
+        """sets y component of point"""
 
 
 class IGraphicsItem:
@@ -24,16 +32,22 @@ class IGraphicsItem:
         """paints this item onto canvas"""
 
 
-    def move(self, delta: GraphicsPoint):
+    def move(self, delta: IPoint):
         """moves the item point by delta"""
 
 
-    def rotate(self, about: GraphicsPoint, rad: float):
+    def rotate(self, about: IPoint, rad: float):
         """rotates the item about given point by given amount of radians"""
 
 
-    def scale(self, about: GraphicsPoint, mul: float):
+    def scale(self, about: IPoint, mul: float):
         """scales the item about given point by given scale"""
+
+
+class GraphicsPoint(IPoint, IGraphicsItem):
+    """
+    Represents a 2D point that can draw itself onto ICanvas
+    """
 
 
 class GraphicsLine(IGraphicsItem):
@@ -43,13 +57,6 @@ class GraphicsLine(IGraphicsItem):
     start: GraphicsPoint
     end: GraphicsPoint
 
-
-class GraphicsPoint(IGraphicsItem):
-    """
-    Represents a 2D point that can draw itself onto ICanvas
-    """
-    x: int
-    y: int
 
 
 class GraphicsRect(IGraphicsItem):
@@ -83,10 +90,3 @@ class GraphicsPolygon(IGraphicsItem):
     """
     Represents a polygon that can draw itself onto ICanvas
     """
-
-
-class QCanvas(ICanvas):
-    """
-    QGraphicsScene wrapper(adapter) to use with IGraphicsItem
-    """
-    canvas: QGraphicsScene
