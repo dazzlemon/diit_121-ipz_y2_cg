@@ -64,7 +64,15 @@ class GraphicsRect(IGraphicsItem):
     Represents a rectangle that can draw itself onto ICanvas
     """
     start: GraphicsPoint
-    size: GraphicsPoint
+
+    @property
+    def size(self) -> GraphicsPoint:
+        """.x -> width .y - height"""
+
+
+    @size.setter
+    def size(self, value):
+        """sets size with new GraphicsPoint"""
 
 
 class GraphicsEllipse(IGraphicsItem):
@@ -78,12 +86,16 @@ class GraphicsSquare(GraphicsRect):
     """
     Represents a square that can draw itself onto ICanvas
     """
+    @property
+    def size(self) -> GraphicsPoint:
+        """same as GraphicsRect.size but x and y actually have the same value"""
 
 
 class GraphicsCircle(GraphicsEllipse):
     """
     Represents a a circle enclosed in square that can draw itself onto ICanvas
     """
+    rect: GraphicsSquare
 
 
 class GraphicsPolygon(IGraphicsItem):
