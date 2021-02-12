@@ -1,28 +1,7 @@
 """
 IGraphicsItem to use with ICanvas, and its extensions
 """
-from canvas import ICanvas
-
-class IPoint:
-    @property
-    def x(self):
-        """returns x component of point"""
-
-
-    @property
-    def y(self):
-        """returns y component of point"""
-
-
-    @x.setter
-    def x(self, value):
-        """sets x component of point"""
-
-
-    @y.setter
-    def y(self, value):
-        """sets y component of point"""
-
+from ._interfaces import ICanvas, IPoint
 
 class IGraphicsItem:
     """
@@ -48,15 +27,47 @@ class GraphicsPoint(IPoint, IGraphicsItem):
     """
     Represents a 2D point that can draw itself onto ICanvas
     """
+    def __init__(self, x, y):
+        self._x = x
+        self._y = y
+
+
+    @property
+    def x(self):
+        """returns x component of point"""
+        return self._x
+
+
+    @property
+    def y(self):
+        """returns y component of point"""
+        return self._y
+
+
+    @x.setter
+    def x(self, value):
+        """sets x component of point"""
+        self._x = value
+
+
+    @y.setter
+    def y(self, value):
+        """sets y component of point"""
+        self._y = value
 
 
 class GraphicsLine(IGraphicsItem):
     """
     Represents a 2D line
     """
-    start: GraphicsPoint
-    end: GraphicsPoint
 
+    def __init__(self, x1, y1, x2, y2):
+        self.start = GraphicsPoint(x1, y1)
+        self.end   = GraphicsPoint(x2, y2)
+
+
+    def paint(self, canvas: ICanvas):
+        canvas.draw_lines([self.start, self.end])
 
 
 class GraphicsRect(IGraphicsItem):
@@ -95,7 +106,8 @@ class GraphicsCircle(GraphicsEllipse):
     """
     Represents a a circle enclosed in square that can draw itself onto ICanvas
     """
-    rect: GraphicsSquare
+    def __init__(self, rect: GraphicsSquare):
+        self.rect = rect
 
 
 class GraphicsPolygon(IGraphicsItem):
