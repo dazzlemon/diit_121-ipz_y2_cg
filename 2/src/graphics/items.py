@@ -153,7 +153,6 @@ class GraphicsEllipse(IGraphicsItem):
         if flip:
             a, b = b, a
             orig_x, orig_y = orig_y, orig_x
-        c = sqrt(a**2 - b**2)
 
         f = lambda x: b / a * sqrt(a**2 - x**2)
         xs = np.linspace(-a, a, num = int(2 * a))
