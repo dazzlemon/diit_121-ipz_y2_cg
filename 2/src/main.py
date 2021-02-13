@@ -5,7 +5,7 @@ MAIN
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
 from PyQt5.QtCore import Qt
 from forms_py import Ui_MainWindow
-from graphics.items import GraphicsLine
+from graphics.items import GraphicsLine, GraphicsRect
 from graphics.canvas import QCanvas
 
 class Cg2(QApplication):
@@ -24,7 +24,10 @@ class Cg2(QApplication):
         self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         self._canvas = QCanvas(self._scene)
-        self._items = [GraphicsLine(0, 0, 500, 500)]
+        self._items = [
+            GraphicsLine(0, 0, 500, 500),
+            GraphicsRect(10, 10, 400, 400)
+        ]
 
         for i in self._items:
             i.paint(self._canvas)

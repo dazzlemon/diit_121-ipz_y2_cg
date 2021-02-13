@@ -74,16 +74,35 @@ class GraphicsRect(IGraphicsItem):
     """
     Represents a rectangle that can draw itself onto ICanvas
     """
-    start: GraphicsPoint
+    def __init__(self, x1, y1, x2, y2):
+        self.start = GraphicsPoint(x1, y1)
+        self.size  = GraphicsPoint(x2, y2)
 
     @property
     def size(self) -> GraphicsPoint:
-        """.x -> width .y - height"""
+        """.x -> width .y -> height"""
+        return self._size
 
 
     @size.setter
     def size(self, value):
         """sets size with new GraphicsPoint"""
+        self._size = value
+
+
+    def paint(self, canvas: ICanvas):
+        x  = self.start.x
+        y  = self.start.y
+        dx = self.size.x
+        dy = self.size.y
+        points = [
+            self.start,
+            GraphicsPoint(x + dx, y),
+            GraphicsPoint(x + dx, y + dy),
+            GraphicsPoint(x     , y + dy),
+            self.start
+        ]
+        canvas.draw_lines(points)
 
 
 class GraphicsEllipse(IGraphicsItem):
