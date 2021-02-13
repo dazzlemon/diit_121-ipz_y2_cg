@@ -80,7 +80,7 @@ class GraphicsRect(GraphicsPolygon):
     """
     Represents a rectangle that can draw itself onto ICanvas
     """
-    def __init__(self, x1, y1, x2, y2):
+    def __init__(self, x1: float, y1: float, x2: float, y2: float):
         self.start = GraphicsPoint(x1, y1)
         self.size  = GraphicsPoint(x2, y2)
 
@@ -92,7 +92,7 @@ class GraphicsRect(GraphicsPolygon):
 
 
     @size.setter
-    def size(self, value):
+    def size(self, value: GraphicsPoint):
         """sets size with new GraphicsPoint"""
         self._size = value
 
@@ -116,7 +116,7 @@ class GraphicsSquare(GraphicsRect):
     """
     Represents a square that can draw itself onto ICanvas
     """
-    def __init__(self, x, y, size):
+    def __init__(self, x: float, y: float, size: float):
         self.start = GraphicsPoint(x, y)
         self.size = size
 
@@ -128,7 +128,7 @@ class GraphicsSquare(GraphicsRect):
 
 
     @size.setter
-    def size(self, value):
+    def size(self, value: float):
         """value must be float"""
         self._size = value
 
