@@ -28,7 +28,7 @@ class Cg2(QApplication):
             GraphicsLine(0, 0, 500, 500),
             GraphicsRect(10, 10, 400, 800),
             GraphicsSquare(10, 10, 400),
-            GraphicsEllipse(10, 10, 800, 400),
+            GraphicsEllipse(10, 10, 400, 800),
         ]
 
         for i in self._items:

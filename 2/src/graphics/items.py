@@ -148,6 +148,10 @@ class GraphicsEllipse(IGraphicsItem):
 
         a = self.rect.size.x / 2
         b = self.rect.size.y / 2
+        if a < b:
+            a, b = b, a
+            orig_x, orig_y = orig_y, orig_x
+            flip = True
         c = sqrt(a**2 - b**2)
 
         f = lambda x: b / a * sqrt(a**2 - x**2)
@@ -164,6 +168,13 @@ class GraphicsEllipse(IGraphicsItem):
             lambda p: GraphicsPoint(orig_x + p.x + a, orig_y + p.y + b),
             points_top + points_bot
         )
+
+        if flip:
+            points = map(
+                lambda p: GraphicsPoint(p.y, p.x),
+                points
+            )
+
         canvas.draw_lines(points)
 
 
