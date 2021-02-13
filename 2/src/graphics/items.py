@@ -1,6 +1,8 @@
 """
 IGraphicsItem to use with ICanvas, and its extensions
 """
+from math import sqrt
+import numpy as np
 from ._interfaces import ICanvas, IPoint
 
 class IGraphicsItem:
@@ -136,7 +138,33 @@ class GraphicsEllipse(IGraphicsItem):
     """
     Represents an Ellipse enclosed in rect that can draw itself onto ICanvas
     """
-    rect: GraphicsRect
+    def __init__(self, x1: float, y1: float, x2: float, y2: float):
+        self.rect = GraphicsRect(x1, y1, x2, y2)
+
+
+    def paint(self, canvas: ICanvas):
+        orig_x = self.rect.start.x
+        orig_y = self.rect.start.y
+
+        a = self.rect.size.x / 2
+        b = self.rect.size.y / 2
+        c = sqrt(a**2 - b**2)
+
+        f = lambda x: b / a * sqrt(a**2 - x**2)
+        xs = np.linspace(-a, a, num = int(2 * a))
+
+        points_top = [GraphicsPoint(x, f(x)) for x in xs]
+        points_bot = list(map(
+            lambda p: GraphicsPoint(p.x, -p.y),
+            points_top
+        ))
+        points_bot.reverse()
+
+        points = map(
+            lambda p: GraphicsPoint(orig_x + p.x + a, orig_y + p.y + b),
+            points_top + points_bot
+        )
+        canvas.draw_lines(points)
 
 
 class GraphicsCircle(GraphicsEllipse):
