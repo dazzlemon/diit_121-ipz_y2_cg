@@ -134,6 +134,7 @@ class GraphicsSquare(GraphicsRect):
         """value must be float"""
         self._size = value
 
+
 class GraphicsEllipse(IGraphicsItem):
     """
     Represents an Ellipse enclosed in rect that can draw itself onto ICanvas
@@ -148,10 +149,10 @@ class GraphicsEllipse(IGraphicsItem):
 
         a = self.rect.size.x / 2
         b = self.rect.size.y / 2
-        if a < b:
+        flip = a < b
+        if flip:
             a, b = b, a
             orig_x, orig_y = orig_y, orig_x
-            flip = True
         c = sqrt(a**2 - b**2)
 
         f = lambda x: b / a * sqrt(a**2 - x**2)
@@ -182,5 +183,5 @@ class GraphicsCircle(GraphicsEllipse):
     """
     Represents a a circle enclosed in square that can draw itself onto ICanvas
     """
-    def __init__(self, rect: GraphicsSquare):
-        self.rect = rect
+    def __init__(self, x1: float, y1: float, size: float):
+        self.rect = GraphicsSquare(x1, y1, size)
