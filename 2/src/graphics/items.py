@@ -70,13 +70,20 @@ class GraphicsLine(IGraphicsItem):
         canvas.draw_lines([self.start, self.end])
 
 
-class GraphicsRect(IGraphicsItem):
+class GraphicsPolygon(IGraphicsItem):
+    """
+    Represents a polygon that can draw itself onto ICanvas
+    """
+
+
+class GraphicsRect(GraphicsPolygon):
     """
     Represents a rectangle that can draw itself onto ICanvas
     """
     def __init__(self, x1, y1, x2, y2):
         self.start = GraphicsPoint(x1, y1)
         self.size  = GraphicsPoint(x2, y2)
+
 
     @property
     def size(self) -> GraphicsPoint:
@@ -105,20 +112,31 @@ class GraphicsRect(IGraphicsItem):
         canvas.draw_lines(points)
 
 
+class GraphicsSquare(GraphicsRect):
+    """
+    Represents a square that can draw itself onto ICanvas
+    """
+    def __init__(self, x, y, size):
+        self.start = GraphicsPoint(x, y)
+        self.size = size
+
+
+    @property
+    def size(self) -> GraphicsPoint:
+        """same as GraphicsRect.size but x and y actually have the same value"""
+        return GraphicsPoint(self._size, self._size)
+
+
+    @size.setter
+    def size(self, value):
+        """value must be float"""
+        self._size = value
+
 class GraphicsEllipse(IGraphicsItem):
     """
     Represents an Ellipse enclosed in rect that can draw itself onto ICanvas
     """
     rect: GraphicsRect
-
-
-class GraphicsSquare(GraphicsRect):
-    """
-    Represents a square that can draw itself onto ICanvas
-    """
-    @property
-    def size(self) -> GraphicsPoint:
-        """same as GraphicsRect.size but x and y actually have the same value"""
 
 
 class GraphicsCircle(GraphicsEllipse):
@@ -127,9 +145,3 @@ class GraphicsCircle(GraphicsEllipse):
     """
     def __init__(self, rect: GraphicsSquare):
         self.rect = rect
-
-
-class GraphicsPolygon(IGraphicsItem):
-    """
-    Represents a polygon that can draw itself onto ICanvas
-    """

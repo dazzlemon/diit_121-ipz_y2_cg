@@ -5,7 +5,7 @@ MAIN
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
 from PyQt5.QtCore import Qt
 from forms_py import Ui_MainWindow
-from graphics.items import GraphicsLine, GraphicsRect
+from graphics.items import GraphicsLine, GraphicsRect, GraphicsSquare
 from graphics.canvas import QCanvas
 
 class Cg2(QApplication):
@@ -26,7 +26,8 @@ class Cg2(QApplication):
         self._canvas = QCanvas(self._scene)
         self._items = [
             GraphicsLine(0, 0, 500, 500),
-            GraphicsRect(10, 10, 400, 400)
+            GraphicsRect(10, 10, 400, 800),
+            GraphicsSquare(10, 10, 400)
         ]
 
         for i in self._items:
