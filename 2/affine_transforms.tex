@@ -1,0 +1,106 @@
+\begin{document}
+
+\section{Simple affine transformations}
+
+\subsection{Translate}
+by $\Delta$(x, y)
+\[
+\begin{bmatrix}
+1 & 0 & \Delta x\\
+0 & 1 & \Delta y\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x\\
+y\\
+1
+\end{bmatrix}
+\]
+
+\subsection{Rotate}
+about origin
+by $\theta$
+\[
+\begin{bmatrix}
+\cos \theta & -\sin \theta & 0\\
+\sin \theta &  \cos \theta & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x\\
+y\\
+1
+\end{bmatrix}
+\]
+
+\subsection{Scale}
+about origin
+by (w, h)
+\[
+\begin{bmatrix}
+w & 0 & 0\\
+0 & h & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x\\
+y\\
+1
+\end{bmatrix}
+\]
+
+\section{Complex affine transformations}
+
+\subsection{Rotate}
+about p(x, y)
+by $\theta$
+\[
+\begin{bmatrix}
+1 & 0 & px\\
+0 & 1 & py\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+\cos \theta & -\sin \theta & 0\\
+\sin \theta &  \cos \theta & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & -px\\
+0 & 1 & -py\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x\\
+y\\
+1
+\end{bmatrix}
+\]
+
+\subsection{Scale}
+about p(x, y)
+by (w, h)
+\[
+\begin{bmatrix}
+1 & 0 & px\\
+0 & 1 & py\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+w & 0 & 0\\
+0 & h & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 0 & -px\\
+0 & 1 & -py\\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+x\\
+y\\
+1
+\end{bmatrix}
+\]
+
+\end{document}
