@@ -21,7 +21,7 @@ class IGraphicsItem:
         """rotates the item about given point by given amount of radians"""
 
 
-    def scale(self, about: IPoint, mul: float):
+    def scale(self, about: IPoint, w: float, h: float):
         """scales the item about given point by given scale"""
 
 

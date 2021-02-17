@@ -1,0 +1,40 @@
+=:=:= Translate =:=:=
+	(by d(x, y))
+
+[1 0 d.x][x]
+[0 1 d.y][y]
+[0 0  1 ][1]
+
+=:=:= Rotate =:=:=
+	(about origin)
+	(by theta)
+
+[cos(theta) -sin(theta) 0][x]
+[sin(theta)  cos(theta) 0][y]
+[    0           0      1][1]
+
+=:=:= Scale =:=:=
+	(about origin)
+	(by (w, h))
+
+[w 0 0][x]
+[0 h 0][y]
+[0 0 1][1]
+
+=:=:= Rotate =:=:=
+	(about p(x, y))
+	(by theta)
+
+[1 0 p.x][cos(theta) -sin(theta) 0][1 0 -p.x][x]
+[0 1 p.y][sin(theta)  cos(theta) 0][0 1 -p.y][y]
+[0 0  1 ][    0           0      1][0 0   1 ][1]
+
+=:=:= Scale =:=:=
+	(about p(x, y))
+	(by (w, h))
+
+[1 0 p.x][w 0 0][1 0 -p.x][x]
+[0 1 p.y][0 h 0][0 1 -p.y][y]
+[0 0  1 ][0 0 1][0 0   1 ][1]
+
+
