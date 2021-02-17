@@ -36,11 +36,31 @@ class Cg2(QApplication):
 
 
     def _init_signals(self):
-        def move_right():
-            for i in self._items:
-                i.move(GraphicsPoint(10, 0))
-            self._update()
-        self._main_ui.moveRightButton.pressed.connect(move_right)
+        def move(dx, dy):
+            def move_():
+                for i in self._items:
+                    i.move(GraphicsPoint(dx, dy))
+                self._update()
+            return move_
+        self._main_ui.moveRightButton.pressed.connect(move(10, 0))
+        self._main_ui.moveLeftButton.pressed.connect(move(-10, 0))
+        self._main_ui.moveUpButton.pressed.connect(move(0, -10))
+        self._main_ui.moveDownButton.pressed.connect(move(0, 10))
+        self._main_ui.moveRightUpButton.pressed.connect(move(10, -10))
+        self._main_ui.moveRightDownButton.pressed.connect(move(10, 10))
+        self._main_ui.moveLeftDownButton.pressed.connect(move(-10, 10))
+        self._main_ui.moveLeftUpButton.pressed.connect(move(-10, -10))
+
+        self._main_ui.moveRightButton.setAutoRepeat(True)
+        self._main_ui.moveLeftButton.setAutoRepeat(True)
+        self._main_ui.moveUpButton.setAutoRepeat(True)
+        self._main_ui.moveDownButton.setAutoRepeat(True)
+        self._main_ui.moveRightUpButton.setAutoRepeat(True)
+        self._main_ui.moveRightDownButton.setAutoRepeat(True)
+        self._main_ui.moveLeftDownButton.setAutoRepeat(True)
+        self._main_ui.moveLeftUpButton.setAutoRepeat(True)
+
+
 
     def _update(self):
         self._scene.clear()
