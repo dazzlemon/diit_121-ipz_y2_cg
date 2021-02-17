@@ -58,6 +58,11 @@ class GraphicsPoint(IPoint, IGraphicsItem):
         self._y = value
 
 
+    def move(self, delta: IPoint):
+        self.x += delta.x
+        self.y += delta.y
+
+
 class GraphicsLine(IGraphicsItem):
     """
     Represents a 2D line
@@ -70,6 +75,11 @@ class GraphicsLine(IGraphicsItem):
 
     def paint(self, canvas: ICanvas):
         canvas.draw_lines([self.start, self.end])
+
+
+    def move(self, delta: IPoint):
+        self.start.move(delta)
+        self.end.move(delta)
 
 
 class GraphicsPolygon(IGraphicsItem):
@@ -112,6 +122,10 @@ class GraphicsRect(GraphicsPolygon):
             self.start
         ]
         canvas.draw_lines(points)
+
+
+    def move(self, delta: IPoint):
+        self.start.move(delta)
 
 
 class GraphicsSquare(GraphicsRect):
@@ -176,6 +190,10 @@ class GraphicsEllipse(IGraphicsItem):
             )
 
         canvas.draw_lines(points)
+
+
+    def move(self, delta: IPoint):
+        self.rect.move(delta)
 
 
 class GraphicsCircle(GraphicsEllipse):

@@ -5,7 +5,7 @@ MAIN
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
 from PyQt5.QtCore import Qt
 from forms_py import Ui_MainWindow
-from graphics.items import GraphicsLine, GraphicsRect, GraphicsSquare, GraphicsEllipse, GraphicsCircle
+from graphics.items import GraphicsLine, GraphicsRect, GraphicsSquare, GraphicsEllipse, GraphicsCircle, GraphicsPoint
 from graphics.canvas import QCanvas
 
 class Cg2(QApplication):
@@ -16,6 +16,7 @@ class Cg2(QApplication):
         self._main_ui = Ui_MainWindow()
         self._main_ui.setupUi(self._main_window)
         self._init_canvas()
+        self._init_signals()
 
 
     def _init_canvas(self):
@@ -31,9 +32,21 @@ class Cg2(QApplication):
             GraphicsEllipse(10, 10, 400, 800),
             GraphicsCircle(10, 410, 400)
         ]
+        self._update()
 
+
+    def _init_signals(self):
+        def move_right():
+            for i in self._items:
+                i.move(GraphicsPoint(10, 0))
+            self._update()
+        self._main_ui.moveRightButton.pressed.connect(move_right)
+
+    def _update(self):
+        self._scene.clear()
         for i in self._items:
             i.paint(self._canvas)
+        self._scene.update()
 
     def exec_(self):
         self._main_window.show()

@@ -27,6 +27,9 @@ class Ui_MainWindow(object):
         self.gview = QtWidgets.QGraphicsView(self.centralwidget)
         self.gview.setObjectName("gview")
         self.gridLayout_2.addWidget(self.gview, 0, 0, 1, 1)
+        self.moveRightButton = QtWidgets.QPushButton(self.centralwidget)
+        self.moveRightButton.setObjectName("moveRightButton")
+        self.gridLayout_2.addWidget(self.moveRightButton, 0, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -35,6 +38,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Safonov CG2"))
+        self.moveRightButton.setText(_translate("MainWindow", "move ->"))
 
 
 if __name__ == "__main__":

@@ -24,6 +24,13 @@
     <item row="0" column="0">
      <widget class="QGraphicsView" name="gview"/>
     </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="moveRightButton">
+      <property name="text">
+       <string>move -&gt;</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>
