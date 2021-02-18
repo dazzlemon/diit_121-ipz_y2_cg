@@ -2,6 +2,7 @@
 IGraphicsItem to use with ICanvas, and its extensions
 """
 from math import sqrt
+from copy import deepcopy
 import numpy as np
 from ._interfaces import ICanvas, IPoint
 
@@ -122,7 +123,6 @@ class GraphicsRect(GraphicsPolygon):
             self.start
         ]
         canvas.draw_lines(points)
-        canvas.fill(points)
 
 
     def move(self, delta: IPoint):
@@ -190,8 +190,8 @@ class GraphicsEllipse(IGraphicsItem):
                 points
             )
 
-        canvas.draw_lines(points)
-
+        canvas.draw_lines(deepcopy(points))
+        canvas.fill(points)
 
     def move(self, delta: IPoint):
         self.rect.move(delta)

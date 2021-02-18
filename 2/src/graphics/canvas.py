@@ -15,6 +15,7 @@ class QCanvas(ICanvas):
     def __init__(self, canvas: QGraphicsScene):
         self.canvas = canvas
 
+
     def draw_lines(self, points: List[IPoint]):
         """draws lines between i-th and (i-1)-th points"""
         for p1, p2 in pairwise(points):
