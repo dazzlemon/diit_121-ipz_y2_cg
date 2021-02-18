@@ -122,6 +122,7 @@ class GraphicsRect(GraphicsPolygon):
             self.start
         ]
         canvas.draw_lines(points)
+        canvas.fill(points)
 
 
     def move(self, delta: IPoint):

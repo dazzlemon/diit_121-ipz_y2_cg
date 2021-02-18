@@ -4,6 +4,8 @@ CG2
 from typing import List
 from more_itertools import pairwise
 from PyQt5.QtWidgets import QGraphicsScene
+from PyQt5.QtGui import QPolygonF, QPen, QBrush, QColor
+from PyQt5.QtCore import QPointF
 from ._interfaces import ICanvas, IPoint
 
 class QCanvas(ICanvas):
@@ -21,3 +23,7 @@ class QCanvas(ICanvas):
 
     def fill(self, points: List[IPoint]):
         """fills all pixels in space closed by lines between i-th and (i-1)-th points"""
+        self.canvas.addPolygon(QPolygonF(map(
+            lambda ip: QPointF(ip.x, ip.y),
+            points
+        )), QPen(), QBrush(QColor(255, 0, 0)))
