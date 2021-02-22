@@ -87,28 +87,6 @@ class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
         self.y += delta.y
 
 
-    def rotate(self, about: IPoint, rad: float):
-        move = np.array([
-            [1, 0, about.x],
-            [0, 1, about.y],
-            [0, 0, 1      ],
-        ])
-        rotate = np.array([
-            [cos(rad), -sin(rad), 0],
-            [sin(rad),  cos(rad), 0],
-            [0,         0,        1],
-        ])
-        move_ = np.array([
-            [1, 0, -about.x],
-            [0, 1, -about.y],
-            [0, 0, 1       ],
-        ])
-        xy1 = np.array([self.x, self.y, 1])
-        new = move_ @ rotate @ move @ xy1 # x @ y -> np.matmul(x, y)
-        self.x = new[0]
-        self.y = new[1]
-
-
     def transform(self, matrix: np.ndarray):
         """
         applies transformation matrix to this point,
@@ -151,10 +129,14 @@ class GraphicsLine(IDrawable, AffineTransformable):
         self._color = value
 
 
-class GraphicsPolygonLike(IDrawable, IAffineTransformable):
+class GraphicsPolygonLike(IDrawable, AffineTransformable):
     """
     Represents a polygon that can draw itself onto ICanvas
     """
+    def __init__(self):
+        AffineTransformable.__init__(self)
+
+
     def paint(self, canvas: ICanvas):
         canvas.draw_lines(self.points, self.color)
         canvas.fill(self.points, self.color)
@@ -178,6 +160,7 @@ class GraphicsRect(GraphicsPolygonLike):
             GraphicsPoint(x1, y1),
         ]
         self.color = color
+        GraphicsPolygonLike.__init__(self)
 
 
     @property
@@ -194,12 +177,10 @@ class GraphicsRect(GraphicsPolygonLike):
 
     @property
     def points(self) -> List[IPoint]:
-        return self._points
-
-
-    def move(self, delta: IPoint):
-        for i in self._points:
-            i.move(delta)
+        pts = deepcopy(self._points)
+        for i in pts:
+            i.transform(self._transformations)
+        return pts
 
 
     @property
@@ -212,11 +193,6 @@ class GraphicsRect(GraphicsPolygonLike):
         self._color = value
 
 
-    def rotate(self, about: IPoint, rad: float):
-        for i in self._points:
-            i.rotate(about, rad)
-
-
 class GraphicsSquare(GraphicsRect):
     """
     Represents a square that can draw itself onto ICanvas
@@ -225,7 +201,7 @@ class GraphicsSquare(GraphicsRect):
         GraphicsRect.__init__(self, x, y, size, size, color)
 
 
-class GraphicsEllipse(IDrawable, IAffineTransformable):
+class GraphicsEllipse(IDrawable, AffineTransformable):
     """
     Represents an Ellipse enclosed in rect that can draw itself onto ICanvas
     """
@@ -233,11 +209,8 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
         self.start = GraphicsPoint(x1, y1)
         self.size  = GraphicsPoint(x2, y2)
         self.color = color
-        self.transformations = np.array([
-            [1, 0, 0],
-            [0, 1, 0],
-            [0, 0, 1],
-        ])
+        AffineTransformable.__init__(self)
+
 
     def paint(self, canvas: ICanvas):
         orig_x = self.start.x
@@ -272,7 +245,7 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
             ))
 
         for i in points:
-            i.transform(self.transformations)
+            i.transform(self._transformations)
 
         canvas.draw_lines(points, self.color)
         canvas.fill(points, self.color)
@@ -286,26 +259,6 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
     @color.setter
     def color(self, value):
         self._color = value
-
-
-    def rotate(self, about: IPoint, rad: float):
-        move = np.array([
-            [1, 0, about.x],
-            [0, 1, about.y],
-            [0, 0, 1      ],
-        ])
-        rotate = np.array([
-            [cos(rad), -sin(rad), 0],
-            [sin(rad),  cos(rad), 0],
-            [0,         0,        1],
-        ])
-        move_ = np.array([
-            [1, 0, -about.x],
-            [0, 1, -about.y],
-            [0, 0, 1       ],
-        ])
-        matrix = move_ @ rotate @ move
-        self.transformations = matrix @ self.transformations
 
 
 class GraphicsCircle(GraphicsEllipse):
