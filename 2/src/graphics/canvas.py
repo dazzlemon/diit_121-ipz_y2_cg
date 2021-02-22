@@ -16,15 +16,15 @@ class QCanvas(ICanvas):
         self.canvas = canvas
 
 
-    def draw_lines(self, points: List[IPoint]):
+    def draw_lines(self, points: List[IPoint], color: QColor):
         """draws lines between i-th and (i-1)-th points"""
         for p1, p2 in pairwise(points):
-            self.canvas.addLine(p1.x, p1.y, p2.x, p2.y)
+            self.canvas.addLine(p1.x, p1.y, p2.x, p2.y, QPen(color))
 
 
-    def fill(self, points: List[IPoint]):
+    def fill(self, points: List[IPoint], color: QColor):
         """fills all pixels in space closed by lines between i-th and (i-1)-th points"""
         self.canvas.addPolygon(QPolygonF(map(
             lambda ip: QPointF(ip.x, ip.y),
             points
-        )), QPen(), QBrush(QColor(255, 0, 0)))
+        )), QPen(), QBrush(color))

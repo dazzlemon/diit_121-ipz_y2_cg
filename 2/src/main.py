@@ -4,6 +4,7 @@ MAIN
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
 from forms_py import Ui_MainWindow
 from graphics.items import GraphicsLine, GraphicsRect, GraphicsSquare, GraphicsEllipse, GraphicsCircle, GraphicsPoint
 from graphics.canvas import QCanvas
@@ -26,11 +27,11 @@ class Cg2(QApplication):
 
         self._canvas = QCanvas(self._scene)
         self._items = [
-            GraphicsLine(0, 0, 500, 500),
-            GraphicsRect(10, 10, 400, 800),
-            GraphicsSquare(10, 10, 400),
-            GraphicsEllipse(10, 10, 400, 800),
-            GraphicsCircle(10, 410, 400)
+            GraphicsLine(0, 0, 500, 500, QColor(255, 0, 0)),
+            GraphicsRect(10, 10, 400, 800, QColor(0, 255, 0)),
+            GraphicsSquare(10, 10, 400, QColor(0, 0, 255)),
+            GraphicsEllipse(10, 10, 400, 800, QColor(0, 255, 255)),
+            GraphicsCircle(10, 410, 400, QColor(255, 255, 0))
         ]
         self._update()
 

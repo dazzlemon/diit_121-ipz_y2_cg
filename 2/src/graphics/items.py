@@ -4,29 +4,11 @@ IGraphicsItem to use with ICanvas, and its extensions
 from math import sqrt
 from copy import deepcopy
 import numpy as np
-from ._interfaces import ICanvas, IPoint
-
-class IGraphicsItem:
-    """
-    Graphics item that can draw itself onto ICanvas
-    """
-    def paint(self, canvas: ICanvas):
-        """paints this item onto canvas"""
+from ._interfaces import ICanvas, IPoint, IAffineTransformable, IDrawable
+from PyQt5.QtGui import QColor
 
 
-    def move(self, delta: IPoint):
-        """moves the item point by delta"""
-
-
-    def rotate(self, about: IPoint, rad: float):
-        """rotates the item about given point by given amount of radians"""
-
-
-    def scale(self, about: IPoint, w: float, h: float):
-        """scales the item about given point by given scale"""
-
-
-class GraphicsPoint(IPoint, IGraphicsItem):
+class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
     """
     Represents a 2D point that can draw itself onto ICanvas
     """
@@ -64,18 +46,19 @@ class GraphicsPoint(IPoint, IGraphicsItem):
         self.y += delta.y
 
 
-class GraphicsLine(IGraphicsItem):
+class GraphicsLine(IDrawable, IAffineTransformable):
     """
     Represents a 2D line
     """
 
-    def __init__(self, x1, y1, x2, y2):
+    def __init__(self, x1: float, y1: float, x2: float, y2: float, color: QColor):
         self.start = GraphicsPoint(x1, y1)
         self.end   = GraphicsPoint(x2, y2)
+        self.color = color
 
 
     def paint(self, canvas: ICanvas):
-        canvas.draw_lines([self.start, self.end])
+        canvas.draw_lines([self.start, self.end], self.color)
 
 
     def move(self, delta: IPoint):
@@ -83,7 +66,17 @@ class GraphicsLine(IGraphicsItem):
         self.end.move(delta)
 
 
-class GraphicsPolygon(IGraphicsItem):
+    @property
+    def color(self) -> QColor:
+        return self._color
+
+
+    @color.setter
+    def color(self, value):
+        self._color = value
+
+
+class GraphicsPolygon(IDrawable, IAffineTransformable):
     """
     Represents a polygon that can draw itself onto ICanvas
     """
@@ -93,9 +86,10 @@ class GraphicsRect(GraphicsPolygon):
     """
     Represents a rectangle that can draw itself onto ICanvas
     """
-    def __init__(self, x1: float, y1: float, x2: float, y2: float):
+    def __init__(self, x1: float, y1: float, x2: float, y2: float, color: QColor):
         self.start = GraphicsPoint(x1, y1)
         self.size  = GraphicsPoint(x2, y2)
+        self.color = color
 
 
     @property
@@ -122,20 +116,31 @@ class GraphicsRect(GraphicsPolygon):
             GraphicsPoint(x     , y + dy),
             self.start
         ]
-        canvas.draw_lines(points)
+        canvas.draw_lines(points, self.color)
 
 
     def move(self, delta: IPoint):
         self.start.move(delta)
 
 
+    @property
+    def color(self) -> QColor:
+        return self._color
+
+
+    @color.setter
+    def color(self, value: QColor):
+        self._color = value
+
+
 class GraphicsSquare(GraphicsRect):
     """
     Represents a square that can draw itself onto ICanvas
     """
-    def __init__(self, x: float, y: float, size: float):
+    def __init__(self, x: float, y: float, size: float, color: QColor):
         self.start = GraphicsPoint(x, y)
-        self.size = size
+        self.size  = size
+        self.color = color
 
 
     @property
@@ -150,12 +155,12 @@ class GraphicsSquare(GraphicsRect):
         self._size = value
 
 
-class GraphicsEllipse(IGraphicsItem):
+class GraphicsEllipse(IDrawable, IAffineTransformable):
     """
     Represents an Ellipse enclosed in rect that can draw itself onto ICanvas
     """
-    def __init__(self, x1: float, y1: float, x2: float, y2: float):
-        self.rect = GraphicsRect(x1, y1, x2, y2)
+    def __init__(self, x1: float, y1: float, x2: float, y2: float, color: QColor):
+        self.rect  = GraphicsRect(x1, y1, x2, y2, color)
 
 
     def paint(self, canvas: ICanvas):
@@ -190,16 +195,27 @@ class GraphicsEllipse(IGraphicsItem):
                 points
             )
 
-        canvas.draw_lines(deepcopy(points))
-        canvas.fill(points)
+        canvas.draw_lines(deepcopy(points), self.color)
+        canvas.fill(points, self.color)
+
 
     def move(self, delta: IPoint):
         self.rect.move(delta)
+
+
+    @property
+    def color(self) -> QColor:
+        return self.rect.color
+
+
+    @color.setter
+    def color(self, value):
+        self.rect.color = value
 
 
 class GraphicsCircle(GraphicsEllipse):
     """
     Represents a a circle enclosed in square that can draw itself onto ICanvas
     """
-    def __init__(self, x1: float, y1: float, size: float):
-        self.rect = GraphicsSquare(x1, y1, size)
+    def __init__(self, x1: float, y1: float, size: float, color: QColor):
+        self.rect  = GraphicsSquare(x1, y1, size, color)
