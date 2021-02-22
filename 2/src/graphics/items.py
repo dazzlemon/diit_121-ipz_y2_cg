@@ -2,7 +2,7 @@
 IGraphicsItem to use with ICanvas, and its extensions
 """
 from typing import List
-from math import sqrt
+from math import sqrt, cos, sin
 from copy import deepcopy
 import numpy as np
 from ._interfaces import ICanvas, IPoint, IAffineTransformable, IDrawable
@@ -43,8 +43,31 @@ class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
 
 
     def move(self, delta: IPoint):
+        # no matrices required
         self.x += delta.x
         self.y += delta.y
+
+
+    def rotate(self, about: IPoint, rad: float):
+        move = np.array([
+            [1, 0, about.x],
+            [0, 1, about.y],
+            [0, 0, 1      ],
+        ])
+        rotate = np.array([
+            [cos(rad), -sin(rad), 0],
+            [sin(rad),  cos(rad), 0],
+            [0,         0,        1],
+        ])
+        move_ = np.array([
+            [1, 0, -about.x],
+            [0, 1, -about.y],
+            [0, 0, 1       ],
+        ])
+        xy1 = np.array([self.x, self.y, 1])
+        new = move_ @ rotate @ move @ xy1 # x @ y -> np.matmul(x, y)
+        self.x = new[0]
+        self.y = new[1]
 
 
 class GraphicsLine(IDrawable, IAffineTransformable):
@@ -75,6 +98,11 @@ class GraphicsLine(IDrawable, IAffineTransformable):
     @color.setter
     def color(self, value):
         self._color = value
+
+
+    def rotate(self, about: IPoint, rad: float):
+        self.start.rotate(about, rad)
+        self.end.rotate(about, rad)
 
 
 class GraphicsPolygonLike(IDrawable, IAffineTransformable):

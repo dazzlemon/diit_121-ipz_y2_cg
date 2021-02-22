@@ -61,6 +61,17 @@ class Cg2(QApplication):
         self._main_ui.moveLeftDownButton.setAutoRepeat(True)
         self._main_ui.moveLeftUpButton.setAutoRepeat(True)
 
+        def rotate(rad):
+            def rot():
+                for i in self._items:
+                    i.rotate(GraphicsPoint(0, 0), rad)
+                self._update()
+            return rot
+        self._main_ui.rotateClockwiseButton.pressed.connect(rotate(0.01))
+        self._main_ui.rotateAnticlockwiseButton.pressed.connect(rotate(-0.01))
+
+        self._main_ui.rotateClockwiseButton.setAutoRepeat(True)
+        self._main_ui.rotateAnticlockwiseButton.setAutoRepeat(True)
 
 
     def _update(self):
