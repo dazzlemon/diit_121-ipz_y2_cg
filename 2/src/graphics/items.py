@@ -117,7 +117,7 @@ class GraphicsRect(GraphicsPolygon):
             self.start
         ]
         canvas.draw_lines(points, self.color)
-
+        canvas.fill(points, self.color)
 
     def move(self, delta: IPoint):
         self.start.move(delta)
@@ -210,7 +210,7 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
 
     @color.setter
     def color(self, value):
-        self.rect.color = value
+        self._color = value
 
 
 class GraphicsCircle(GraphicsEllipse):

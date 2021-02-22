@@ -27,4 +27,4 @@ class QCanvas(ICanvas):
         self.canvas.addPolygon(QPolygonF(map(
             lambda ip: QPointF(ip.x, ip.y),
             points
-        )), QPen(), QBrush(color))
+        )), QPen(color), QBrush(color))
