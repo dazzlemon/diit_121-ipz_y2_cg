@@ -124,8 +124,13 @@ class GraphicsRect(GraphicsPolygonLike):
     Represents a rectangle that can draw itself onto ICanvas
     """
     def __init__(self, x1: float, y1: float, x2: float, y2: float, color: QColor):
-        self.start = GraphicsPoint(x1, y1)
-        self.size  = GraphicsPoint(x2, y2)
+        self._points = [
+            GraphicsPoint(x1, y1),
+            GraphicsPoint(x1 + x2, y1),
+            GraphicsPoint(x1 + x2, y1 + y2),
+            GraphicsPoint(x1     , y1 + y2),
+            GraphicsPoint(x1, y1),
+        ]
         self.color = color
 
 
@@ -143,22 +148,12 @@ class GraphicsRect(GraphicsPolygonLike):
 
     @property
     def points(self) -> List[IPoint]:
-        x  = self.start.x
-        y  = self.start.y
-        dx = self.size.x
-        dy = self.size.y
-        points = [
-            self.start,
-            GraphicsPoint(x + dx, y),
-            GraphicsPoint(x + dx, y + dy),
-            GraphicsPoint(x     , y + dy),
-            self.start
-        ]
-        return points
+        return self._points
 
 
     def move(self, delta: IPoint):
-        self.start.move(delta)
+        for i in self._points:
+            i.move(delta)
 
 
     @property
@@ -171,6 +166,11 @@ class GraphicsRect(GraphicsPolygonLike):
         self._color = value
 
 
+    def rotate(self, about: IPoint, rad: float):
+        for i in self._points:
+            i.rotate(about, rad)
+
+
 class GraphicsSquare(GraphicsRect):
     """
     Represents a square that can draw itself onto ICanvas
@@ -179,23 +179,22 @@ class GraphicsSquare(GraphicsRect):
         GraphicsRect.__init__(self, x, y, size, size, color)
 
 
-    #TODO: @size.setter(value: float)
-
-
 class GraphicsEllipse(IDrawable, IAffineTransformable):
     """
     Represents an Ellipse enclosed in rect that can draw itself onto ICanvas
     """
     def __init__(self, x1: float, y1: float, x2: float, y2: float, color: QColor):
-        self.rect  = GraphicsRect(x1, y1, x2, y2, color)
+        self.start = GraphicsPoint(x1, y1)
+        self.size  = GraphicsPoint(x2, y2)
+        self.color = color
 
 
     def paint(self, canvas: ICanvas):
-        orig_x = self.rect.start.x
-        orig_y = self.rect.start.y
+        orig_x = self.start.x
+        orig_y = self.start.y
 
-        a = self.rect.size.x / 2
-        b = self.rect.size.y / 2
+        a = self.size.x / 2
+        b = self.size.y / 2
         flip = a < b
         if flip:
             a, b = b, a
@@ -226,13 +225,9 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
         canvas.fill(points, self.color)
 
 
-    def move(self, delta: IPoint):
-        self.rect.move(delta)
-
-
     @property
     def color(self) -> QColor:
-        return self.rect.color
+        return self._color
 
 
     @color.setter
@@ -245,4 +240,4 @@ class GraphicsCircle(GraphicsEllipse):
     Represents a a circle enclosed in square that can draw itself onto ICanvas
     """
     def __init__(self, x1: float, y1: float, size: float, color: QColor):
-        self.rect  = GraphicsSquare(x1, y1, size, color)
+        GraphicsEllipse.__init__(self, x1, y1, size, size, color)
