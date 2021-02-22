@@ -35,6 +35,7 @@ class Cg2(QApplication):
             GraphicsCircle(10, 410, 400, QColor(255, 255, 0))
         ]
         self._update()
+        self._about_point = GraphicsPoint(0, 0)
 
 
     def _init_signals(self):
@@ -65,7 +66,7 @@ class Cg2(QApplication):
         def rotate(rad):
             def rot():
                 for i in self._items:
-                    i.rotate(GraphicsPoint(0, 0), rad)
+                    i.rotate(self._about_point, rad)
                 self._update()
             return rot
         self._main_ui.rotateClockwiseButton.pressed.connect(rotate(0.1))
@@ -77,7 +78,7 @@ class Cg2(QApplication):
         def scale(mul):
             def scale_():
                 for i in self._items:
-                    i.scale(GraphicsPoint(0, 0), mul, mul)
+                    i.scale(self._about_point, mul, mul)
                 self._update()
             return scale_
         self._main_ui.scaleUpButton.pressed.connect(scale(1.2))
