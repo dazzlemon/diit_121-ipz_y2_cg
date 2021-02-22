@@ -28,14 +28,18 @@ class Cg2(QApplication):
 
         self._canvas = QCanvas(self._scene)
         self._items = [
-            GraphicsLine(0, 0, 500, QColor(255, 0, 0)),
-            GraphicsRect(10, 10, 800, 400, QColor(0, 255, 0)),
-            GraphicsSquare(410, 410, 400, QColor(0, 0, 255)),
-            GraphicsEllipse(10, 10, 400, 800, QColor(0, 255, 255)),
-            GraphicsCircle(10, 410, 400, QColor(255, 255, 0))
+            GraphicsEllipse(400, 400, 400, 300, QColor(60, 150, 0)),
+            GraphicsCircle(450, 350, 200, QColor(60, 150, 0)),
+            GraphicsCircle(580, 350, 200, QColor(60, 150, 0)),
+            GraphicsEllipse(500, 420, 120, 55, QColor(255, 255, 255)),
+            GraphicsEllipse(650, 420, 120, 55, QColor(255, 255, 255)),
+            GraphicsCircle(550, 420, 50, QColor(0, 0, 0)),
+            GraphicsCircle(700, 420, 50, QColor(0, 0, 0)),
+            GraphicsEllipse(500, 550, 300, 55, QColor(30, 80, 0)),
+            GraphicsLine(500, 580, 300, QColor(0, 0, 0))
         ]
         self._update()
-        self._about_point = GraphicsPoint(0, 0)
+        self._about_point = GraphicsPoint(-600, -600)
 
 
     def _init_signals(self):
