@@ -47,6 +47,25 @@ class AffineTransformable(IAffineTransformable):
         self._transformations = matrix @ self._transformations
 
 
+    def scale(self, about: IPoint, w: float, h: float):
+        move = np.array([
+            [1, 0, about.x],
+            [0, 1, about.y],
+            [0, 0, 1      ],
+        ])
+        scale = np.array([
+            [w, 0, 0],
+            [0, h, 0],
+            [0, 0, 1],
+        ])
+        move_ = np.array([
+            [1, 0, -about.x],
+            [0, 1, -about.y],
+            [0, 0, 1       ],
+        ])
+        matrix = move_ @ scale @ move
+        self._transformations = matrix @ self._transformations
+
 
 class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
     """
@@ -266,5 +285,4 @@ class GraphicsCircle(GraphicsEllipse):
     Represents a a circle enclosed in square that can draw itself onto ICanvas
     """
     def __init__(self, x1: float, y1: float, size: float, color: QColor):
-        print("test")
         GraphicsEllipse.__init__(self, x1, y1, size, size, color)

@@ -74,6 +74,18 @@ class Cg2(QApplication):
         self._main_ui.rotateClockwiseButton.setAutoRepeat(True)
         self._main_ui.rotateAnticlockwiseButton.setAutoRepeat(True)
 
+        def scale(mul):
+            def scale_():
+                for i in self._items:
+                    i.scale(GraphicsPoint(0, 0), mul, mul)
+                self._update()
+            return scale_
+        self._main_ui.scaleUpButton.pressed.connect(scale(1.2))
+        self._main_ui.scaleDownButton.pressed.connect(scale(0.8))
+
+        self._main_ui.scaleUpButton.setAutoRepeat(True)
+        self._main_ui.scaleDownButton.setAutoRepeat(True)
+
 
     def _update(self):
         self._scene.clear()
