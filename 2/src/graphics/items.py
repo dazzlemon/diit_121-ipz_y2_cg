@@ -9,6 +9,45 @@ from ._interfaces import ICanvas, IPoint, IAffineTransformable, IDrawable
 from PyQt5.QtGui import QColor
 
 
+class AffineTransformable(IAffineTransformable):
+    def __init__(self):
+        self._transformations = np.array([
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1],
+        ])
+
+
+    def move(self, delta: IPoint):
+        move = np.array([
+            [1, 0, delta.x],
+            [0, 1, delta.y],
+            [0, 0, 1      ],
+        ])
+        self._transformations = move @ self._transformations
+
+
+    def rotate(self, about: IPoint, rad: float):
+        move = np.array([
+            [1, 0, about.x],
+            [0, 1, about.y],
+            [0, 0, 1      ],
+        ])
+        rotate = np.array([
+            [cos(rad), -sin(rad), 0],
+            [sin(rad),  cos(rad), 0],
+            [0,         0,        1],
+        ])
+        move_ = np.array([
+            [1, 0, -about.x],
+            [0, 1, -about.y],
+            [0, 0, 1       ],
+        ])
+        matrix = move_ @ rotate @ move
+        self._transformations = matrix @ self._transformations
+
+
+
 class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
     """
     Represents a 2D point that can draw itself onto ICanvas
@@ -83,7 +122,7 @@ class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
         self.y = new[1]
 
 
-class GraphicsLine(IDrawable, IAffineTransformable):
+class GraphicsLine(IDrawable, AffineTransformable):
     """
     Represents a 2D line
     """
@@ -92,28 +131,14 @@ class GraphicsLine(IDrawable, IAffineTransformable):
         self.start  = GraphicsPoint(x1, y1)
         self.length = length
         self.color  = color
-        self.transformations = np.array([
-            [1, 0, 0],
-            [0, 1, 0],
-            [0, 0, 1],
-        ])
+        AffineTransformable.__init__(self)
 
 
     def paint(self, canvas: ICanvas):
         points = deepcopy([self.start, GraphicsPoint(self.start.x + self.length, self.start.y)])
         for i in points:
-            i.transform(self.transformations)
+            i.transform(self._transformations)
         canvas.draw_lines(points, self.color)
-
-
-    def move(self, delta: IPoint):
-        move = np.array([
-            [1, 0, delta.x],
-            [0, 1, delta.y],
-            [0, 0, 1      ],
-        ])
-        self.transformations = move @ self.transformations
-
 
 
     @property
@@ -124,27 +149,6 @@ class GraphicsLine(IDrawable, IAffineTransformable):
     @color.setter
     def color(self, value):
         self._color = value
-
-
-    def rotate(self, about: IPoint, rad: float):
-        move = np.array([
-            [1, 0, about.x],
-            [0, 1, about.y],
-            [0, 0, 1      ],
-        ])
-        rotate = np.array([
-            [cos(rad), -sin(rad), 0],
-            [sin(rad),  cos(rad), 0],
-            [0,         0,        1],
-        ])
-        move_ = np.array([
-            [1, 0, -about.x],
-            [0, 1, -about.y],
-            [0, 0, 1       ],
-        ])
-        matrix = move_ @ rotate @ move
-        self.transformations = matrix @ self.transformations
-
 
 
 class GraphicsPolygonLike(IDrawable, IAffineTransformable):
