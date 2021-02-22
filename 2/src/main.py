@@ -22,16 +22,17 @@ class Cg2(QApplication):
 
     def _init_canvas(self):
         self._scene = QGraphicsScene()
+        self._scene.setSceneRect(0, 0, 800, 600)
         self._main_ui.gview.setScene(self._scene)
         self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         self._canvas = QCanvas(self._scene)
         self._items = [
             GraphicsLine(0, 0, 500, 500, QColor(255, 0, 0)),
-            GraphicsRect(10, 10, 400, 800, QColor(0, 255, 0)),
-            GraphicsSquare(10, 10, 400, QColor(0, 0, 255)),
-            GraphicsEllipse(10, 10, 400, 800, QColor(0, 255, 255)),
-            GraphicsCircle(10, 410, 400, QColor(255, 255, 0))
+            #GraphicsRect(10, 10, 400, 800, QColor(0, 255, 0)),
+            #GraphicsSquare(10, 10, 400, QColor(0, 0, 255)),
+            #GraphicsEllipse(10, 10, 400, 800, QColor(0, 255, 255)),
+            #GraphicsCircle(10, 410, 400, QColor(255, 255, 0))
         ]
         self._update()
 
@@ -67,8 +68,8 @@ class Cg2(QApplication):
                     i.rotate(GraphicsPoint(0, 0), rad)
                 self._update()
             return rot
-        self._main_ui.rotateClockwiseButton.pressed.connect(rotate(0.01))
-        self._main_ui.rotateAnticlockwiseButton.pressed.connect(rotate(-0.01))
+        self._main_ui.rotateClockwiseButton.pressed.connect(rotate(0.1))
+        self._main_ui.rotateAnticlockwiseButton.pressed.connect(rotate(-0.1))
 
         self._main_ui.rotateClockwiseButton.setAutoRepeat(True)
         self._main_ui.rotateAnticlockwiseButton.setAutoRepeat(True)
