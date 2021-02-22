@@ -262,15 +262,15 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
         )
 
         if flip:
-            points = map(
+            points = list(map(
                 lambda p: GraphicsPoint(p.y, p.x),
                 points
-            )
+            ))
 
         for i in points:
             i.transform(self.transformations)
 
-        canvas.draw_lines(deepcopy(points), self.color)
+        canvas.draw_lines(points, self.color)
         canvas.fill(points, self.color)
 
 
