@@ -70,24 +70,50 @@ class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
         self.y = new[1]
 
 
+    def transform(self, matrix: np.ndarray):
+        """
+        applies transformation matrix to this point,
+        needed to be able to apply affine transformations
+        as well as normal like changing width/size/radius etc
+        """
+        #TODO: add check for matrix' dimensions
+        xy1 = np.array([self.x, self.y, 1])
+        new = matrix @ xy1
+        self.x = new[0]
+        self.y = new[1]
+
+
 class GraphicsLine(IDrawable, IAffineTransformable):
     """
     Represents a 2D line
     """
 
-    def __init__(self, x1: float, y1: float, x2: float, y2: float, color: QColor):
-        self.start = GraphicsPoint(x1, y1)
-        self.end   = GraphicsPoint(x2, y2)
-        self.color = color
+    def __init__(self, x1: float, y1: float, length: float, color: QColor):
+        self.start  = GraphicsPoint(x1, y1)
+        self.length = length
+        self.color  = color
+        self.transformations = np.array([
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1],
+        ])
 
 
     def paint(self, canvas: ICanvas):
-        canvas.draw_lines([self.start, self.end], self.color)
+        points = deepcopy([self.start, GraphicsPoint(self.start.x + self.length, self.start.y)])
+        for i in points:
+            i.transform(self.transformations)
+        canvas.draw_lines(points, self.color)
 
 
     def move(self, delta: IPoint):
-        self.start.move(delta)
-        self.end.move(delta)
+        move = np.array([
+            [1, 0, delta.x],
+            [0, 1, delta.y],
+            [0, 0, 1      ],
+        ])
+        self.transformations = move @ self.transformations
+
 
 
     @property
@@ -101,8 +127,24 @@ class GraphicsLine(IDrawable, IAffineTransformable):
 
 
     def rotate(self, about: IPoint, rad: float):
-        self.start.rotate(about, rad)
-        self.end.rotate(about, rad)
+        move = np.array([
+            [1, 0, about.x],
+            [0, 1, about.y],
+            [0, 0, 1      ],
+        ])
+        rotate = np.array([
+            [cos(rad), -sin(rad), 0],
+            [sin(rad),  cos(rad), 0],
+            [0,         0,        1],
+        ])
+        move_ = np.array([
+            [1, 0, -about.x],
+            [0, 1, -about.y],
+            [0, 0, 1       ],
+        ])
+        matrix = move_ @ rotate @ move
+        self.transformations = matrix @ self.transformations
+
 
 
 class GraphicsPolygonLike(IDrawable, IAffineTransformable):
@@ -187,7 +229,11 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
         self.start = GraphicsPoint(x1, y1)
         self.size  = GraphicsPoint(x2, y2)
         self.color = color
-
+        self.transformations = np.array([
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1],
+        ])
 
     def paint(self, canvas: ICanvas):
         orig_x = self.start.x
@@ -221,6 +267,9 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
                 points
             )
 
+        for i in points:
+            i.transform(self.transformations)
+
         canvas.draw_lines(deepcopy(points), self.color)
         canvas.fill(points, self.color)
 
@@ -233,6 +282,26 @@ class GraphicsEllipse(IDrawable, IAffineTransformable):
     @color.setter
     def color(self, value):
         self._color = value
+
+
+    def rotate(self, about: IPoint, rad: float):
+        move = np.array([
+            [1, 0, about.x],
+            [0, 1, about.y],
+            [0, 0, 1      ],
+        ])
+        rotate = np.array([
+            [cos(rad), -sin(rad), 0],
+            [sin(rad),  cos(rad), 0],
+            [0,         0,        1],
+        ])
+        move_ = np.array([
+            [1, 0, -about.x],
+            [0, 1, -about.y],
+            [0, 0, 1       ],
+        ])
+        matrix = move_ @ rotate @ move
+        self.transformations = matrix @ self.transformations
 
 
 class GraphicsCircle(GraphicsEllipse):
