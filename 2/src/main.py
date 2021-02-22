@@ -35,6 +35,10 @@ class Cg2(QApplication):
             GraphicsEllipse(650, 420, 120, 55, QColor(255, 255, 255)),
             GraphicsCircle(550, 420, 50, QColor(0, 0, 0)),
             GraphicsCircle(700, 420, 50, QColor(0, 0, 0)),
+            GraphicsRect(560, 430, 30, 20, QColor(255, 255, 255)),
+            GraphicsRect(710, 430, 30, 20, QColor(255, 255, 255)),
+            GraphicsSquare(560, 430, 10, QColor(0, 0, 0)),
+            GraphicsSquare(710, 430, 10, QColor(0, 0, 0)),
             GraphicsEllipse(500, 550, 300, 55, QColor(30, 80, 0)),
             GraphicsLine(500, 580, 300, QColor(0, 0, 0))
         ]
