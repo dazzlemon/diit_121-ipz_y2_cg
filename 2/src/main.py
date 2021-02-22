@@ -39,7 +39,7 @@ class Cg2(QApplication):
             GraphicsLine(500, 580, 300, QColor(0, 0, 0))
         ]
         self._update()
-        self._about_point = GraphicsPoint(-600, -600)
+        self._about_point = GraphicsPoint(600, 600)
 
 
     def _init_signals(self):

@@ -28,7 +28,7 @@ class AffineTransformable(IAffineTransformable):
 
 
     def rotate(self, about: IPoint, rad: float):
-        move = np.array([
+        move_ = np.array([
             [1, 0, about.x],
             [0, 1, about.y],
             [0, 0, 1      ],
@@ -38,7 +38,7 @@ class AffineTransformable(IAffineTransformable):
             [sin(rad),  cos(rad), 0],
             [0,         0,        1],
         ])
-        move_ = np.array([
+        move = np.array([
             [1, 0, -about.x],
             [0, 1, -about.y],
             [0, 0, 1       ],
@@ -48,7 +48,7 @@ class AffineTransformable(IAffineTransformable):
 
 
     def scale(self, about: IPoint, w: float, h: float):
-        move = np.array([
+        move_ = np.array([
             [1, 0, about.x],
             [0, 1, about.y],
             [0, 0, 1      ],
@@ -58,7 +58,7 @@ class AffineTransformable(IAffineTransformable):
             [0, h, 0],
             [0, 0, 1],
         ])
-        move_ = np.array([
+        move = np.array([
             [1, 0, -about.x],
             [0, 1, -about.y],
             [0, 0, 1       ],
