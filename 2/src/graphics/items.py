@@ -1,6 +1,7 @@
 """
 IGraphicsItem to use with ICanvas, and its extensions
 """
+from typing import List
 from math import sqrt
 from copy import deepcopy
 import numpy as np
@@ -76,13 +77,21 @@ class GraphicsLine(IDrawable, IAffineTransformable):
         self._color = value
 
 
-class GraphicsPolygon(IDrawable, IAffineTransformable):
+class GraphicsPolygonLike(IDrawable, IAffineTransformable):
     """
     Represents a polygon that can draw itself onto ICanvas
     """
+    def paint(self, canvas: ICanvas):
+        canvas.draw_lines(self.points, self.color)
+        canvas.fill(self.points, self.color)
 
 
-class GraphicsRect(GraphicsPolygon):
+    @property
+    def points(self) -> List[IPoint]:
+        """Returns anchor points to draw a figure on ICanvas"""
+
+
+class GraphicsRect(GraphicsPolygonLike):
     """
     Represents a rectangle that can draw itself onto ICanvas
     """
@@ -104,7 +113,8 @@ class GraphicsRect(GraphicsPolygon):
         self._size = value
 
 
-    def paint(self, canvas: ICanvas):
+    @property
+    def points(self) -> List[IPoint]:
         x  = self.start.x
         y  = self.start.y
         dx = self.size.x
@@ -116,8 +126,8 @@ class GraphicsRect(GraphicsPolygon):
             GraphicsPoint(x     , y + dy),
             self.start
         ]
-        canvas.draw_lines(points, self.color)
-        canvas.fill(points, self.color)
+        return points
+
 
     def move(self, delta: IPoint):
         self.start.move(delta)
@@ -138,21 +148,10 @@ class GraphicsSquare(GraphicsRect):
     Represents a square that can draw itself onto ICanvas
     """
     def __init__(self, x: float, y: float, size: float, color: QColor):
-        self.start = GraphicsPoint(x, y)
-        self.size  = size
-        self.color = color
+        GraphicsRect.__init__(self, x, y, size, size, color)
 
 
-    @property
-    def size(self) -> GraphicsPoint:
-        """same as GraphicsRect.size but x and y actually have the same value"""
-        return GraphicsPoint(self._size, self._size)
-
-
-    @size.setter
-    def size(self, value: float):
-        """value must be float"""
-        self._size = value
+    #TODO: @size.setter(value: float)
 
 
 class GraphicsEllipse(IDrawable, IAffineTransformable):
