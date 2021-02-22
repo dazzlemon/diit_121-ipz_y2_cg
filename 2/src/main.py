@@ -25,6 +25,9 @@ class Cg2(QApplication):
         self._scene.setSceneRect(0, 0, 800, 600)
         self._main_ui.gview.setScene(self._scene)
         self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        def on_scene_click(e):
+            print("test")
+        self._main_ui.gview.mousePressEvent = on_scene_click
 
         self._canvas = QCanvas(self._scene)
         self._items = [
