@@ -239,11 +239,11 @@ class GraphicsEllipse(IDrawable, AffineTransformable):
         )
 
         if flip:
-            points = list(map(
+            points = map(
                 lambda p: GraphicsPoint(p.y, p.x),
                 points
-            ))
-
+            )
+        points = list(points)# to be able to iterate more than once
         for i in points:
             i.transform(self._transformations)
 
@@ -266,4 +266,5 @@ class GraphicsCircle(GraphicsEllipse):
     Represents a a circle enclosed in square that can draw itself onto ICanvas
     """
     def __init__(self, x1: float, y1: float, size: float, color: QColor):
+        print("test")
         GraphicsEllipse.__init__(self, x1, y1, size, size, color)

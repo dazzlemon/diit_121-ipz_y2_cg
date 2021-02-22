@@ -29,8 +29,8 @@ class Cg2(QApplication):
         self._canvas = QCanvas(self._scene)
         self._items = [
             GraphicsLine(0, 0, 500, QColor(255, 0, 0)),
-            GraphicsRect(10, 10, 400, 800, QColor(0, 255, 0)),
-            GraphicsSquare(10, 10, 400, QColor(0, 0, 255)),
+            GraphicsRect(10, 10, 800, 400, QColor(0, 255, 0)),
+            GraphicsSquare(410, 410, 400, QColor(0, 0, 255)),
             GraphicsEllipse(10, 10, 400, 800, QColor(0, 255, 255)),
             GraphicsCircle(10, 410, 400, QColor(255, 255, 0))
         ]
