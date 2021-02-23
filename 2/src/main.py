@@ -4,7 +4,7 @@ MAIN
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QPen, QBrush
 from forms_py import Ui_MainWindow
 from graphics.items import GraphicsLine, GraphicsRect, GraphicsSquare, GraphicsEllipse, GraphicsCircle, GraphicsPoint
 from graphics.canvas import QCanvas
@@ -107,10 +107,9 @@ class Cg2(QApplication):
         self._scene.clear()
         for i in self._items:
             i.paint(self._canvas)
-        from PyQt5.QtGui import QPen, QBrush
         self._scene.addEllipse(self._about_point.x, self._about_point.y,
-                                   4, 4,
-                                   QPen(), QBrush())
+                               4, 4,
+                               QPen(QColor(255, 0, 0)), QBrush(QColor(255, 0, 0)))
         self._scene.update()
 
     def exec_(self):
