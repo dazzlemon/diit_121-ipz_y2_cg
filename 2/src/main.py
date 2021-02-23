@@ -25,9 +25,6 @@ class Cg2(QApplication):
         self._scene.setSceneRect(0, 0, 800, 600)
         self._main_ui.gview.setScene(self._scene)
         self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        def on_scene_click(e):
-            print("test")
-        self._main_ui.gview.mousePressEvent = on_scene_click
 
         self._canvas = QCanvas(self._scene)
         self._items = [
@@ -97,6 +94,14 @@ class Cg2(QApplication):
 
         self._main_ui.scaleUpButton.setAutoRepeat(True)
         self._main_ui.scaleDownButton.setAutoRepeat(True)
+
+        def scene_click(event):
+            from PyQt5.QtGui import QPen, QBrush
+            x = event.scenePos().x()
+            y = event.scenePos().y()
+            self._scene.addEllipse(x, y, 4, 4, QPen(), QBrush())
+            print(x, y)# DEBUG
+        self._scene.mouseReleaseEvent = scene_click
 
 
     def _update(self):
