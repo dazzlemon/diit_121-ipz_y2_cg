@@ -42,8 +42,8 @@ class Cg2(QApplication):
             GraphicsEllipse(500, 550, 300, 55, QColor(30, 80, 0)),
             GraphicsLine(500, 580, 300, QColor(0, 0, 0))
         ]
-        self._update()
         self._about_point = GraphicsPoint(600, 600)
+        self._update()
 
 
     def _init_signals(self):
@@ -96,11 +96,10 @@ class Cg2(QApplication):
         self._main_ui.scaleDownButton.setAutoRepeat(True)
 
         def scene_click(event):
-            from PyQt5.QtGui import QPen, QBrush
-            x = event.scenePos().x()
-            y = event.scenePos().y()
-            self._scene.addEllipse(x, y, 4, 4, QPen(), QBrush())
-            print(x, y)# DEBUG
+            self._about_point.x = event.scenePos().x()
+            self._about_point.y = event.scenePos().y()
+            print(self._about_point.x, self._about_point.y)# DEBUG
+            self._update()
         self._scene.mouseReleaseEvent = scene_click
 
 
@@ -108,6 +107,10 @@ class Cg2(QApplication):
         self._scene.clear()
         for i in self._items:
             i.paint(self._canvas)
+        from PyQt5.QtGui import QPen, QBrush
+        self._scene.addEllipse(self._about_point.x, self._about_point.y,
+                                   4, 4,
+                                   QPen(), QBrush())
         self._scene.update()
 
     def exec_(self):
