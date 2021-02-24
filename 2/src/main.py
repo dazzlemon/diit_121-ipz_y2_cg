@@ -85,6 +85,14 @@ class Cg2(QApplication):
             self._update()
         self._scene.mouseReleaseEvent = scene_click
 
+        def checkbox_toggled(ref):
+            def toggle(val):
+                ref._is_transformable = val
+            return toggle
+        self._main_ui.bodyCheck.stateChanged.connect(checkbox_toggled(self.frog._items[0]))
+        self._main_ui.rightEyeCheck.stateChanged.connect(checkbox_toggled(self.frog._items[1]))
+        self._main_ui.leftEyeCheck.stateChanged.connect(checkbox_toggled(self.frog._items[2]))
+        self._main_ui.mouthCheck.stateChanged.connect(checkbox_toggled(self.frog._items[3]))
 
     def _update(self):
         self._scene.clear()
