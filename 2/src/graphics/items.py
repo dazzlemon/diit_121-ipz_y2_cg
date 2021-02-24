@@ -141,9 +141,9 @@ class GraphicsRect(GraphicsPolygonLike):
     """
     def __init__(self, x1: float, y1: float, x2: float, y2: float, color: QColor):
         self.color = color
-        GraphicsPolygonLike.__init__(self)
         self.start = GraphicsPoint(x1, y1)
         self.size  = GraphicsPoint(x2, y2)
+        GraphicsPolygonLike.__init__(self)
 
 
     @property
