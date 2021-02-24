@@ -1,0 +1,1 @@
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/dazzlemon/diit_121-ipz_y2_cg.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dazzlemon/diit_121-ipz_y2_cg/context:python)
