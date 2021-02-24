@@ -100,12 +100,6 @@ class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
         self._y = value
 
 
-    def move(self, delta: IPoint):
-        # no matrices required
-        self.x += delta.x
-        self.y += delta.y
-
-
     def transform(self, matrix: np.ndarray):
         """
         applies transformation matrix to this point,
