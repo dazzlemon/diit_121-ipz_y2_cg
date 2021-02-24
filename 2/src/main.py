@@ -94,6 +94,12 @@ class Cg2(QApplication):
         self._main_ui.leftEyeCheck.stateChanged.connect(checkbox_toggled(self.frog._items[2]))
         self._main_ui.mouthCheck.stateChanged.connect(checkbox_toggled(self.frog._items[3]))
 
+        self._main_ui.bodyCheck.setChecked(self.frog._items[0]._is_transformable)
+        self._main_ui.rightEyeCheck.setChecked(self.frog._items[1]._is_transformable)
+        self._main_ui.leftEyeCheck.setChecked(self.frog._items[2]._is_transformable)
+        self._main_ui.mouthCheck.setChecked(self.frog._items[3]._is_transformable)
+
+
     def _update(self):
         self._scene.clear()
         self.frog.paint(self._canvas)
