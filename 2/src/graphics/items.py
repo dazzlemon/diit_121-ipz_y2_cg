@@ -28,43 +28,25 @@ class AffineTransformable(IAffineTransformable):
 
 
     def rotate(self, about: IPoint, rad: float):
-        move_ = np.array([
-            [1, 0, about.x],
-            [0, 1, about.y],
-            [0, 0, 1      ],
-        ])
         rotate = np.array([
             [cos(rad), -sin(rad), 0],
             [sin(rad),  cos(rad), 0],
             [0,         0,        1],
         ])
-        move = np.array([
-            [1, 0, -about.x],
-            [0, 1, -about.y],
-            [0, 0, 1       ],
-        ])
-        matrix = move_ @ rotate @ move
-        self._transformations = matrix @ self._transformations
+        self.move(GraphicsPoint(-about.x, -about.y))
+        self._transformations = rotate @ self._transformations
+        self.move(about)
 
 
     def scale(self, about: IPoint, w: float, h: float):
-        move_ = np.array([
-            [1, 0, about.x],
-            [0, 1, about.y],
-            [0, 0, 1      ],
-        ])
         scale = np.array([
             [w, 0, 0],
             [0, h, 0],
             [0, 0, 1],
         ])
-        move = np.array([
-            [1, 0, -about.x],
-            [0, 1, -about.y],
-            [0, 0, 1       ],
-        ])
-        matrix = move_ @ scale @ move
-        self._transformations = matrix @ self._transformations
+        self.move(GraphicsPoint(-about.x, -about.y))
+        self._transformations = scale @ self._transformations
+        self.move(about)
 
 
 class GraphicsPoint(IPoint, IDrawable, IAffineTransformable):
