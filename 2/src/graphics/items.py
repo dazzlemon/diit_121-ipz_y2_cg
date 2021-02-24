@@ -132,16 +132,6 @@ class GraphicsLine(IDrawable, AffineTransformable):
         canvas.draw_lines(points, self.color)
 
 
-    @property
-    def color(self) -> QColor:
-        return self._color
-
-
-    @color.setter
-    def color(self, value):
-        self._color = value
-
-
 class GraphicsPolygonLike(IDrawable, AffineTransformable):
     """
     Represents a polygon that can draw itself onto ICanvas
@@ -194,16 +184,6 @@ class GraphicsRect(GraphicsPolygonLike):
         for i in pts:
             i.transform(self._transformations)
         return pts
-
-
-    @property
-    def color(self) -> QColor:
-        return self._color
-
-
-    @color.setter
-    def color(self, value: QColor):
-        self._color = value
 
 
 class GraphicsSquare(GraphicsRect):
@@ -262,16 +242,6 @@ class GraphicsEllipse(IDrawable, AffineTransformable):
 
         canvas.draw_lines(points, self.color)
         canvas.fill(points, self.color)
-
-
-    @property
-    def color(self) -> QColor:
-        return self._color
-
-
-    @color.setter
-    def color(self, value):
-        self._color = value
 
 
 class GraphicsCircle(GraphicsEllipse):

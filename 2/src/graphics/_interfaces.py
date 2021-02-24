@@ -44,15 +44,6 @@ class IDrawable:
     """
     Graphics item that can be drawn on ICanvas
     """
-    @property
-    def points(self) -> List[IPoint]:
-        """returns points to draw on canvas"""
-
-
-    @property
-    def color(self) -> QColor:
-        """color"""
-
 
     def paint(self, canvas: ICanvas):
         """paints this item onto canvas"""
