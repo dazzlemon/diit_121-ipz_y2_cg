@@ -105,7 +105,6 @@ class GraphicsLine(IDrawable, AffineTransformable):
     """
     Represents a 2D line
     """
-
     def __init__(self, x1: float, y1: float, length: float, color: QColor):
         self.start  = GraphicsPoint(x1, y1)
         self.length = length
@@ -136,30 +135,26 @@ class GraphicsPolygonLike(IDrawable, AffineTransformable):
         canvas.fill(pts, self.color)
 
 
-    @property
-    def points(self) -> List[IPoint]:
-        """Returns anchor points to draw a figure on ICanvas"""
-
-
 class GraphicsRect(GraphicsPolygonLike):
     """
     Represents a rectangle that can draw itself onto ICanvas
     """
     def __init__(self, x1: float, y1: float, x2: float, y2: float, color: QColor):
-        self._points = [
-            GraphicsPoint(x1, y1),
-            GraphicsPoint(x1 + x2, y1),
-            GraphicsPoint(x1 + x2, y1 + y2),
-            GraphicsPoint(x1     , y1 + y2),
-            GraphicsPoint(x1, y1),
-        ]
         self.color = color
         GraphicsPolygonLike.__init__(self)
+        self.start = GraphicsPoint(x1, y1)
+        self.size  = GraphicsPoint(x2, y2)
 
 
     @property
     def points(self) -> List[IPoint]:
-        return deepcopy(self._points)
+        return [
+            deepcopy(self.start),
+            GraphicsPoint(self.start.x + self.size.x, self.start.y),
+            GraphicsPoint(self.start.x + self.size.x, self.start.y + self.size.y),
+            GraphicsPoint(self.start.x              , self.start.y + self.size.y),
+            deepcopy(self.start)
+        ]
 
 
 class GraphicsSquare(GraphicsRect):
@@ -178,7 +173,7 @@ class GraphicsEllipse(GraphicsPolygonLike):
         self.start = GraphicsPoint(x1, y1)
         self.size  = GraphicsPoint(x2, y2)
         self.color = color
-        AffineTransformable.__init__(self)
+        GraphicsPolygonLike.__init__(self)
 
 
     @property
