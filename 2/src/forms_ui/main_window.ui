@@ -123,6 +123,38 @@
        </layout>
       </item>
       <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="leftEyeCheck">
+          <property name="text">
+           <string>left eye</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="bodyCheck">
+          <property name="text">
+           <string>body</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="mouthCheck">
+          <property name="text">
+           <string>mouth</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="rightEyeCheck">
+          <property name="text">
+           <string>rigth eye</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
