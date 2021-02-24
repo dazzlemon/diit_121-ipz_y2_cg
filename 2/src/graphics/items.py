@@ -141,8 +141,11 @@ class GraphicsPolygonLike(IDrawable, AffineTransformable):
 
 
     def paint(self, canvas: ICanvas):
-        canvas.draw_lines(self.points, self.color)
-        canvas.fill(self.points, self.color)
+        pts = self.points
+        for i in pts:
+            i.transform(self._transformations)
+        canvas.draw_lines(pts, self.color)
+        canvas.fill(pts, self.color)
 
 
     @property
@@ -167,23 +170,8 @@ class GraphicsRect(GraphicsPolygonLike):
 
 
     @property
-    def size(self) -> GraphicsPoint:
-        """.x -> width .y -> height"""
-        return self._size
-
-
-    @size.setter
-    def size(self, value: GraphicsPoint):
-        """sets size with new GraphicsPoint"""
-        self._size = value
-
-
-    @property
     def points(self) -> List[IPoint]:
-        pts = deepcopy(self._points)
-        for i in pts:
-            i.transform(self._transformations)
-        return pts
+        return deepcopy(self._points)
 
 
 class GraphicsSquare(GraphicsRect):
@@ -194,7 +182,7 @@ class GraphicsSquare(GraphicsRect):
         GraphicsRect.__init__(self, x, y, size, size, color)
 
 
-class GraphicsEllipse(IDrawable, AffineTransformable):
+class GraphicsEllipse(GraphicsPolygonLike):
     """
     Represents an Ellipse enclosed in rect that can draw itself onto ICanvas
     """
@@ -205,7 +193,8 @@ class GraphicsEllipse(IDrawable, AffineTransformable):
         AffineTransformable.__init__(self)
 
 
-    def paint(self, canvas: ICanvas):
+    @property
+    def points(self) -> List[IPoint]:
         orig_x = self.start.x
         orig_y = self.start.y
 
@@ -236,12 +225,7 @@ class GraphicsEllipse(IDrawable, AffineTransformable):
                 lambda p: GraphicsPoint(p.y, p.x),
                 points
             )
-        points = list(points)# to be able to iterate more than once
-        for i in points:
-            i.transform(self._transformations)
-
-        canvas.draw_lines(points, self.color)
-        canvas.fill(points, self.color)
+        return list(points)# to be able to iterate more than once
 
 
 class GraphicsCircle(GraphicsEllipse):
