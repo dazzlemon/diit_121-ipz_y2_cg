@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\begin{document}
+
+\section{Simple affine transformations in 3D}
+
+\subsection{Translate}
+by $\Delta$ (x, y, z)
+\begin{gather}
+	\begin{bmatrix}
+		x'\\
+		y'\\
+		z'\\
+		\_
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		1 & 0 & 0 & \Delta x\\
+		0 & 1 & 0 & \Delta y\\
+		0 & 0 & 1 & \Delta z\\
+		0 & 0 & 0 & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		x\\
+		y\\
+		z\\
+		1
+	\end{bmatrix}
+\end{gather}
+
+\subsection{Scale}
+about origin
+by S (x, y, z)
+\begin{gather}
+	\begin{bmatrix}
+		x'\\
+		y'\\
+		z'\\
+		\_
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		S_x & 0   & 0   & 0\\
+		0   & S_y & 0   & 0\\
+		0   & 0   & S_z & 0\\
+		0   & 0   & 0   & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		x\\
+		y\\
+		z\\
+		1
+	\end{bmatrix}
+\end{gather}
+
+\subsection{Rotate}
+
+about $O_z$
+by $\theta$
+\begin{gather}
+		\begin{bmatrix}
+		x'\\
+		y'\\
+		z'\\
+		\_
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\cos \theta & -\sin \theta & 0 & 0\\
+		\sin \theta &  \cos \theta & 0 & 0\\
+		0           & 0            & 1 & 0\\
+		0           & 0            & 0 & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		x\\
+		y\\
+		z\\
+		1
+	\end{bmatrix}
+\end{gather}
+\\
+about $O_x$
+by $\theta$
+\begin{gather}
+		\begin{bmatrix}
+		x'\\
+		y'\\
+		z'\\
+		\_
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		1 & 0           & 0            & 0\\
+		0 & \cos \theta & -\sin \theta & 0\\
+		0 & \sin \theta &  \cos \theta & 0\\
+		0 & 0           &  0           & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		x\\
+		y\\
+		z\\
+		1
+	\end{bmatrix}
+\end{gather}
+\\
+about $O_y$
+by $\theta$
+\begin{gather}
+		\begin{bmatrix}
+		x'\\
+		y'\\
+		z'\\
+		\_
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\cos \theta & 0 & -\sin \theta & 0\\
+		0           & 1 & 0            & 0\\
+		\sin \theta & 0 &  \cos \theta & 0\\
+		0           & 0 & 0            & 1
+	\end{bmatrix}
+	\begin{bmatrix}
+		x\\
+		y\\
+		z\\
+		1
+	\end{bmatrix}
+\end{gather}
+
+\end{document}
