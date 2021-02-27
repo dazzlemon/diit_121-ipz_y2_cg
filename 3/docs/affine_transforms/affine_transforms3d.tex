@@ -131,7 +131,7 @@ by $\theta$
 \end{gather}
 
 \clearpage
-\section{Axonometrix projections}
+\section{Axonometric projections}
 $T_{axonometric_{plane}} = T_{rot_1} * T_{rot_2} * T_{orto_{plane}}$
 \\e.g.
 \begin{gather}T_{axonometric_{z=0}} = T_{rot_y} * T_{rot_x} * T_{orto_{z=0}}\end{gather}
@@ -183,4 +183,40 @@ It can be achieved by rotating an object $45 \degree$ in the plane of the screen
 $K_x = K_y \neq~K_z$
 \\$K_y = K_z \neq~K_x$
 \\$K_z = K_x \neq~K_y$
+\\right angle dimetric projection: $K_x = K_z = 0.94; K_y = 0.47$
+\\$K_x = K_z = 1; K_y = 0.5$
+\\
+\begin{gather}
+	\begin{bmatrix}
+		x'\\
+		y'\\
+		\_\\
+		\_
+	\end{bmatrix}
+	= T_{dimetric~right~angle}
+	\begin{bmatrix}
+		x\\
+		y\\
+		z\\
+		1
+	\end{bmatrix}
+\end{gather}
+
+\begin{gather}
+	T_{dimetric~right~angle}
+	= 
+	\begin{bmatrix}
+		\cos 7\degree10' &  \sin  7\degree10' * \cos 41\degree25' & 0 & 0\\
+		0                &  \cos 41\degree25'                     & 0 & 0\\
+		\sin 7\degree10' & -\cos  7\degree10' * \sin 41\degree25' & 0 & 0\\
+		0                & 0                                      & 0 & 1
+	\end{bmatrix}
+	\approx
+	\begin{bmatrix}
+		0.99  & 0.094 & 0 & 0\\
+		0     & 0.75  & 0 & 0\\
+		0.125 & -0.66 & 0 & 0\\
+		0     & 0     & 0 & 1
+	\end{bmatrix}
+\end{gather}
 \end{document}
