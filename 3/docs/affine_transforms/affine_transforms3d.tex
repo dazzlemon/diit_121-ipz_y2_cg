@@ -132,11 +132,31 @@ by $\theta$
 
 \clearpage
 \section{Axonometrix projections}
-$T_{axonometric_{axis}} = T_{rot_1} * T_{rot_2} * T_{orto_{axis}}$
-\\
-e.g. $T_{axonometric_z} = T_{rot_y} * T_{rot_x} * T_{orto_z}$
-\\
-where $T_{rot_{axis}}$ is one of matrices from Section~\ref{rotations}
+$T_{axonometric_{plane}} = T_{rot_1} * T_{rot_2} * T_{orto_{plane}}$
+\\e.g.
+\begin{gather}T_{axonometric_{z=0}} = T_{rot_y} * T_{rot_x} * T_{orto_{z=0}}\end{gather}
+\begin{gather}T_{axonometric_{y=0}} = T_{rot_x} * T_{rot_z} * T_{orto_{y=0}}\end{gather}
+\begin{gather}T_{axonometric_{x=0}} = T_{rot_z} * T_{rot_y} * T_{orto_{x=0}}\end{gather}
+\\where $T_{rot_{axis}}$ is one of matrices from Section~\ref{rotations}
+\\and $T_{orto_{plane}}$ is ortographic projection onto a plane
+\\e.g. $T_{orto_{z=0}} = 
+\begin{bmatrix}
+	1 & 0 & 0 & 0\\
+	0 & 1 & 0 & 0\\
+	0 & 0 & 0 & 0\\
+	0 & 0 & 0 & 1
+\end{bmatrix}
+$
+\\so we get $T_{axonometric_{z=0}} = 
+\begin{bmatrix}
+	\cos \theta &  \sin \theta * \cos \phi & 0 & 0\\
+	0           &  \cos \phi               & 0 & 0\\
+	\sin \theta & -\cos \theta * \sin \phi & 0 & 0\\
+	0           & 0                        & 0 & 1
+\end{bmatrix}
+$
+\\where $\theta$ and $\phi$ are rotation angles around $O_x$ and $O_y$ accordingly
+\\trimetric, isometric and dimetric have different ratios of distortion coefficients ($K_x, K_y, K_z$)
 \subsection{Isometric}
 Isometric projections are commonly used in technical drawings and used to be used in some computer game graphics.
 In an isometric projection the three axes appear $120\degree$ drawings and used to from each other and are equally foreshortened.
