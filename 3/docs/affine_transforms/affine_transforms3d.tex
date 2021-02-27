@@ -157,11 +157,30 @@ $
 $
 \\where $\theta$ and $\phi$ are rotation angles around $O_x$ and $O_y$ accordingly
 \\trimetric, isometric and dimetric have different ratios of distortion coefficients ($K_x, K_y, K_z$)
+\\where
+\\
+$
+	K_{xx=0} = \sqrt{{\sin}^2 \psi - {\cos}^2 \psi * {\sin}^2 \theta}\\
+	K_{yx=0} = \sqrt{{\cos}^2 \psi + {\sin}^2 \psi * {\sin}^2 \theta}\\
+	K_{zx=0} = \sqrt{{\cos}^2 \theta}\\
+	\\
+	K_{xy=0} = \sqrt{{\cos}^2 \psi}\\
+	K_{yy=0} = \sqrt{{\sin}^2 \phi - {\cos}^2 \phi * {\sin}^2 \psi}\\
+	K_{zy=0} = \sqrt{{\cos}^2 \phi + {\sin}^2 \phi * {\sin}^2 \psi}\\
+	\\
+	K_{xz=0} = \sqrt{{\cos}^2 \theta + {\sin}^2 \theta * {\sin}^2 \phi}\\
+	K_{yz=0} = \sqrt{{\cos}^2 \phi}\\
+	K_{zz=0} = \sqrt{{\sin}^2 \theta - {\cos}^2 \theta * {\sin}^2 \phi}
+$
+
+\clearpage
 \subsection{Isometric}
 Isometric projections are commonly used in technical drawings and used to be used in some computer game graphics.
 In an isometric projection the three axes appear $120\degree$ drawings and used to from each other and are equally foreshortened.
-It can be achieved by rotating an object $45 \degree$ in the plane of the screen and $\sim 35.3 \degree (\arctan (1 / \sqrt 2))$ through the horizontal axis
-
+It can be achieved by rotating an object $45 \degree$ in the plane of the screen and $\sim 35.3 \degree (\arctan (1 / \sqrt 2))$ through the horizontal axis.
+\\$K_x = K_y = K_z$
 \subsection{Dimetric}
-
+$K_x = K_y \neq~K_z$
+\\$K_y = K_z \neq~K_x$
+\\$K_z = K_x \neq~K_y$
 \end{document}
