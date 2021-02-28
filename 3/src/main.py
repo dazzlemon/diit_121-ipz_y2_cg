@@ -18,6 +18,20 @@ t_right_angle_dimetric = np.array([
     [0, 0, -1, 0],
 ])
 
+class Point2d:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+def from3dto2d(x, y, z):
+    #p4 = np.array([x, y, z, 1])
+    #p4_ = t_right_angle_dimetric @ p4
+    x_ = (x - z) / sqrt(2)#p4_[0]
+    y_ = (x + 2*y + z) / sqrt(6)#p4_[1]
+    return Point2d(x_, y_)
+
+
 class Cg3(QApplication):
     def __init__(self, argv):
         QApplication.__init__(self, argv)
@@ -31,13 +45,13 @@ class Cg3(QApplication):
 
     def _init_canvas(self):
         self._scene = QGraphicsScene()
-#        self._scene.setSceneRect(0, 0, 800, 600)
+#       self._scene.setSceneRect(0, 0, 800, 600)
         self._main_ui.gview.setScene(self._scene)
- #       self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+#       self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         self.parallelepiped = Parallelepiped(
             GraphicsPoint3d(0, 0,   0),
-            GraphicsPoint3d(0, 200, 0),
+            GraphicsPoint3d(100, 200, 0),
             100,
             100
         )
@@ -50,6 +64,21 @@ class Cg3(QApplication):
 
     def _update(self):
         self._scene.clear()
+
+        zero = GraphicsPoint3d(0, 0, 0)
+
+        unit_vecs = [
+            GraphicsPoint3d(1, 0, 0),
+            GraphicsPoint3d(0, 1, 0),
+            GraphicsPoint3d(0, 0, 1),
+        ]
+
+        zero = from3dto2d(zero.x, zero.y, zero.z)
+
+        for p in unit_vecs:
+            p_ = from3dto2d(p.x, p.y, p.z)
+            self._scene.addLine(zero.x, zero.y, 1000 * p_.x, 1000 * p_.y)
+
         self.parallelepiped.paint(self._scene)
 
 
@@ -89,13 +118,9 @@ class Parallelepiped:
         ]
 
         for p in face1 + face2:
-            p4 = np.array([p.x, p.y, p.z, 1])
-            p4_ = t_right_angle_dimetric @ p4
-            x = (p.x - p.z) / sqrt(2)#p4_[0]
-            y = (p.x + 2*p.y + p.z) / sqrt(6)#p4_[1]
-#            canvas.addEllipse(x, y, 4, 4, QPen(), QBrush())
-            p.x = x
-            p.y = y
+            p_ = from3dto2d(p.x, p.y, p.z)
+            p.x = p_.x
+            p.y = p_.y
 
         for p1, p2 in pairwise([*face1, face1[0]]):
             canvas.addLine(p1.x, p1.y, p2.x, p2.y)
