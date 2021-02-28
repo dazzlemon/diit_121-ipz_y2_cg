@@ -2,6 +2,7 @@
 Cg3 Main
 """
 
+from more_itertools import pairwise
 from math import sqrt
 import numpy as np
 from PyQt5.QtGui import QPen, QBrush
@@ -16,7 +17,6 @@ t_right_angle_dimetric = np.array([
     [0, 0, 1, 1],
     [0, 0, -1, 0],
 ])
-
 
 class Cg3(QApplication):
     def __init__(self, argv):
@@ -37,7 +37,7 @@ class Cg3(QApplication):
 
         self.parallelepiped = Parallelepiped(
             GraphicsPoint3d(0, 0,   0),
-            GraphicsPoint3d(0, 100, 0),
+            GraphicsPoint3d(0, 200, 0),
             100,
             100
         )
@@ -75,24 +75,36 @@ class Parallelepiped:
 
 
     def paint(self, canvas: QGraphicsScene):
-        points = [
+        face1 = [
             self.start1,
             GraphicsPoint3d(self.start1.x + self.w, self.start1.y,          self.start1.z),
             GraphicsPoint3d(self.start1.x + self.w, self.start1.y, self.start1.z + self.h),
             GraphicsPoint3d(self.start1.x,          self.start1.y, self.start1.z + self.h),
+        ]
+        face2 = [
             self.start2,
             GraphicsPoint3d(self.start2.x + self.w, self.start2.y,          self.start2.z),
             GraphicsPoint3d(self.start2.x + self.w, self.start2.y, self.start2.z + self.h),
             GraphicsPoint3d(self.start2.x,          self.start2.y, self.start2.z + self.h),
         ]
 
-        for p in points:
+        for p in face1 + face2:
             p4 = np.array([p.x, p.y, p.z, 1])
             p4_ = t_right_angle_dimetric @ p4
             x = (p.x - p.z) / sqrt(2)#p4_[0]
             y = (p.x + 2*p.y + p.z) / sqrt(6)#p4_[1]
-            canvas.addEllipse(x, y, 4, 4, QPen(), QBrush())
+#            canvas.addEllipse(x, y, 4, 4, QPen(), QBrush())
+            p.x = x
+            p.y = y
 
+        for p1, p2 in pairwise([*face1, face1[0]]):
+            canvas.addLine(p1.x, p1.y, p2.x, p2.y)
+
+        for p1, p2 in pairwise([*face2, face2[0]]):
+            canvas.addLine(p1.x, p1.y, p2.x, p2.y)
+
+        for p1, p2 in zip(face1, face2):
+            canvas.addLine(p1.x, p1.y, p2.x, p2.y)
 
 def main():
     """main"""
