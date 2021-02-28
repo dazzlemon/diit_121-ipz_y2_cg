@@ -2,7 +2,7 @@
 CG3 main
 """
 
-from math import sin, cos
+from math import sin, cos, pi
 import numpy as np
 
 
@@ -125,6 +125,22 @@ def main():
     """main"""
     point = GraphicsPoint3d(1, 1, 1)
     print(point)
+
+    point.scale(GraphicsPoint3d(0.5, 0.6, 0.7))
+    print("after scale(0.5, 0.6, 0.7): %s" % point)
+    point.scale(GraphicsPoint3d(1 / 0.5, 1 / 0.6, 1 / 0.7))
+
+    point.rotate_x(pi)
+    print("after rotate_x(pi): %s" % point)
+    point.rotate_x(-pi)
+
+    point.rotate_y(pi)
+    print("after rotate_y(pi): %s" % point)
+    point.rotate_y(-pi)
+
+    point.rotate_z(pi)
+    print("after rotate_z(pi): %s" % point)
+    point.rotate_z(-pi)
 
 
 if __name__ == "__main__":
