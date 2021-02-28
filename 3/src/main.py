@@ -2,6 +2,7 @@
 Cg3 Main
 """
 
+from PyQt5.QtGui import QPen, QBrush
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
 from graphics_point3d import Point3d, GraphicsPoint3d
@@ -26,11 +27,12 @@ class Cg3(QApplication):
 
         self.parallelepiped = Parallelepiped(
             GraphicsPoint3d(0, 0, 0),
-            GraphicsPoint3d(0, 0, 1),
-            1,
-            1
+            GraphicsPoint3d(0, 0, 100),
+            100,
+            100
         )
         self._update()
+
 
     def _init_signals(self):
         pass
@@ -61,7 +63,20 @@ class Parallelepiped:
 
 
     def paint(self, canvas: QGraphicsScene):
-        pass
+        points = [
+            self.start1,
+            GraphicsPoint3d(self.start1.x + self.w, self.start1.y,          self.start1.z),
+            GraphicsPoint3d(self.start1.x + self.w, self.start1.y + self.h, self.start1.z),
+            GraphicsPoint3d(self.start1.x,          self.start1.y + self.h, self.start1.z),
+            self.start2,
+            GraphicsPoint3d(self.start2.x + self.w, self.start2.y,          self.start2.z),
+            GraphicsPoint3d(self.start2.x + self.w, self.start2.y + self.h, self.start2.z),
+            GraphicsPoint3d(self.start2.x,          self.start2.y + self.h, self.start2.z),
+        ]
+
+        for p in points:
+            p_ = p
+            canvas.addEllipse(p_.x, p_.y, 4, 4, QPen(), QBrush())
 
 
 def main():
