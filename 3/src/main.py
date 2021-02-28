@@ -1,146 +1,74 @@
 """
-CG3 main
+Cg3 Main
 """
 
-from math import sin, cos, pi
-import numpy as np
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
+from graphics_point3d import Point3d, GraphicsPoint3d
+from forms_py import Ui_MainWindow
+
+class Cg3(QApplication):
+    def __init__(self, argv):
+        QApplication.__init__(self, argv)
+
+        self._main_window = QMainWindow()
+        self._main_ui     = Ui_MainWindow()
+        self._main_ui.setupUi(self._main_window)
+        self._init_canvas()
+        self._init_signals()
 
 
-class Point3d:
-    """x,y,z 3d point"""
-    @property
-    def x(self):
-        """x component of this point"""
-        return self._x
+    def _init_canvas(self):
+        self._scene = QGraphicsScene()
+        self._scene.setSceneRect(0, 0, 800, 600)
+        self._main_ui.gview.setScene(self._scene)
+        self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+
+        self.parallelepiped = Parallelepiped(
+            GraphicsPoint3d(0, 0, 0),
+            GraphicsPoint3d(0, 0, 1),
+            1,
+            1
+        )
+        self._update()
+
+    def _init_signals(self):
+        pass
 
 
-    @property
-    def y(self):
-        """y component of this point"""
-        return self._y
+    def _update(self):
+        self._scene.clear()
+        self.parallelepiped.paint(self._scene)
 
 
-    @property
-    def z(self):
-        """z component of this point"""
-        return self._z
+    def exec_(self):
+        self._main_window.show()
+        QApplication.exec_()
 
 
-    @x.setter
-    def x(self, value: float):
-        self._x = value
+class Parallelepiped:
+    """parallelepiped"""
+    def __init__(self, start1: Point3d, start2: Point3d, w: float, h: float):
+        """
+        start1 & start2 - starting points for bases (that are connected by single edge)
+        w, h - size of base
+        """
+
+        self.start1 = start1
+        self.start2 = start2
+        self.w = w
+        self.h = h
 
 
-    @y.setter
-    def y(self, value: float):
-        self._y = value
-
-
-    @z.setter
-    def z(self, value: float):
-        self._z = value
-
-
-class GraphicsPoint3d(Point3d):
-    """Represents a point in 3d space"""
-    def __init__(self, x: float, y: float, z: float):
-        self.x = x
-        self.y = y
-        self.z = z
-
-
-    def move(self, delta: Point3d):
-        """Moves this point by delta"""
-        t = np.array([
-            [1, 0, 0, delta.x],
-            [0, 1, 0, delta.y],
-            [0, 0, 1, delta.z],
-            [0, 0, 0,       1],
-        ])
-        self.transform(t)
-
-
-    def scale(self, scale: Point3d):
-        """Scales this by <scale> about origin, if <scale> = (1, 1, 1) point doesnt change"""
-        t = np.array([
-            [scale.x, 0,       0,       0],
-            [0,       scale.y, 0,       0],
-            [0,       0,       scale.z, 0],
-            [0,       0,       0,       1],
-        ])
-        self.transform(t)
-
-
-    def rotate_x(self, rad: float):
-        """Rotates by rad degrees around O_x"""
-        t = np.array([
-            [1,        0,         0, 0],
-            [0, cos(rad), -sin(rad), 0],
-            [0, sin(rad),  cos(rad), 0],
-            [0,        0,         0, 1],
-        ])
-        self.transform(t)
-
-
-    def rotate_y(self, rad: float):
-        """Rotates by rad degrees around O_y"""
-        t = np.array([
-            [cos(rad), 0, -sin(rad), 0],
-            [0,        1,         0, 0],
-            [sin(rad), 0,  cos(rad), 0],
-            [0,        0,         0, 1],
-        ])
-        self.transform(t)
-
-
-    def rotate_z(self, rad: float):
-        """Rotates by rad degrees around O_z"""
-        t = np.array([
-            [cos(rad), -sin(rad), 0, 0],
-            [sin(rad),  cos(rad), 0, 0],
-            [0,         0,        1, 0],
-            [0,         0,        0, 1],
-        ])
-        self.transform(t)
-
-
-    def transform(self, t_matrix):
-        """applies t_matrix to this point"""
-        vec4  = np.array([self.x, self.y, self.z, 1])
-        vec4_ = t_matrix @ vec4
-        self.x = vec4_[0]
-        self.y = vec4_[1]
-        self.z = vec4_[2]
-
-
-    def __repr__(self):
-        return "<Cg3::Point3d (x:%s, y:%s, z:%s)>" % (self.x, self.y, self.z)
-
-
-    def __str__(self):
-        return "(%s, %s, %s)" % (self.x, self.y, self.z)
+    def paint(self, canvas: QGraphicsScene):
+        pass
 
 
 def main():
     """main"""
-    point = GraphicsPoint3d(1, 1, 1)
-    print(point)
-
-    point.scale(GraphicsPoint3d(0.5, 0.6, 0.7))
-    print("after scale(0.5, 0.6, 0.7): %s" % point)
-    point.scale(GraphicsPoint3d(1 / 0.5, 1 / 0.6, 1 / 0.7))
-
-    point.rotate_x(pi)
-    print("after rotate_x(pi): %s" % point)
-    point.rotate_x(-pi)
-
-    point.rotate_y(pi)
-    print("after rotate_y(pi): %s" % point)
-    point.rotate_y(-pi)
-
-    point.rotate_z(pi)
-    print("after rotate_z(pi): %s" % point)
-    point.rotate_z(-pi)
+    import sys
+    app = Cg3(sys.argv)
+    sys.exit(app.exec_())
 
 
 if __name__ == "__main__":
