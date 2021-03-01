@@ -2,12 +2,13 @@
 Cg3 Main
 """
 
-from PyQt5.QtGui import QPen, QBrush
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
-from forms_py import Ui_MainWindow
+from PyQt5.QtGui      import QPen, QBrush
+from PyQt5.QtCore     import Qt
+from PyQt5.QtWidgets  import QApplication, QMainWindow, QGraphicsScene
+from forms_py         import Ui_MainWindow
 from graphics_point3d import GraphicsPoint3d
-from point import Parallelepiped, from3dto2d
+from parallelepiped   import Parallelepiped
+from graphics_point3d import from3dto2d
 
 class Cg3(QApplication):
     def __init__(self, argv):
