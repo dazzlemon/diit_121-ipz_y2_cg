@@ -23,7 +23,7 @@ def world3d_to_2d(x, y, z):
     #p4 = np.array([x, y, z, 1])
     #p4_ = t_right_angle_dimetric @ p4
     x_ = (x - z) / sqrt(2)#p4_[0]
-    y_ = (x + 2*y + z) / sqrt(6)#p4_[1]
+    y_ = -(x - 2*y + z) / sqrt(6)#p4_[1]
     return Point2d(x_, y_)
 
 

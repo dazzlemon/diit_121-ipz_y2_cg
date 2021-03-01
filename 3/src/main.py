@@ -27,8 +27,8 @@ class Cg3(QApplication):
 #       self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         self.parallelepiped = Parallelepiped(
-            GraphicsPoint3d(0, 0,   0),
-            GraphicsPoint3d(100, 200, 0),
+            GraphicsPoint3d(10, 0, 10),
+            GraphicsPoint3d(110, 210, 0),
             100,
             100
         )
