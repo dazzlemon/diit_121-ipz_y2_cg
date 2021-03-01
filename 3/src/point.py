@@ -1,33 +1,9 @@
 """
 Cg3 Point2d, from3dto2d, Parallelepiped
 """
-from math import sqrt
 from more_itertools import pairwise
-import numpy as np
 from PyQt5.QtWidgets import QGraphicsScene
-from graphics_point3d import GraphicsPoint3d, Point3d
-
-t_right_angle_dimetric = np.array([
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, 1],
-    [0, 0, -1, 0],
-])
-
-
-class Point2d:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-
-def from3dto2d(x, y, z):
-    #p4 = np.array([x, y, z, 1])
-    #p4_ = t_right_angle_dimetric @ p4
-    x_ = (x - z) / sqrt(2)#p4_[0]
-    y_ = (x + 2*y + z) / sqrt(6)#p4_[1]
-    return Point2d(x_, y_)
-
+from graphics_point3d import GraphicsPoint3d, Point3d, from3dto2d
 
 class Parallelepiped:
     """parallelepiped"""
@@ -46,6 +22,9 @@ class Parallelepiped:
 
 
     def paint(self, canvas: QGraphicsScene):
+        """
+        Paints this Parallelepiped onto canvas
+        """
         face1 = [
             self.start1,
             GraphicsPoint3d(self.start1.x + self.w, self.start1.y,          self.start1.z),
