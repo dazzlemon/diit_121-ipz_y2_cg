@@ -46,16 +46,19 @@ class Cg3(QApplication):
         zero = GraphicsPoint3d(0, 0, 0)
 
         unit_vecs = [
-            GraphicsPoint3d(1, 0, 0),
-            GraphicsPoint3d(0, 1, 0),
-            GraphicsPoint3d(0, 0, 1),
+            (GraphicsPoint3d(1, 0, 0), "x"),
+            (GraphicsPoint3d(0, 1, 0), "y"),
+            (GraphicsPoint3d(0, 0, 1), "z"),
         ]
 
         zero = from3dto2d(zero.x, zero.y, zero.z)
 
-        for p in unit_vecs:
+        axes_len = 1000
+        for p, name in unit_vecs:
             p_ = from3dto2d(p.x, p.y, p.z)
-            self._scene.addLine(zero.x, zero.y, 1000 * p_.x, 1000 * p_.y)
+            self._scene.addLine(zero.x, zero.y, axes_len * p_.x, axes_len * p_.y)
+            text = self._scene.addText(name)
+            text.setPos(p_.x * axes_len, p_.y * axes_len)
 
         self.parallelepiped.paint(self._scene)
 
