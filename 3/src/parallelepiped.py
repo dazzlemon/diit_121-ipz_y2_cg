@@ -3,7 +3,7 @@ Cg3 Point2d, from3dto2d, Parallelepiped
 """
 from more_itertools import pairwise
 from PyQt5.QtWidgets import QGraphicsScene
-from graphics_point3d import GraphicsPoint3d, Point3d, from3dto2d
+from graphics_point3d import GraphicsPoint3d, Point3d, world3d_to_view
 
 class Parallelepiped:
     """parallelepiped"""
@@ -39,7 +39,7 @@ class Parallelepiped:
         ]
 
         for p in face1 + face2:
-            p_ = from3dto2d(p.x, p.y, p.z)
+            p_ = world3d_to_view(p.x, p.y, p.z)
             p.x = p_.x
             p.y = p_.y
 

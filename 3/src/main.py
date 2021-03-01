@@ -6,9 +6,8 @@ from PyQt5.QtGui      import QPen, QBrush
 from PyQt5.QtCore     import Qt
 from PyQt5.QtWidgets  import QApplication, QMainWindow, QGraphicsScene
 from forms_py         import Ui_MainWindow
-from graphics_point3d import GraphicsPoint3d
+from graphics_point3d import GraphicsPoint3d, world3d_to_view
 from parallelepiped   import Parallelepiped
-from graphics_point3d import from3dto2d
 
 class Cg3(QApplication):
     def __init__(self, argv):
@@ -51,11 +50,11 @@ class Cg3(QApplication):
             (GraphicsPoint3d(0, 0, 1), "z"),
         ]
 
-        zero = from3dto2d(zero.x, zero.y, zero.z)
+        zero = world3d_to_view(zero.x, zero.y, zero.z)
 
         axes_len = 1000
         for p, name in unit_vecs:
-            p_ = from3dto2d(p.x, p.y, p.z)
+            p_ = world3d_to_view(p.x, p.y, p.z)
             self._scene.addLine(zero.x, zero.y, axes_len * p_.x, axes_len * p_.y)
             text = self._scene.addText(name)
             text.setPos(p_.x * axes_len, p_.y * axes_len)

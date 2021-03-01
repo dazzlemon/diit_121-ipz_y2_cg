@@ -19,12 +19,20 @@ class Point2d:
         self.y = y
 
 
-def from3dto2d(x, y, z):
+def world3d_to_2d(x, y, z):
     #p4 = np.array([x, y, z, 1])
     #p4_ = t_right_angle_dimetric @ p4
     x_ = (x - z) / sqrt(2)#p4_[0]
     y_ = (x + 2*y + z) / sqrt(6)#p4_[1]
     return Point2d(x_, y_)
+
+
+def world2d_to_view(p: Point2d):
+    return Point2d(p.x, -p.y)
+
+
+def world3d_to_view(x, y, z):
+    return world2d_to_view(world3d_to_2d(x, y, z))
 
 
 class Point3d:
