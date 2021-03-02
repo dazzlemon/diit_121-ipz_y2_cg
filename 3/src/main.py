@@ -26,25 +26,6 @@ class Cg3(QApplication):
         self._main_ui.gview.setScene(self._scene)
 #       self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
-        def rot_x(x):
-            self.parallelepiped.rot_x = np.deg2rad(x)
-            self._update()
-            print(f"{np.deg2rad(x) = }")
-
-        def rot_y(y):
-            self.parallelepiped.rot_y = np.deg2rad(y)
-            self._update()
-            print(f"{np.deg2rad(y) = }")
-
-        def rot_z(z):
-            self.parallelepiped.rot_z = np.deg2rad(z)
-            self._update()
-            print(f"{np.deg2rad(z) = }")
-
-        self._main_ui.xDial.valueChanged.connect(rot_x)
-        self._main_ui.yDial.valueChanged.connect(rot_y)
-        self._main_ui.zDial.valueChanged.connect(rot_z)
-
         self.parallelepiped = Parallelepiped(
             GraphicsPoint3d(10, 0, 10),
             GraphicsPoint3d(110, 210, 0),
@@ -55,8 +36,25 @@ class Cg3(QApplication):
 
 
     def _init_signals(self):
-        pass
+        def rot_x(x):
+            self.parallelepiped.rot_x = np.deg2rad(x)
+            self._update()
 
+        def rot_y(y):
+            self.parallelepiped.rot_y = np.deg2rad(y)
+            self._update()
+
+        def rot_z(z):
+            self.parallelepiped.rot_z = np.deg2rad(z)
+            self._update()
+
+        self._main_ui.xDial.valueChanged.connect(rot_x)
+        self._main_ui.yDial.valueChanged.connect(rot_y)
+        self._main_ui.zDial.valueChanged.connect(rot_z)
+
+        def scale(val):
+            print(f"{val = }")
+        self._main_ui.scaleSpinBox.valueChanged.connect(scale)
 
     def _update(self):
         self._scene.clear()
