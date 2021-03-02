@@ -19,21 +19,6 @@ class Point2d:
         self.y = y
 
 
-def world3d_to_2d(x, y, z):
-    #p4 = np.array([x, y, z, 1])
-    #p4_ = t_right_angle_dimetric @ p4
-    x_ = (x - z) / sqrt(2)#p4_[0]
-    y_ = -(x - 2*y + z) / sqrt(6)#p4_[1]
-    return Point2d(x_, y_)
-
-
-def world2d_to_view(p: Point2d):
-    return Point2d(p.x, -p.y)
-
-
-def world3d_to_view(x, y, z):
-    return world2d_to_view(world3d_to_2d(x, y, z))
-
 
 class Point3d:
     """x,y,z 3d point"""
@@ -148,6 +133,23 @@ class GraphicsPoint3d(Point3d):
 
     def __str__(self):
         return "(%s, %s, %s)" % (self.x, self.y, self.z)
+
+
+def world3d_to_2d(p: Point3d) -> Point2d:
+    #p4 = np.array([x, y, z, 1])
+    #p4_ = t_right_angle_dimetric @ p4
+    x = (p.x - p.z) / sqrt(2)#p4_[0]
+    y = -(p.x - 2*p.y + p.z) / sqrt(6)#p4_[1]
+    return Point2d(x, y)
+
+
+def world2d_to_view(p: Point2d) -> Point2d:
+    return Point2d(p.x, -p.y)
+
+
+def world3d_to_view(p: Point3d) -> Point2d:
+    """maps 3d coords to 2d with axonometric projection"""
+    return world2d_to_view(world3d_to_2d(p))
 
 
 def main():

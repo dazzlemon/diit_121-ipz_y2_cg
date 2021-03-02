@@ -1,8 +1,9 @@
 """
 Cg3 Point2d, from3dto2d, Parallelepiped
 """
-from more_itertools import pairwise
-from PyQt5.QtWidgets import QGraphicsScene
+from copy             import deepcopy
+from more_itertools   import pairwise
+from PyQt5.QtWidgets  import QGraphicsScene
 from graphics_point3d import GraphicsPoint3d, Point3d, world3d_to_view
 
 class Parallelepiped:
@@ -31,22 +32,29 @@ class Parallelepiped:
             GraphicsPoint3d(self.start1.x + self.w, self.start1.y, self.start1.z + self.h),
             GraphicsPoint3d(self.start1.x,          self.start1.y, self.start1.z + self.h),
         ]
+        face1 = map(world3d_to_view, face1)
         face2 = [
             self.start2,
             GraphicsPoint3d(self.start2.x + self.w, self.start2.y,          self.start2.z),
             GraphicsPoint3d(self.start2.x + self.w, self.start2.y, self.start2.z + self.h),
             GraphicsPoint3d(self.start2.x,          self.start2.y, self.start2.z + self.h),
         ]
+        face2 = map(world3d_to_view, face2)
 
-        for p in face1 + face2:
-            p_ = world3d_to_view(p.x, p.y, p.z)
-            p.x = p_.x
-            p.y = p_.y
+        def pairwise_lf(gen):
+            """
+            same as pairwise, but last pair is (last, first),
+            and not generator but raw list
+            doesnt ruin input generator
+            """
+            l = list(deepcopy(gen))
+            l.append(l[0])
+            return pairwise(l)
 
-        for p1, p2 in pairwise([*face1, face1[0]]):
+        for p1, p2 in pairwise_lf(face1):
             canvas.addLine(p1.x, p1.y, p2.x, p2.y)
 
-        for p1, p2 in pairwise([*face2, face2[0]]):
+        for p1, p2 in pairwise_lf(face2):
             canvas.addLine(p1.x, p1.y, p2.x, p2.y)
 
         for p1, p2 in zip(face1, face2):

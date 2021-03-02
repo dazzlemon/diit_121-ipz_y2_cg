@@ -42,7 +42,7 @@ class Cg3(QApplication):
     def _update(self):
         self._scene.clear()
 
-        zero = GraphicsPoint3d(0, 0, 0)
+        zero = world3d_to_view(GraphicsPoint3d(0, 0, 0))
 
         unit_vecs = [
             (GraphicsPoint3d(1, 0, 0), "x"),
@@ -50,11 +50,9 @@ class Cg3(QApplication):
             (GraphicsPoint3d(0, 0, 1), "z"),
         ]
 
-        zero = world3d_to_view(zero.x, zero.y, zero.z)
-
         axes_len = 1000
         for p, name in unit_vecs:
-            p_ = world3d_to_view(p.x, p.y, p.z)
+            p_ = world3d_to_view(p)
             self._scene.addLine(zero.x, zero.y, axes_len * p_.x, axes_len * p_.y)
             text = self._scene.addText(name)
             text.setPos(p_.x * axes_len, p_.y * axes_len)
