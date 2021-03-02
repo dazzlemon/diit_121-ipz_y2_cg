@@ -27,6 +27,9 @@
           <property name="maximum">
            <number>360</number>
           </property>
+          <property name="wrapping">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
@@ -34,12 +37,18 @@
           <property name="maximum">
            <number>360</number>
           </property>
+          <property name="wrapping">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QDial" name="zDial">
           <property name="maximum">
            <number>360</number>
+          </property>
+          <property name="wrapping">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

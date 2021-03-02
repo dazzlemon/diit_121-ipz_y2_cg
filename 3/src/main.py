@@ -26,6 +26,19 @@ class Cg3(QApplication):
         self._main_ui.gview.setScene(self._scene)
 #       self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
+        def rot_x(x):
+            print(f"{x = }")
+
+        def rot_y(y):
+            print(f"{y = }")
+
+        def rot_z(z):
+            print(f"{z = }")
+
+        self._main_ui.xDial.valueChanged.connect(rot_x)
+        self._main_ui.yDial.valueChanged.connect(rot_y)
+        self._main_ui.zDial.valueChanged.connect(rot_z)
+
         self.parallelepiped = Parallelepiped(
             GraphicsPoint3d(10, 0, 10),
             GraphicsPoint3d(110, 210, 0),
