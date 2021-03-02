@@ -32,11 +32,11 @@ class Parallelepiped:
         Paints this Parallelepiped onto canvas
         """
         def apply_transforms(p):
+            p.move(self.delta)
+            p.scale(GraphicsPoint3d(self.scale, self.scale, self.scale))
             p.rotate_x(self.rot_x)
             p.rotate_y(self.rot_y)
             p.rotate_z(self.rot_z)
-            p.scale(GraphicsPoint3d(self.scale, self.scale, self.scale))
-            p.move(self.delta)
             return world3d_to_view(p)
 
         face1 = deepcopy([
