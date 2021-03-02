@@ -63,6 +63,7 @@ class Ui_MainWindow(object):
         self.scaleSpinBox.setMinimum(0.1)
         self.scaleSpinBox.setMaximum(10.0)
         self.scaleSpinBox.setSingleStep(0.1)
+        self.scaleSpinBox.setProperty("value", 1.0)
         self.scaleSpinBox.setObjectName("scaleSpinBox")
         self.horizontalLayout_3.addWidget(self.scaleSpinBox)
         self.ySpinBox = QtWidgets.QSpinBox(self.centralwidget)

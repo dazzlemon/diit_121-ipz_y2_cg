@@ -53,7 +53,8 @@ class Cg3(QApplication):
         self._main_ui.zDial.valueChanged.connect(rot_z)
 
         def scale(val):
-            print(f"{val = }")
+            self.parallelepiped.scale = val
+            self._update()
         self._main_ui.scaleSpinBox.valueChanged.connect(scale)
 
     def _update(self):
