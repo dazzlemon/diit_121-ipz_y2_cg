@@ -20,26 +20,38 @@ class Parallelepiped:
         self.start2 = start2
         self.w = w
         self.h = h
+        self.rot_x = 0
+        self.rot_y = 0
+        self.rot_z = 0
 
 
     def paint(self, canvas: QGraphicsScene):
         """
         Paints this Parallelepiped onto canvas
         """
-        face1 = [
+        def apply_transforms(p):
+            p.rotate_x(self.rot_x)
+            p.rotate_y(self.rot_y)
+            p.rotate_z(self.rot_z)
+            return world3d_to_view(p)
+
+        face1 = deepcopy([
             self.start1,
             GraphicsPoint3d(self.start1.x + self.w, self.start1.y,          self.start1.z),
             GraphicsPoint3d(self.start1.x + self.w, self.start1.y, self.start1.z + self.h),
             GraphicsPoint3d(self.start1.x,          self.start1.y, self.start1.z + self.h),
-        ]
-        face1 = map(world3d_to_view, face1)
-        face2 = [
+        ])
+
+
+        face1 = map(apply_transforms, face1)
+
+        face2 = deepcopy([
             self.start2,
             GraphicsPoint3d(self.start2.x + self.w, self.start2.y,          self.start2.z),
             GraphicsPoint3d(self.start2.x + self.w, self.start2.y, self.start2.z + self.h),
             GraphicsPoint3d(self.start2.x,          self.start2.y, self.start2.z + self.h),
-        ]
-        face2 = map(world3d_to_view, face2)
+        ])
+        face2 = map(apply_transforms, face2)
 
         def pairwise_lf(gen):
             """

@@ -1,7 +1,7 @@
 """
 Cg3 Main
 """
-
+import numpy as np
 from PyQt5.QtGui      import QPen, QBrush
 from PyQt5.QtCore     import Qt
 from PyQt5.QtWidgets  import QApplication, QMainWindow, QGraphicsScene
@@ -27,13 +27,19 @@ class Cg3(QApplication):
 #       self._main_ui.gview.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         def rot_x(x):
-            print(f"{x = }")
+            self.parallelepiped.rot_x = np.deg2rad(x)
+            self._update()
+            print(f"{np.deg2rad(x) = }")
 
         def rot_y(y):
-            print(f"{y = }")
+            self.parallelepiped.rot_y = np.deg2rad(y)
+            self._update()
+            print(f"{np.deg2rad(y) = }")
 
         def rot_z(z):
-            print(f"{z = }")
+            self.parallelepiped.rot_z = np.deg2rad(z)
+            self._update()
+            print(f"{np.deg2rad(z) = }")
 
         self._main_ui.xDial.valueChanged.connect(rot_x)
         self._main_ui.yDial.valueChanged.connect(rot_y)
