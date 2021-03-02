@@ -107,13 +107,34 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="ySpinBox"/>
+         <widget class="QSpinBox" name="xSpinBox">
+          <property name="minimum">
+           <number>-1024</number>
+          </property>
+          <property name="maximum">
+           <number>1024</number>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="xSpinBox"/>
+         <widget class="QSpinBox" name="ySpinBox">
+          <property name="minimum">
+           <number>-1024</number>
+          </property>
+          <property name="maximum">
+           <number>1024</number>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="zSpinBox"/>
+         <widget class="QSpinBox" name="zSpinBox">
+          <property name="minimum">
+           <number>-1024</number>
+          </property>
+          <property name="maximum">
+           <number>1024</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

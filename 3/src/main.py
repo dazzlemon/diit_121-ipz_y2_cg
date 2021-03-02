@@ -57,6 +57,21 @@ class Cg3(QApplication):
             self._update()
         self._main_ui.scaleSpinBox.valueChanged.connect(scale)
 
+
+        def dx(val):
+            self.parallelepiped.delta.x = val
+            self._update()
+        def dy(val):
+            self.parallelepiped.delta.y = val
+            self._update()
+        def dz(val):
+            self.parallelepiped.delta.z = val
+            self._update()
+        self._main_ui.xSpinBox.valueChanged.connect(dx)
+        self._main_ui.ySpinBox.valueChanged.connect(dy)
+        self._main_ui.zSpinBox.valueChanged.connect(dz)
+
+
     def _update(self):
         self._scene.clear()
 

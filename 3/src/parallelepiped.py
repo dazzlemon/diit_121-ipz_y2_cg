@@ -24,6 +24,7 @@ class Parallelepiped:
         self.rot_y = 0
         self.rot_z = 0
         self.scale = 1
+        self.delta = GraphicsPoint3d(0, 0, 0)
 
 
     def paint(self, canvas: QGraphicsScene):
@@ -35,6 +36,7 @@ class Parallelepiped:
             p.rotate_y(self.rot_y)
             p.rotate_z(self.rot_z)
             p.scale(GraphicsPoint3d(self.scale, self.scale, self.scale))
+            p.move(self.delta)
             return world3d_to_view(p)
 
         face1 = deepcopy([
