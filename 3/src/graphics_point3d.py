@@ -129,18 +129,13 @@ class GraphicsPoint3d(Point3d):
 
 
 def axonometric_proj(p: Point3d, rot_x, rot_z) -> Point2d:
+    rot_x = np.deg2rad(rot_x)
+    rot_z = np.deg2rad(rot_z)
     t = np.array([
-        [ cos(rot_x), 0, -cos(rot_z) / 2, 0],
-        [-sin(rot_x), 1, -sin(rot_z) / 2, 0],
-        [ 0,          0,               0, 0],
-        [ 0,          0,               0, 0],
-    ])
-
-    t = np.array([
-        [cos(rot_z), -sin(rot_z)*cos(rot_x), 0, 0],
-        [0,          cos(rot_x),            0, 0],
+        [ cos(rot_z), -sin(rot_z)*cos(rot_x), 0, 0],
+        [ 0,                      cos(rot_x), 0, 0],
         [-sin(rot_z), -cos(rot_z)*sin(rot_x), 0, 0],
-        [0,           0,                     0, 1],
+        [ 0,           0,                     0, 1],
     ]).T
 
     p4 = np.array([p.x, p.y, p.z, 1])
@@ -151,18 +146,25 @@ def axonometric_proj(p: Point3d, rot_x, rot_z) -> Point2d:
 
 
 def dimetric_proj(p: Point3d) -> Point2d:
-    _42 = np.deg2rad(42)
-    _7  = np.deg2rad(7)
-    return axonometric_proj(p, _7, _42)
-    #x = p.x*cos(_7) -  p.z*cos(_42)/2
-    #y = p.y - p.z*sin(_42)/2 - p.x*sin(_7)
-    #return Point2d(x, y)
+    #return axonometric_proj(p, 42, 7)
+    t = np.array([
+        [  0.935, 0,     -0.354, 0],#cos7 0 
+        [ -0.118, 0.943, -0.312, 0],#
+        [  0,     0,      0,     0],
+        [  0,     0,      0,     0],
+    ])
+    p4  = np.array([p.x, p.y, p.z, 1])
+    p4_ = t @ p4
+    x = p4_[0]
+    y = p4_[1]
+    return Point2d(x, y)
 
 
 def isometric_proj(p: Point3d) -> Point2d:
+    #return axonometric_proj(p, 45, 45)
     t = np.array([
-        [  0.707, 0,     -0.707, 0],
-        [ -0.408, 0.816, -0.408, 0],
+        [  0.707, 0,     -0.707, 0],#cos45 0 -sin45
+        [ -0.408, 0.816, -0.408, 0],#-cos45sin35 cos35 -cos45sin35
         [  0,     0,      0,     0],
         [  0,     0,      0,     0],
     ])
