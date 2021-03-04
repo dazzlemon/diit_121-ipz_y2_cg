@@ -128,28 +128,19 @@ class GraphicsPoint3d(Point3d):
         return "(%s, %s, %s)" % (self.x, self.y, self.z)
 
 
-def axonometric_proj(p: Point3d, rot_x, rot_z) -> Point2d:
+def axonometric_proj(p: Point3d, rot_x, rot_y) -> Point2d:
     rot_x = np.deg2rad(rot_x)
-    rot_z = np.deg2rad(rot_z)
-    t = np.array([
-        [ cos(rot_z), -sin(rot_z)*cos(rot_x), 0, 0],
-        [ 0,                      cos(rot_x), 0, 0],
-        [-sin(rot_z), -cos(rot_z)*sin(rot_x), 0, 0],
-        [ 0,           0,                     0, 1],
-    ]).T
-
-    p4 = np.array([p.x, p.y, p.z, 1])
-    p4_ = t @ p4
-    x = p4_[0]
-    y = p4_[1]
-    return Point2d(x, y)
+    rot_y = np.deg2rad(rot_y)
+    p.rotate_y(rot_y)
+    p.rotate_x(rot_x)
+    return Point2d(p.x, p.y)
 
 
 def dimetric_proj(p: Point3d) -> Point2d:
-    #return axonometric_proj(p, 42, 7)
+    return axonometric_proj(p, 14, 21)# test numbers, but works about the same as matrix below
     t = np.array([
-        [  0.935, 0,     -0.354, 0],#cos7 0 
-        [ -0.118, 0.943, -0.312, 0],#
+        [  0.935, 0,     -0.354, 0],
+        [ -0.118, 0.943, -0.312, 0],
         [  0,     0,      0,     0],
         [  0,     0,      0,     0],
     ])
@@ -161,18 +152,7 @@ def dimetric_proj(p: Point3d) -> Point2d:
 
 
 def isometric_proj(p: Point3d) -> Point2d:
-    #return axonometric_proj(p, 45, 45)
-    t = np.array([
-        [  0.707, 0,     -0.707, 0],#cos45 0 -sin45
-        [ -0.408, 0.816, -0.408, 0],#-cos45sin35 cos35 -cos45sin35
-        [  0,     0,      0,     0],
-        [  0,     0,      0,     0],
-    ])
-    p4  = np.array([p.x, p.y, p.z, 1])
-    p4_ = t @ p4
-    x = p4_[0]
-    y = p4_[1]
-    return Point2d(x, y)
+    return axonometric_proj(p, 35, 45)
 
 
 def world2d_to_view(p: Point2d) -> Point2d:
