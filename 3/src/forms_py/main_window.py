@@ -97,6 +97,15 @@ class Ui_MainWindow(object):
         self.label_5.setObjectName("label_5")
         self.horizontalLayout_4.addWidget(self.label_5)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.isoRadio = QtWidgets.QRadioButton(self.centralwidget)
+        self.isoRadio.setObjectName("isoRadio")
+        self.horizontalLayout_5.addWidget(self.isoRadio)
+        self.dimRadio = QtWidgets.QRadioButton(self.centralwidget)
+        self.dimRadio.setObjectName("dimRadio")
+        self.horizontalLayout_5.addWidget(self.dimRadio)
+        self.verticalLayout.addLayout(self.horizontalLayout_5)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.gridLayout.addLayout(self.verticalLayout, 0, 1, 1, 1)
@@ -115,6 +124,8 @@ class Ui_MainWindow(object):
         self.label_6.setText(_translate("MainWindow", "dx"))
         self.label_4.setText(_translate("MainWindow", "dy"))
         self.label_5.setText(_translate("MainWindow", "dz"))
+        self.isoRadio.setText(_translate("MainWindow", "isometry"))
+        self.dimRadio.setText(_translate("MainWindow", "iso/nen dimetry"))
 
 
 if __name__ == "__main__":

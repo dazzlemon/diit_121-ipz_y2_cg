@@ -128,45 +128,46 @@ class GraphicsPoint3d(Point3d):
         return "(%s, %s, %s)" % (self.x, self.y, self.z)
 
 
-#def axonometric_proj(p: Point3d) -> Point2d:
-    #t = np.array([
-    #    [0, 0, 0, 0],
-    #    [0, 0, 0, 0],
-    #    [0, 0, 0, 0],
-    #    [0, 0, 0, 0],
-    #])
-    #p4 = np.array([p.x, p.y, p.z, 1])
-    #p4_ = t @ p4
-    #y = p4_[1]
-    #x = p4_[0]
-    #return Point2d(x, y)
+def axonometric_proj(p: Point3d, rot_x, rot_y, rot_z) -> Point2d:
+    t = np.array([
+        [ cos(rot_x), cos(rot_y), -cos(rot_z) / 2, 0],
+        [-sin(rot_x), sin(rot_y), -sin(rot_z) / 2, 0],
+        [ 0,          0,           0,              0],
+        [ 0,          0,           0,              0],
+    ])
+    p4 = np.array([p.x, p.y, p.z, 1])
+    p4_ = t @ p4
+    x = p4_[0]
+    y = p4_[1]
+    return Point2d(x, y)
 
 
 def dimetric_proj(p: Point3d) -> Point2d:
     _42 = np.deg2rad(42)
     _7  = np.deg2rad(7)
-    x = p.x*cos(_7) -  p.z*cos(_42)/2
-    y = p.y - p.z*sin(_42)/2 - p.x*sin(_7)
-    return Point2d(x, y)
-
-
-def world3d_to_2d(p: Point3d) -> Point2d:
-    return dimetric_proj(p)
+    _90 = np.deg2rad(90)
+    return axonometric_proj(p, _7, _90, _42)
+    #x = p.x*cos(_7) -  p.z*cos(_42)/2
+    #y = p.y - p.z*sin(_42)/2 - p.x*sin(_7)
+    #return Point2d(x, y)
 
 
 def isometric_proj(p: Point3d) -> Point2d:
-    x =  (p.x         - p.z)/sqrt(2)
-    y = -(p.x - 2*p.y + p.z)/sqrt(6)
+    t = np.array([
+        [  0.707, 0,     -0.707, 0],
+        [ -0.408, 0.816, -0.408, 0],
+        [  0,     0,      0,     0],
+        [  0,     0,      0,     0],
+    ])
+    p4  = np.array([p.x, p.y, p.z, 1])
+    p4_ = t @ p4
+    x = p4_[0]
+    y = p4_[1]
     return Point2d(x, y)
 
 
 def world2d_to_view(p: Point2d) -> Point2d:
     return Point2d(p.x, -p.y)
-
-
-def world3d_to_view(p: Point3d) -> Point2d:
-    """maps 3d coords to 2d with axonometric projection"""
-    return world2d_to_view(world3d_to_2d(p))
 
 
 def main():

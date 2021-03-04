@@ -6,7 +6,7 @@ from PyQt5.QtGui      import QPen, QBrush
 from PyQt5.QtCore     import Qt
 from PyQt5.QtWidgets  import QApplication, QMainWindow, QGraphicsScene
 from forms_py         import Ui_MainWindow
-from graphics_point3d import GraphicsPoint3d, world3d_to_view
+from graphics_point3d import GraphicsPoint3d, isometric_proj, dimetric_proj, world2d_to_view
 from parallelepiped   import Parallelepiped
 
 class Cg3(QApplication):
@@ -16,9 +16,9 @@ class Cg3(QApplication):
         self._main_window = QMainWindow()
         self._main_ui     = Ui_MainWindow()
         self._main_ui.setupUi(self._main_window)
+        self._proj = isometric_proj
         self._init_canvas()
         self._init_signals()
-
 
     def _init_canvas(self):
         self._scene = QGraphicsScene()
@@ -71,8 +71,23 @@ class Cg3(QApplication):
         self._main_ui.ySpinBox.valueChanged.connect(dy)
         self._main_ui.zSpinBox.valueChanged.connect(dz)
 
+        def iso(var):
+            if var:
+                self._proj = isometric_proj
+                self._update()
+        def dim(var):
+            if var:
+                self._proj = dimetric_proj
+                self._update()
+        self._main_ui.isoRadio.toggled.connect(iso)
+        self._main_ui.dimRadio.toggled.connect(dim)
+        self._main_ui.isoRadio.setChecked(True)
+
 
     def _update(self):
+        def world3d_to_view(p):
+            p_ = self._proj(p)
+            return world2d_to_view(p_)
         self._scene.clear()
 
         zero = world3d_to_view(GraphicsPoint3d(0, 0, 0))
@@ -90,7 +105,7 @@ class Cg3(QApplication):
             text = self._scene.addText(name)
             text.setPos(p_.x * axes_len, p_.y * axes_len)
 
-        self.parallelepiped.paint(self._scene)
+        self.parallelepiped.paint(self._scene, world3d_to_view)
 
 
     def exec_(self):

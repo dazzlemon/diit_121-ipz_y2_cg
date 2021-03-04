@@ -4,7 +4,7 @@ Cg3 Point2d, from3dto2d, Parallelepiped
 from copy             import deepcopy
 from more_itertools   import pairwise
 from PyQt5.QtWidgets  import QGraphicsScene
-from graphics_point3d import GraphicsPoint3d, Point3d, world3d_to_view
+from graphics_point3d import GraphicsPoint3d, Point3d
 
 class Parallelepiped:
     """parallelepiped"""
@@ -27,7 +27,7 @@ class Parallelepiped:
         self.delta = GraphicsPoint3d(0, 0, 0)
 
 
-    def paint(self, canvas: QGraphicsScene):
+    def paint(self, canvas: QGraphicsScene, world3d_to_view):
         """
         Paints this Parallelepiped onto canvas
         """
