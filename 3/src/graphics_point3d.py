@@ -6,10 +6,10 @@ from math import sin, cos, pi, sqrt
 import numpy as np
 
 t_right_angle_dimetric = np.array([
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, 1],
-    [0, 0, -1, 0],
+    [ 0.707, -0.408, 0, 0],
+    [ 0,      0.816, 0, 0],
+    [-0.707, -0.408, 0, 0],
+    [ 0,      0,     0, 1],
 ])
 
 
@@ -136,10 +136,16 @@ class GraphicsPoint3d(Point3d):
 
 
 def world3d_to_2d(p: Point3d) -> Point2d:
-    #p4 = np.array([x, y, z, 1])
+    #p4 = np.array([p.x, p.y, p.z, 1])
     #p4_ = t_right_angle_dimetric @ p4
-    x = (p.x - p.z) / sqrt(2)#p4_[0]
-    y = -(p.x - 2*p.y + p.z) / sqrt(6)#p4_[1]
+    #y = p4_[1]
+    #x = p4_[0]
+    #x = (p.x - p.z) / sqrt(2)#p4_[0]
+    #y = -(p.x - 2*p.y + p.z) / sqrt(6)#p4_[1]
+    _42 = np.deg2rad(42)
+    _7  = np.deg2rad(7)
+    x = p.x*cos(_7) +  p.z*cos(_42)/2
+    y = p.y + p.z*sin(_42)/2 - p.x*sin(_7)
     return Point2d(x, y)
 
 
