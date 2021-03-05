@@ -75,5 +75,3 @@ class Parallelepiped:
 
         for p1, p2 in zip(face1, face2):
             canvas.addLine(p1.x, p1.y, p2.x, p2.y)
-
-

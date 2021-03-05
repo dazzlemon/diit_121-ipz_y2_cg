@@ -2,11 +2,12 @@
 CG3 GraphicsPoint3d
 """
 
-from math import sin, cos, pi, sqrt
+from math import sin, cos, pi
 import numpy as np
 
 
 class Point2d:
+    """(x, y) point in 2d space"""
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -129,6 +130,7 @@ class GraphicsPoint3d(Point3d):
 
 
 def axonometric_proj(p: Point3d, rot_x, rot_y) -> Point2d:
+    """Axonometric projection -> rot_y -> rot_x -> throw away z"""
     rot_x = np.deg2rad(rot_x)
     rot_y = np.deg2rad(rot_y)
     p.rotate_y(rot_y)
@@ -137,25 +139,28 @@ def axonometric_proj(p: Point3d, rot_x, rot_y) -> Point2d:
 
 
 def dimetric_proj(p: Point3d) -> Point2d:
+    """Right angle dimetric projection from all positive octant(x, y, z >= 0)"""
     return axonometric_proj(p, 14, 21)# test numbers, but works about the same as matrix below
-    t = np.array([
-        [  0.935, 0,     -0.354, 0],
-        [ -0.118, 0.943, -0.312, 0],
-        [  0,     0,      0,     0],
-        [  0,     0,      0,     0],
-    ])
-    p4  = np.array([p.x, p.y, p.z, 1])
-    p4_ = t @ p4
-    x = p4_[0]
-    y = p4_[1]
-    return Point2d(x, y)
+    # t = np.array([
+    #     [  0.935, 0,     -0.354, 0],
+    #     [ -0.118, 0.943, -0.312, 0],
+    #     [  0,     0,      0,     0],
+    #     [  0,     0,      0,     0],
+    # ])
+    # p4  = np.array([p.x, p.y, p.z, 1])
+    # p4_ = t @ p4
+    # x = p4_[0]
+    # y = p4_[1]
+    # return Point2d(x, y)
 
 
 def isometric_proj(p: Point3d) -> Point2d:
+    """Isometric Projection from all positive octant(x, y, z >= 0)"""
     return axonometric_proj(p, 35, 45)
 
 
 def world2d_to_view(p: Point2d) -> Point2d:
+    """Reverses y-compound of <p>"""
     return Point2d(p.x, -p.y)
 
 
