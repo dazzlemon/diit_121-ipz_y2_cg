@@ -8,6 +8,7 @@ from graphics_point3d import GraphicsPoint3d, isometric_proj, dimetric_proj, wor
 from parallelepiped   import Parallelepiped
 
 class Cg3(QApplication):
+    """Main class"""
     def __init__(self, argv):
         QApplication.__init__(self, argv)
 
@@ -34,40 +35,28 @@ class Cg3(QApplication):
 
 
     def _init_signals(self):
-        def rot_x(x):
-            self.parallelepiped.rot_x = np.deg2rad(x)
-            self._update()
-
-        def rot_y(y):
-            self.parallelepiped.rot_y = np.deg2rad(y)
-            self._update()
-
-        def rot_z(z):
-            self.parallelepiped.rot_z = np.deg2rad(z)
-            self._update()
-
-        self._main_ui.xDial.valueChanged.connect(rot_x)
-        self._main_ui.yDial.valueChanged.connect(rot_y)
-        self._main_ui.zDial.valueChanged.connect(rot_z)
+        def rotate(axis):
+            def rot(val):
+                setattr(self.parallelepiped, "rot_" + axis, np.deg2rad(val))
+                self._update()
+            return rot
+        self._main_ui.xDial.valueChanged.connect(rotate("x"))
+        self._main_ui.yDial.valueChanged.connect(rotate("y"))
+        self._main_ui.zDial.valueChanged.connect(rotate("z"))
 
         def scale(val):
             self.parallelepiped.scale = val
             self._update()
         self._main_ui.scaleSpinBox.valueChanged.connect(scale)
 
-
-        def dx(val):
-            self.parallelepiped.delta.x = val
-            self._update()
-        def dy(val):
-            self.parallelepiped.delta.y = val
-            self._update()
-        def dz(val):
-            self.parallelepiped.delta.z = val
-            self._update()
-        self._main_ui.xSpinBox.valueChanged.connect(dx)
-        self._main_ui.ySpinBox.valueChanged.connect(dy)
-        self._main_ui.zSpinBox.valueChanged.connect(dz)
+        def move(axis):
+            def m(val):
+                setattr(self.parallelepiped.delta, axis, val)
+                self._update()
+            return m
+        self._main_ui.xSpinBox.valueChanged.connect(move("x"))
+        self._main_ui.ySpinBox.valueChanged.connect(move("y"))
+        self._main_ui.zSpinBox.valueChanged.connect(move("z"))
 
         def iso(var):
             if var:
@@ -106,15 +95,16 @@ class Cg3(QApplication):
 
 
     def exec_(self):
+        """QApplication.exec_ overload to show window before start"""
         self._main_window.show()
         QApplication.exec_()
 
 
 def main():
     """main"""
-    import sys
+    import sys# Actually absolutely OK, the same way as in files made by generator
     app = Cg3(sys.argv)
-    sys.exit(app.exec_())
+    sys.exit(app.exec_())# None zero return when everything is actually OK, idk
 
 
 if __name__ == "__main__":
