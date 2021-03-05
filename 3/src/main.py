@@ -2,8 +2,6 @@
 Cg3 Main
 """
 import numpy as np
-from PyQt5.QtGui      import QPen, QBrush
-from PyQt5.QtCore     import Qt
 from PyQt5.QtWidgets  import QApplication, QMainWindow, QGraphicsScene
 from forms_py         import Ui_MainWindow
 from graphics_point3d import GraphicsPoint3d, isometric_proj, dimetric_proj, world2d_to_view
@@ -86,8 +84,7 @@ class Cg3(QApplication):
 
     def _update(self):
         def world3d_to_view(p):
-            p_ = self._proj(p)
-            return world2d_to_view(p_)
+            return world2d_to_view(self._proj(p))
         self._scene.clear()
 
         zero = world3d_to_view(GraphicsPoint3d(0, 0, 0))
