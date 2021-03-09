@@ -16,6 +16,7 @@ class Cg3(QApplication):
         self._main_ui     = Ui_MainWindow()
         self._main_ui.setupUi(self._main_window)
         self._proj = isometric_proj
+        self._is_parallelepiped = True
         self._init_canvas()
         self._init_signals()
 
@@ -72,7 +73,9 @@ class Cg3(QApplication):
 
         def g_elem_toggle(is_parallelepiped):
             def toggle(var):
-                self._main_ui.pMatrixGroup.setEnabled(not is_parallelepiped and var)
+                self._is_parallelepiped = is_parallelepiped and var
+                self._main_ui.pMatrixGroup.setEnabled(not self._is_parallelepiped)
+                self._update()
             return toggle
         self._main_ui.parallelepipedRadio.toggled.connect(g_elem_toggle(True))
         self._main_ui.surfaceRadio.toggled.connect(g_elem_toggle(False))
@@ -97,9 +100,10 @@ class Cg3(QApplication):
             self._scene.addLine(zero.x, zero.y, axes_len * p_.x, axes_len * p_.y)
             text = self._scene.addText(name)
             text.setPos(p_.x * axes_len, p_.y * axes_len)
-
-        self.parallelepiped.paint(self._scene, world3d_to_view)
-
+        if self._is_parallelepiped:
+            self.parallelepiped.paint(self._scene, world3d_to_view)
+        else:
+            pass
 
     def exec_(self):
         """QApplication.exec_ overload to show window before start"""
