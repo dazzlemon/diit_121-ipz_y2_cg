@@ -25,6 +25,13 @@
         <property name="enabled">
          <bool>true</bool>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 7px;
+    padding: 0px 5px 0px 5px;
+}</string>
+        </property>
         <property name="title">
          <string>graphics element to draw</string>
         </property>
@@ -198,6 +205,13 @@
       </item>
       <item>
        <widget class="QGroupBox" name="groupBox_3">
+        <property name="styleSheet">
+         <string notr="true">QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 7px;
+    padding: 0px 5px 0px 5px;
+}</string>
+        </property>
         <property name="title">
          <string>projection</string>
         </property>
@@ -220,9 +234,19 @@
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QGroupBox" name="pMatrixGroup">
+        <property name="styleSheet">
+         <string notr="true">QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 7px;
+    padding: 0px 5px 0px 5px;
+}</string>
+        </property>
         <property name="title">
-         <string>P matrix for Bezier surface</string>
+         <string notr="true">P matrix for Bezier surface </string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="2" column="0">

@@ -70,6 +70,13 @@ class Cg3(QApplication):
         self._main_ui.dimRadio.toggled.connect(dim)
         self._main_ui.isoRadio.setChecked(True)
 
+        def g_elem_toggle(is_parallelepiped):
+            def toggle(var):
+                self._main_ui.pMatrixGroup.setEnabled(not is_parallelepiped and var)
+            return toggle
+        self._main_ui.parallelepipedRadio.toggled.connect(g_elem_toggle(True))
+        self._main_ui.surfaceRadio.toggled.connect(g_elem_toggle(False))
+        self._main_ui.parallelepipedRadio.setChecked(True)
 
     def _update(self):
         def world3d_to_view(p):
