@@ -13,32 +13,50 @@ class BezierSurface:
     ])
 
 
-    def __init__(self, p_matrix):
-        """p_matrix -> 4x4 array like of objects that have x, y, z attributes that return"""
-        self.p_matrix = p_matrix
-        self.s_step = 0.25
-        self.v_step = 0.25
+    def __init__(self, p_x, p_y, p_z):
+        """p_x, p_y, p_z -> 4x4 real matrices"""
+        self.p_x = p_x
+        self.p_y = p_y
+        self.p_z = p_z
+        self.s_step = 0.33
+        self.v_step = 0.33
 
     def paint(self, canvas: QGraphicsScene, world3d_to_view):
         """paints this surface to <canvas> using world3d_to_view to project 2d to 3d"""
         for s in self._range(self.s_step):
             for v in self._range(self.v_step):
-                print(f"(s = %.2f, v = %.2f)" % (s, v), end="")
+                print(f"(s = {s:.2f}, v = {v:.2f})", end="")
             print()
 
     @staticmethod
-    def _range(max_):
-        steps = int(1 / max_) + 1
+    def _range(step):
+        """[0, 1] linspace with <step>"""
+        steps = int(1 / step) + 1
         return np.linspace(0, 1, num=steps)
 
 
 def main():
-    bs = BezierSurface(np.array([
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-    ]))
+    """main"""
+    bs = BezierSurface(
+        np.array([
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ]),
+        np.array([
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ]),
+        np.array([
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ])
+    )
     bs.paint(None, None)
 
 

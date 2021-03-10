@@ -6,6 +6,7 @@ from PyQt5.QtWidgets  import QApplication, QMainWindow, QGraphicsScene
 from forms_py         import Ui_MainWindow
 from graphics_point3d import GraphicsPoint3d, isometric_proj, dimetric_proj, world2d_to_view
 from parallelepiped   import Parallelepiped
+from bezier_surface   import BezierSurface
 
 class Cg3(QApplication):
     """Main class"""
@@ -31,6 +32,26 @@ class Cg3(QApplication):
             GraphicsPoint3d(110, 210, 0),
             100,
             100
+        )
+        self.bezier_surface = BezierSurface(
+            np.array([
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+            ]),
+            np.array([
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+            ]),
+            np.array([
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+            ])
         )
         self._update()
 
@@ -103,7 +124,7 @@ class Cg3(QApplication):
         if self._is_parallelepiped:
             self.parallelepiped.paint(self._scene, world3d_to_view)
         else:
-            pass
+            self.bezier_surface.paint(self._scene, world3d_to_view)
 
     def exec_(self):
         """QApplication.exec_ overload to show window before start"""
