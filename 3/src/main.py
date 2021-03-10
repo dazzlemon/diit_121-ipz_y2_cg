@@ -113,6 +113,16 @@ class Cg3(QApplication):
             self._update()
         self._main_ui.tStepsSpinBox.valueChanged.connect(t_steps_changed)
 
+        def p_mat_changed(axis, i, j):
+            def pij_changed(val):
+                getattr(self.bezier_surface, "p_" + axis)[i][j] = val
+                self._update()
+            return pij_changed
+        for axis in ["x", "y", "z"]:
+            for i in range(4):
+                for j in range(4):
+                    getattr(self._main_ui, "%s%d%dSpinBox" % (axis, i, j)).valueChanged.connect(p_mat_changed(axis, i, j))
+
 
 
     def _update(self):

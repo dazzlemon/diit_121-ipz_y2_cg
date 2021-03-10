@@ -249,7 +249,60 @@
          <bool>true</bool>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="11" rowspan="4">
+         <item row="2" column="2">
+          <widget class="QDoubleSpinBox" name="z10SpinBox"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QDoubleSpinBox" name="x20SpinBox"/>
+         </item>
+         <item row="3" column="4">
+          <widget class="QDoubleSpinBox" name="x21SpinBox"/>
+         </item>
+         <item row="1" column="10">
+          <widget class="QDoubleSpinBox" name="z02SpinBox"/>
+         </item>
+         <item row="4" column="6">
+          <widget class="QDoubleSpinBox" name="z31SpinBox"/>
+         </item>
+         <item row="5" column="5" colspan="2">
+          <widget class="QSpinBox" name="sStepsSpinBox">
+           <property name="minimum">
+            <number>4</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="6">
+          <widget class="QDoubleSpinBox" name="z11SpinBox"/>
+         </item>
+         <item row="3" column="13">
+          <widget class="QDoubleSpinBox" name="y23SpinBox"/>
+         </item>
+         <item row="2" column="10">
+          <widget class="QDoubleSpinBox" name="z12SpinBox"/>
+         </item>
+         <item row="2" column="4">
+          <widget class="QDoubleSpinBox" name="x11SpinBox"/>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="y10SpinBox"/>
+         </item>
+         <item row="5" column="4">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>s steps</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QDoubleSpinBox" name="z30SpinBox"/>
+         </item>
+         <item row="4" column="12">
+          <widget class="QDoubleSpinBox" name="x33SpinBox"/>
+         </item>
+         <item row="1" column="5">
+          <widget class="QDoubleSpinBox" name="y01SpinBox"/>
+         </item>
+         <item row="1" column="11" rowspan="4">
           <widget class="Line" name="line_3">
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
@@ -262,104 +315,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="5">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_26"/>
-         </item>
-         <item row="2" column="12">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_41"/>
-         </item>
-         <item row="0" column="9">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_17"/>
-         </item>
-         <item row="0" column="4">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_13"/>
-         </item>
-         <item row="2" column="4">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_25"/>
-         </item>
-         <item row="3" column="9">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_38"/>
-         </item>
-         <item row="1" column="12">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_40"/>
-         </item>
-         <item row="0" column="10">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_18"/>
-         </item>
-         <item row="1" column="9">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_32"/>
-         </item>
-         <item row="1" column="13">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_43"/>
-         </item>
-         <item row="2" column="10">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_36"/>
-         </item>
-         <item row="0" column="3" rowspan="4">
-          <widget class="Line" name="line">
-           <property name="frameShadow">
-            <enum>QFrame::Plain</enum>
-           </property>
-           <property name="lineWidth">
-            <number>4</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="13">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_20"/>
-         </item>
-         <item row="0" column="6">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_15"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_5"/>
-         </item>
-         <item row="2" column="8">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_34"/>
-         </item>
-         <item row="0" column="8">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_16"/>
-         </item>
-         <item row="3" column="8">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_37"/>
-         </item>
-         <item row="1" column="2">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_10"/>
-         </item>
-         <item row="3" column="13">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_45"/>
-         </item>
-         <item row="0" column="5">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_14"/>
-         </item>
-         <item row="0" column="2">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
-         </item>
-         <item row="3" column="10">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_39"/>
-         </item>
-         <item row="1" column="10">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_33"/>
-         </item>
-         <item row="3" column="12">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_42"/>
-         </item>
-         <item row="3" column="6">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_30"/>
-         </item>
-         <item row="3" column="0">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_6"/>
-         </item>
-         <item row="0" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
-         </item>
-         <item row="2" column="13">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_44"/>
-         </item>
-         <item row="0" column="7" rowspan="4">
+         <item row="1" column="7" rowspan="4">
           <widget class="Line" name="line_2">
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
@@ -372,91 +328,255 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="14">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_47"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
-         </item>
-         <item row="1" column="4">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_22"/>
-         </item>
-         <item row="3" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_9"/>
-         </item>
-         <item row="3" column="2">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_12"/>
-         </item>
-         <item row="2" column="9">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_35"/>
-         </item>
-         <item row="1" column="14">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_46"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
-         </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_7"/>
-         </item>
-         <item row="3" column="4">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_28"/>
-         </item>
-         <item row="3" column="5">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_29"/>
-         </item>
-         <item row="2" column="6">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_27"/>
-         </item>
-         <item row="1" column="6">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_24"/>
-         </item>
-         <item row="1" column="8">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_31"/>
-         </item>
-         <item row="0" column="12">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_19"/>
-         </item>
-         <item row="0" column="14">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_21"/>
-         </item>
-         <item row="3" column="14">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_48"/>
-         </item>
-         <item row="1" column="5">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_23"/>
-         </item>
-         <item row="2" column="2">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_11"/>
-         </item>
-         <item row="2" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_8"/>
-         </item>
-         <item row="4" column="4">
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>s steps</string>
-           </property>
-          </widget>
+         <item row="2" column="13">
+          <widget class="QDoubleSpinBox" name="y13SpinBox"/>
          </item>
          <item row="4" column="8">
+          <widget class="QDoubleSpinBox" name="x32SpinBox"/>
+         </item>
+         <item row="3" column="2">
+          <widget class="QDoubleSpinBox" name="z20SpinBox"/>
+         </item>
+         <item row="1" column="6">
+          <widget class="QDoubleSpinBox" name="z01SpinBox"/>
+         </item>
+         <item row="3" column="14">
+          <widget class="QDoubleSpinBox" name="z23SpinBox"/>
+         </item>
+         <item row="3" column="1">
+          <widget class="QDoubleSpinBox" name="y20SpinBox"/>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="y00SpinBox"/>
+         </item>
+         <item row="1" column="9">
+          <widget class="QDoubleSpinBox" name="y02SpinBox"/>
+         </item>
+         <item row="1" column="13">
+          <widget class="QDoubleSpinBox" name="y03SpinBox"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="QDoubleSpinBox" name="x30SpinBox"/>
+         </item>
+         <item row="1" column="2">
+          <widget class="QDoubleSpinBox" name="z00SpinBox"/>
+         </item>
+         <item row="2" column="12">
+          <widget class="QDoubleSpinBox" name="x13SpinBox"/>
+         </item>
+         <item row="5" column="8">
           <widget class="QLabel" name="label_9">
            <property name="text">
             <string>t steps</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="5" colspan="2">
-          <widget class="QSpinBox" name="sStepsSpinBox">
+         <item row="5" column="9" colspan="2">
+          <widget class="QSpinBox" name="tStepsSpinBox">
            <property name="minimum">
             <number>4</number>
            </property>
           </widget>
          </item>
-         <item row="4" column="9" colspan="2">
-          <widget class="QSpinBox" name="tStepsSpinBox">
-           <property name="minimum">
+         <item row="4" column="4">
+          <widget class="QDoubleSpinBox" name="x31SpinBox"/>
+         </item>
+         <item row="2" column="8">
+          <widget class="QDoubleSpinBox" name="x12SpinBox"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QDoubleSpinBox" name="x10SpinBox"/>
+         </item>
+         <item row="4" column="13">
+          <widget class="QDoubleSpinBox" name="y33SpinBox"/>
+         </item>
+         <item row="4" column="1">
+          <widget class="QDoubleSpinBox" name="y30SpinBox"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QDoubleSpinBox" name="x00SpinBox"/>
+         </item>
+         <item row="1" column="8">
+          <widget class="QDoubleSpinBox" name="x02SpinBox"/>
+         </item>
+         <item row="4" column="10">
+          <widget class="QDoubleSpinBox" name="z32SpinBox"/>
+         </item>
+         <item row="2" column="5">
+          <widget class="QDoubleSpinBox" name="y11SpinBox"/>
+         </item>
+         <item row="3" column="12">
+          <widget class="QDoubleSpinBox" name="x23SpinBox"/>
+         </item>
+         <item row="3" column="8">
+          <widget class="QDoubleSpinBox" name="x22SpinBox"/>
+         </item>
+         <item row="4" column="5">
+          <widget class="QDoubleSpinBox" name="y31SpinBox"/>
+         </item>
+         <item row="1" column="12">
+          <widget class="QDoubleSpinBox" name="x03SpinBox"/>
+         </item>
+         <item row="2" column="9">
+          <widget class="QDoubleSpinBox" name="y12SpinBox"/>
+         </item>
+         <item row="1" column="3" rowspan="4">
+          <widget class="Line" name="line">
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <property name="lineWidth">
             <number>4</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="5">
+          <widget class="QDoubleSpinBox" name="y21SpinBox"/>
+         </item>
+         <item row="3" column="9">
+          <widget class="QDoubleSpinBox" name="y22SpinBox"/>
+         </item>
+         <item row="1" column="4">
+          <widget class="QDoubleSpinBox" name="x01SpinBox"/>
+         </item>
+         <item row="3" column="10">
+          <widget class="QDoubleSpinBox" name="z22SpinBox"/>
+         </item>
+         <item row="3" column="6">
+          <widget class="QDoubleSpinBox" name="z21SpinBox"/>
+         </item>
+         <item row="1" column="14">
+          <widget class="QDoubleSpinBox" name="z03SpinBox"/>
+         </item>
+         <item row="2" column="14">
+          <widget class="QDoubleSpinBox" name="z13SpinBox"/>
+         </item>
+         <item row="4" column="14">
+          <widget class="QDoubleSpinBox" name="z33SpinBox"/>
+         </item>
+         <item row="4" column="9">
+          <widget class="QDoubleSpinBox" name="y32SpinBox"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>x</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>y</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>z</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>x</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>y</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>z</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="8">
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>x</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="9">
+          <widget class="QLabel" name="label_17">
+           <property name="text">
+            <string>y</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="10">
+          <widget class="QLabel" name="label_18">
+           <property name="text">
+            <string>z</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="12">
+          <widget class="QLabel" name="label_19">
+           <property name="text">
+            <string>x</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="13">
+          <widget class="QLabel" name="label_20">
+           <property name="text">
+            <string>y</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="14">
+          <widget class="QLabel" name="label_21">
+           <property name="text">
+            <string>z</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
