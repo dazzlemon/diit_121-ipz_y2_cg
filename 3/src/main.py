@@ -102,6 +102,19 @@ class Cg3(QApplication):
         self._main_ui.surfaceRadio.toggled.connect(g_elem_toggle(False))
         self._main_ui.parallelepipedRadio.setChecked(True)
 
+        self._main_ui.sStepsSpinBox.setValue(self.bezier_surface.s_steps)
+        self._main_ui.tStepsSpinBox.setValue(self.bezier_surface.t_steps)
+        def s_steps_changed(val):
+            self.bezier_surface.s_steps = val
+            self._update()
+        self._main_ui.sStepsSpinBox.valueChanged.connect(s_steps_changed)
+        def t_steps_changed(val):
+            self.bezier_surface.t_steps = val
+            self._update()
+        self._main_ui.tStepsSpinBox.valueChanged.connect(t_steps_changed)
+
+
+
     def _update(self):
         def world3d_to_view(p):
             return world2d_to_view(self._proj(p))
@@ -136,7 +149,7 @@ def main():
     """main"""
     import sys# Actually absolutely OK, the same way as in files made by generator
     app = Cg3(sys.argv)
-    sys.exit(app.exec_())# None zero return when everything is actually OK, idk
+    sys.exit(app.exec_())# Non zero return when everything is actually OK, idk
 
 
 if __name__ == "__main__":
