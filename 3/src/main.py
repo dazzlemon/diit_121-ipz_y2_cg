@@ -41,16 +41,16 @@ class Cg3(QApplication):
                 [100, 200, 300, 400],
             ]),
             np.array([# ys
-                [200, 100, 100, 100],
-                [100, 200, 100, 100],
-                [100, 100, 200, 100],
-                [100, 100, 100, 200],
+                [100, 100, 100, 100],
+                [100, 100, 100, 100],
+                [100, 100, 100, 100],
+                [100, 100, 100, 100],
             ]),
             np.array([# zs
-                [100, 200, 300, 400],
-                [100, 200, 300, 400],
-                [100, 200, 300, 400],
-                [100, 200, 300, 400],
+                [100, 100, 100, 100],
+                [200, 200, 200, 200],
+                [300, 300, 300, 300],
+                [400, 400, 400, 400],
             ])
         )
         self._update()
@@ -121,17 +121,16 @@ class Cg3(QApplication):
                 getattr(self.bezier_surface, "p_" + axis)[i][j] = val
                 self._update()
             return pij_changed
+
         for axis in ["x", "y", "z"]:
             for i in range(4):
                 for j in range(4):
-                    getattr(
+                    spin_box = getattr(
                         self._main_ui,
                         "%s%d%dSpinBox" % (axis, i, j)
-                    ).valueChanged.connect(p_mat_changed(axis, i, j))
-                    getattr(
-                        self._main_ui,
-                        "%s%d%dSpinBox" % (axis, i, j)
-                    ).setValue(getattr(self.bezier_surface, "p_" + axis)[i][j])
+                    )
+                    spin_box.valueChanged.connect(p_mat_changed(axis, i, j))
+                    spin_box.setValue(getattr(self.bezier_surface, "p_" + axis)[i][j])
 
 
     def _update(self):
