@@ -23,9 +23,21 @@ class BezierSurface:
         self.p_z = p_z
         self.s_steps = 20
         self.t_steps = 20
+        self.rot_x = 0
+        self.rot_y = 0
+        self.rot_z = 0
+        self.scale = 1
+        self.delta = GraphicsPoint3d(0, 0, 0)
 
     def paint(self, canvas: QGraphicsScene, world3d_to_view):
         """paints this surface to <canvas> using world3d_to_view to project 2d to 3d"""
+        def apply_transforms(p):
+            p.move(self.delta)
+            p.scale(GraphicsPoint3d(self.scale, self.scale, self.scale))
+            p.rotate_x(self.rot_x)
+            p.rotate_y(self.rot_y)
+            p.rotate_z(self.rot_z)
+            return world3d_to_view(p)
         m = []
         for s in np.linspace(0, 1, num=self.s_steps):
             row = []
@@ -37,7 +49,7 @@ class BezierSurface:
                 y = s_ @ MATRIX_BEZIER @ self.p_y.T @ t_.T
                 z = s_ @ MATRIX_BEZIER @ self.p_z.T @ t_.T
 
-                p = world3d_to_view(GraphicsPoint3d(x, y, z))
+                p = apply_transforms(GraphicsPoint3d(x, y, z))
                 row.append(p)
             m.append(row)
 

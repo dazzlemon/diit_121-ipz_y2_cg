@@ -250,19 +250,39 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="2" column="2">
-          <widget class="QDoubleSpinBox" name="z10SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z10SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QDoubleSpinBox" name="x20SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x20SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="4">
-          <widget class="QDoubleSpinBox" name="x21SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x21SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="10">
-          <widget class="QDoubleSpinBox" name="z02SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z02SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="6">
-          <widget class="QDoubleSpinBox" name="z31SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z31SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="5" column="5" colspan="2">
           <widget class="QSpinBox" name="sStepsSpinBox">
@@ -272,19 +292,39 @@
           </widget>
          </item>
          <item row="2" column="6">
-          <widget class="QDoubleSpinBox" name="z11SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z11SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="13">
-          <widget class="QDoubleSpinBox" name="y23SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y23SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="10">
-          <widget class="QDoubleSpinBox" name="z12SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z12SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="4">
-          <widget class="QDoubleSpinBox" name="x11SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x11SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QDoubleSpinBox" name="y10SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y10SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="5" column="4">
           <widget class="QLabel" name="label_8">
@@ -294,13 +334,25 @@
           </widget>
          </item>
          <item row="4" column="2">
-          <widget class="QDoubleSpinBox" name="z30SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z30SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="12">
-          <widget class="QDoubleSpinBox" name="x33SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x33SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="5">
-          <widget class="QDoubleSpinBox" name="y01SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y01SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="11" rowspan="4">
           <widget class="Line" name="line_3">
@@ -329,40 +381,88 @@
           </widget>
          </item>
          <item row="2" column="13">
-          <widget class="QDoubleSpinBox" name="y13SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y13SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="8">
-          <widget class="QDoubleSpinBox" name="x32SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x32SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="2">
-          <widget class="QDoubleSpinBox" name="z20SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z20SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="6">
-          <widget class="QDoubleSpinBox" name="z01SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z01SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="14">
-          <widget class="QDoubleSpinBox" name="z23SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z23SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QDoubleSpinBox" name="y20SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y20SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="y00SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y00SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="9">
-          <widget class="QDoubleSpinBox" name="y02SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y02SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="13">
-          <widget class="QDoubleSpinBox" name="y03SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y03SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QDoubleSpinBox" name="x30SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x30SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QDoubleSpinBox" name="z00SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z00SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="12">
-          <widget class="QDoubleSpinBox" name="x13SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x13SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="5" column="8">
           <widget class="QLabel" name="label_9">
@@ -379,46 +479,102 @@
           </widget>
          </item>
          <item row="4" column="4">
-          <widget class="QDoubleSpinBox" name="x31SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x31SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="8">
-          <widget class="QDoubleSpinBox" name="x12SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x12SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QDoubleSpinBox" name="x10SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x10SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="13">
-          <widget class="QDoubleSpinBox" name="y33SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y33SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QDoubleSpinBox" name="y30SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y30SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QDoubleSpinBox" name="x00SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x00SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="8">
-          <widget class="QDoubleSpinBox" name="x02SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x02SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="10">
-          <widget class="QDoubleSpinBox" name="z32SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z32SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="5">
-          <widget class="QDoubleSpinBox" name="y11SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y11SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="12">
-          <widget class="QDoubleSpinBox" name="x23SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x23SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="8">
-          <widget class="QDoubleSpinBox" name="x22SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x22SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="5">
-          <widget class="QDoubleSpinBox" name="y31SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y31SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="12">
-          <widget class="QDoubleSpinBox" name="x03SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x03SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="9">
-          <widget class="QDoubleSpinBox" name="y12SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y12SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="3" rowspan="4">
           <widget class="Line" name="line">
@@ -434,31 +590,67 @@
           </widget>
          </item>
          <item row="3" column="5">
-          <widget class="QDoubleSpinBox" name="y21SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y21SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="9">
-          <widget class="QDoubleSpinBox" name="y22SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y22SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="4">
-          <widget class="QDoubleSpinBox" name="x01SpinBox"/>
+          <widget class="QDoubleSpinBox" name="x01SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="10">
-          <widget class="QDoubleSpinBox" name="z22SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z22SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="6">
-          <widget class="QDoubleSpinBox" name="z21SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z21SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="1" column="14">
-          <widget class="QDoubleSpinBox" name="z03SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z03SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="14">
-          <widget class="QDoubleSpinBox" name="z13SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z13SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="14">
-          <widget class="QDoubleSpinBox" name="z33SpinBox"/>
+          <widget class="QDoubleSpinBox" name="z33SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="4" column="9">
-          <widget class="QDoubleSpinBox" name="y32SpinBox"/>
+          <widget class="QDoubleSpinBox" name="y32SpinBox">
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_10">

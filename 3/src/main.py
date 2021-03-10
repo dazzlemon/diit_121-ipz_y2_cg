@@ -60,6 +60,7 @@ class Cg3(QApplication):
         def rotate(axis):
             def rot(val):
                 setattr(self.parallelepiped, "rot_" + axis, np.deg2rad(val))
+                setattr(self.bezier_surface, "rot_" + axis, np.deg2rad(val))
                 self._update()
             return rot
         self._main_ui.xDial.valueChanged.connect(rotate("x"))
@@ -68,12 +69,14 @@ class Cg3(QApplication):
 
         def scale(val):
             self.parallelepiped.scale = val
+            self.bezier_surface.scale = val
             self._update()
         self._main_ui.scaleSpinBox.valueChanged.connect(scale)
 
         def move(axis):
             def m(val):
                 setattr(self.parallelepiped.delta, axis, val)
+                setattr(self.bezier_surface.delta, axis, val)
                 self._update()
             return m
         self._main_ui.xSpinBox.valueChanged.connect(move("x"))
@@ -121,8 +124,14 @@ class Cg3(QApplication):
         for axis in ["x", "y", "z"]:
             for i in range(4):
                 for j in range(4):
-                    getattr(self._main_ui, "%s%d%dSpinBox" % (axis, i, j)).valueChanged.connect(p_mat_changed(axis, i, j))
-
+                    getattr(
+                        self._main_ui,
+                        "%s%d%dSpinBox" % (axis, i, j)
+                    ).valueChanged.connect(p_mat_changed(axis, i, j))
+                    getattr(
+                        self._main_ui,
+                        "%s%d%dSpinBox" % (axis, i, j)
+                    ).setValue(getattr(self.bezier_surface, "p_" + axis)[i][j])
 
 
     def _update(self):
