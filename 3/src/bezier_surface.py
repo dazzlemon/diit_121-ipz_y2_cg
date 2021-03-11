@@ -46,9 +46,9 @@ class BezierSurface:
                 s_ = np.array([s**3, s**2, s, 1])
                 t_ = np.array([t**3, t**2, t, 1])
 
-                x = s_ @ MATRIX_BEZIER @ self.p_x.T @ t_.T
-                y = s_ @ MATRIX_BEZIER @ self.p_y.T @ t_.T
-                z = s_ @ MATRIX_BEZIER @ self.p_z.T @ t_.T
+                x = s_ @ MATRIX_BEZIER @ self.p_x.T @ MATRIX_BEZIER.T @ t_.T
+                y = s_ @ MATRIX_BEZIER @ self.p_y.T @ MATRIX_BEZIER.T @ t_.T
+                z = s_ @ MATRIX_BEZIER @ self.p_z.T @ MATRIX_BEZIER.T @ t_.T
 
                 p = apply_transforms(GraphicsPoint3d(x, y, z))
                 row.append(p)
