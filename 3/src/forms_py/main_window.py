@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(969, 600)
+        MainWindow.resize(1149, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -413,6 +413,9 @@ class Ui_MainWindow(object):
         self.label_21.setAlignment(QtCore.Qt.AlignCenter)
         self.label_21.setObjectName("label_21")
         self.gridLayout_3.addWidget(self.label_21, 0, 14, 1, 1)
+        self.inputPointsCheck = QtWidgets.QCheckBox(self.pMatrixGroup)
+        self.inputPointsCheck.setObjectName("inputPointsCheck")
+        self.gridLayout_3.addWidget(self.inputPointsCheck, 5, 12, 1, 3)
         self.verticalLayout.addWidget(self.pMatrixGroup)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
@@ -452,6 +455,7 @@ class Ui_MainWindow(object):
         self.label_19.setText(_translate("MainWindow", "x"))
         self.label_20.setText(_translate("MainWindow", "y"))
         self.label_21.setText(_translate("MainWindow", "z"))
+        self.inputPointsCheck.setText(_translate("MainWindow", "draw input points"))
 
 
 if __name__ == "__main__":

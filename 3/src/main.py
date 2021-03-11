@@ -132,6 +132,12 @@ class Cg3(QApplication):
                     spin_box.valueChanged.connect(p_mat_changed(axis, i, j))
                     spin_box.setValue(getattr(self.bezier_surface, "p_" + axis)[i][j])
 
+        def input_points_toggle(val):
+            self.bezier_surface.draw_input = val
+            self._update()
+        self._main_ui.inputPointsCheck.toggled.connect(input_points_toggle)
+        self._main_ui.inputPointsCheck.setChecked(self.bezier_surface.draw_input)
+
 
     def _update(self):
         def world3d_to_view(p):

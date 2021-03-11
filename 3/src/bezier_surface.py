@@ -29,6 +29,8 @@ class BezierSurface:
         self.rot_z = 0
         self.scale = 1
         self.delta = GraphicsPoint3d(0, 0, 0)
+        self.draw_input = True
+
 
     def paint(self, canvas: QGraphicsScene, world3d_to_view):
         """paints this surface to <canvas> using world3d_to_view to project 2d to 3d"""
@@ -60,26 +62,28 @@ class BezierSurface:
         for r1, r2 in pairwise(m):
             for p1, p2 in zip(r1, r2):
                 canvas.addLine(p1.x, p1.y, p2.x, p2.y)
-        m = []
-        for i in range(4):
-            row = []
-            for j in range(4):
-                p = apply_transforms(
-                    GraphicsPoint3d(
-                        self.p_x[i][j],
-                        self.p_y[i][j],
-                        self.p_z[i][j]
+
+        if self.draw_input:
+            m = []
+            for i in range(4):
+                row = []
+                for j in range(4):
+                    p = apply_transforms(
+                        GraphicsPoint3d(
+                            self.p_x[i][j],
+                            self.p_y[i][j],
+                            self.p_z[i][j]
+                        )
                     )
-                )
-                row.append(p)
-            m.append(row)
-        
-        for row in m:
-            for p1, p2 in pairwise(row):
-                canvas.addLine(p1.x, p1.y, p2.x, p2.y, QPen(QColor(255, 0, 0)))
-        for r1, r2 in pairwise(m):
-            for p1, p2 in zip(r1, r2):
-                canvas.addLine(p1.x, p1.y, p2.x, p2.y, QPen(QColor(255, 0, 0)))
+                    row.append(p)
+                m.append(row)
+            
+            for row in m:
+                for p1, p2 in pairwise(row):
+                    canvas.addLine(p1.x, p1.y, p2.x, p2.y, QPen(QColor(255, 0, 0)))
+            for r1, r2 in pairwise(m):
+                for p1, p2 in zip(r1, r2):
+                    canvas.addLine(p1.x, p1.y, p2.x, p2.y, QPen(QColor(255, 0, 0)))
                 
 
 
