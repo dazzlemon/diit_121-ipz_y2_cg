@@ -3,6 +3,7 @@ from typing import final
 import numpy as np
 from more_itertools   import pairwise
 from PyQt5.QtWidgets  import QGraphicsScene
+from PyQt5.QtGui      import QPen, QColor
 from graphics_point3d import GraphicsPoint3d
 
 MATRIX_BEZIER: final = np.array([
@@ -59,6 +60,27 @@ class BezierSurface:
         for r1, r2 in pairwise(m):
             for p1, p2 in zip(r1, r2):
                 canvas.addLine(p1.x, p1.y, p2.x, p2.y)
+        m = []
+        for i in range(4):
+            row = []
+            for j in range(4):
+                p = apply_transforms(
+                    GraphicsPoint3d(
+                        self.p_x[i][j],
+                        self.p_y[i][j],
+                        self.p_z[i][j]
+                    )
+                )
+                row.append(p)
+            m.append(row)
+        
+        for row in m:
+            for p1, p2 in pairwise(row):
+                canvas.addLine(p1.x, p1.y, p2.x, p2.y, QPen(QColor(255, 0, 0)))
+        for r1, r2 in pairwise(m):
+            for p1, p2 in zip(r1, r2):
+                canvas.addLine(p1.x, p1.y, p2.x, p2.y, QPen(QColor(255, 0, 0)))
+                
 
 
 def main():
