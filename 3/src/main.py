@@ -4,7 +4,8 @@ Cg3 Main
 import numpy as np
 from PyQt5.QtWidgets  import QApplication, QMainWindow, QGraphicsScene
 from forms_py         import Ui_MainWindow
-from graphics_point3d import GraphicsPoint3d, isometric_proj, dimetric_proj, world2d_to_view
+from graphics_point3d import (GraphicsPoint3d, isometric_proj, dimetric_proj, world2d_to_view,
+                             xy_proj, xz_proj, yz_proj)
 from parallelepiped   import Parallelepiped
 from bezier_surface   import BezierSurface
 
@@ -94,6 +95,22 @@ class Cg3(QApplication):
         self._main_ui.isoRadio.toggled.connect(iso)
         self._main_ui.dimRadio.toggled.connect(dim)
         self._main_ui.isoRadio.setChecked(True)
+        
+        def xy(var):
+            if var:
+                self._proj = xy_proj
+                self._update()
+        self._main_ui.xyRadio.toggled.connect(xy)
+        def yz(var):
+            if var:
+                self._proj = yz_proj
+                self._update()
+        self._main_ui.yzRadio.toggled.connect(yz)
+        def xz(var):
+            if var:
+                self._proj = xz_proj
+                self._update()
+        self._main_ui.xzRadio.toggled.connect(xz)
 
         def g_elem_toggle(is_parallelepiped):
             def toggle(var):

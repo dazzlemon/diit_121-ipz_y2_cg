@@ -164,6 +164,18 @@ def world2d_to_view(p: Point2d) -> Point2d:
     return Point2d(p.x, -p.y)
 
 
+def xy_proj(p: Point3d) -> Point2d:
+    return Point2d(p.x, p.y)
+
+
+def yz_proj(p: Point3d) -> Point2d:
+    return Point2d(p.z, p.y)
+
+
+def xz_proj(p: Point3d) -> Point2d:
+    return Point2d(p.x, p.z)
+
+
 def main():
     """main"""
     point = GraphicsPoint3d(1, 1, 1)
