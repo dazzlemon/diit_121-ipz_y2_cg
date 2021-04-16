@@ -19,16 +19,16 @@ class Cg4(QApplication):
 
         def paint_shape():
             glBegin(GL_TRIANGLES)
-            glVertex3f(2.0,-1.2,0.0)
-            glVertex3f(2.6,0.0,0.0)
-            glVertex3f(2.9,-1.2,0.0)
+            glVertex3f(2.0, -1.2, 0.0)
+            glVertex3f(2.6,  0.0, 0.0)
+            glVertex3f(2.9, -1.2, 0.0)
             glEnd()
 
         def paint_gl():
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()
             glTranslatef(-2.5, 0.5, -6.0)
-            glColor3f( 1.0, 1.5, 0.0 )
+            glColor3f(1.0, 1.5, 0.0 )
             glPolygonMode(GL_FRONT, GL_FILL)
             paint_shape()
             glFlush()
@@ -40,7 +40,7 @@ class Cg4(QApplication):
             glShadeModel(GL_SMOOTH)
             glMatrixMode(GL_PROJECTION)
             glLoadIdentity()
-            gluPerspective(45.0,1.33,0.1, 100.0)
+            gluPerspective(45.0, 1.33, 0.1, 100.0)
             glMatrixMode(GL_MODELVIEW)
 
         self._main_ui.openGLWidget.paintGL = paint_gl
