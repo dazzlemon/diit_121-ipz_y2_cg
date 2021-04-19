@@ -28,16 +28,9 @@ class Cg4(QApplication):
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()# identity matrix
             glTranslatef(-2.5, 0.5, -6.0)# move (0, 0, 0)
+            glScalef(0.01, 0.01, 0.01)
             
-            self.frog.paint(self.gl_canvas)# idk doesnt work
-            # self.gl_canvas.fill([
-            #     GraphicsPoint(2.0, -1.2),
-            #     GraphicsPoint(2.2, -1.5),
-            #     GraphicsPoint(3.5, -0.5),
-            #     GraphicsPoint(2.6,  0.0),
-            #     GraphicsPoint(2.7,  1.1),
-            #     GraphicsPoint(2.9, -1.7)
-            # ], QColor(128, 128, 128))
+            self.frog.paint(self.gl_canvas)
 
             glFlush()
 
