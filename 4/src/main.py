@@ -22,9 +22,9 @@ class Cg4(QApplication):
             glPolygonMode(GL_FRONT, GL_FILL)# polygon rasterization mode
 
             glBegin(GL_TRIANGLES)# next vertices will be grouped into triangles
-            glVertex3f(2.0, -1.2, 0.0)
-            glVertex3f(2.6,  0.0, 0.0)
-            glVertex3f(2.9, -1.2, 0.0)
+            glVertex3f(2.0, -1.2, -1.0)
+            glVertex3f(2.6,  0.0, 5.0)
+            glVertex3f(2.9, -1.2, -4.0)
             glEnd()# end glBegin(GL_TRIANGLES)
 
         def paint_gl():
@@ -34,30 +34,22 @@ class Cg4(QApplication):
             paint_shape()
             glFlush()
 
-        def initialize_gl():
+        def init_gl(aspect):
             glClearDepth(1.0)
             glDepthFunc(GL_LESS)
             glEnable(GL_DEPTH_TEST)
             glShadeModel(GL_SMOOTH)
             glMatrixMode(GL_PROJECTION)
             glLoadIdentity()
-            gluPerspective(45.0, 1.33, 0.1, 100.0)
+            #              angleY, aspect, zNear, zFar
+            gluPerspective(90.0,   aspect, 0.1,   100.0)
             glMatrixMode(GL_MODELVIEW)
+
+        def initialize_gl():
+            init_gl(1.33)
 
         def resize_gl(w, h):
-            if h == 0:
-                h = 1
-
-            aspect_ratio = w / h
-            glViewport(0, 0, w, h)
-            glMatrixMode(GL_PROJECTION)
-            glLoadIdentity()
-
-            if w >= h:
-                glOrtho(-0.5 * aspect_ratio, 0.5 * aspect_ratio, -0.5, 0.5, 0.1, 100)
-            else:
-                glOrtho(-0.5, 0.5, -0.5 / aspect_ratio, 0.5 / aspect_ratio, 0.1, 100)
-            glMatrixMode(GL_MODELVIEW)
+            init_gl(w / h)
 
         self._main_ui.openGLWidget.resizeGL = resize_gl
         self._main_ui.openGLWidget.paintGL = paint_gl
