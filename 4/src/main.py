@@ -35,15 +35,16 @@ class Cg4(QApplication):
             glFlush()
 
         def init_gl(aspect):
-            glClearDepth(1.0)
-            glDepthFunc(GL_LESS)
-            glEnable(GL_DEPTH_TEST)
-            glShadeModel(GL_SMOOTH)
-            glMatrixMode(GL_PROJECTION)
-            glLoadIdentity()
+            glClearDepth(1.0)# clear value for depth buffer [0, 1]
+            #glDepthFunc(GL_LESS)# val for depth buffer comparisons, GL_LESS is def value
+            glEnable(GL_DEPTH_TEST)# enable depth comparisons
+            #glShadeModel(GL_SMOOTH)# smooth shading is default
+
+            glMatrixMode(GL_PROJECTION)# load projection matrix
+            glLoadIdentity()# make projection matrix := eye()
             #              angleY, aspect, zNear, zFar
-            gluPerspective(90.0,   aspect, 0.1,   100.0)
-            glMatrixMode(GL_MODELVIEW)
+            gluPerspective(90.0,   aspect, 0.1,   100.0)# perspective projection matrix
+            glMatrixMode(GL_MODELVIEW)# load model view
 
         def initialize_gl():
             init_gl(1.33)
