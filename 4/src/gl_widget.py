@@ -22,7 +22,6 @@ class OpenGLCanvas(ICanvas):
             glVertex2f(p1.x, p1.y)
             glVertex2f(p2.x, p2.y)
         glEnd()
-        print("lines; red: %d, green: %d, blue: %s" % (color.red(), color.green(), color.blue()))
 
 
     @staticmethod
@@ -36,7 +35,6 @@ class OpenGLCanvas(ICanvas):
             glVertex2f(p1.x, p1.y)
             glVertex2f(p2.x, p2.y)
         glEnd()# end glBegin(GL_TRIANGLES)
-        print("fill; red: %d, green: %d, blue: %s" % (color.red(), color.green(), color.blue()))
 
 
     @staticmethod

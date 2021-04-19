@@ -30,7 +30,6 @@ class Cg4(QApplication):
             glTranslatef(-2.5, 0.5, -6.0)# move (0, 0, 0)
             
             self.frog.paint(self.gl_canvas)# idk doesnt work
-            self.gl_canvas.paint_gl()
 
             glFlush()
 
