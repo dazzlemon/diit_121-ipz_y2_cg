@@ -19,8 +19,8 @@ class OpenGLCanvas(ICanvas):
         glColor3f(color.red() / 255, color.green() / 255, color.blue() / 255)# color 3i was showing wrong color
         glBegin(GL_LINES)
         for p1, p2 in pairwise(points):
-            glVertex2f(p1.x, p1.y)
-            glVertex2f(p2.x, p2.y)
+            glVertex2f(p1.x / 100, p1.y / 100)
+            glVertex2f(p2.x / 100, p2.y / 100)
         glEnd()
 
 
@@ -32,8 +32,8 @@ class OpenGLCanvas(ICanvas):
 
         glBegin(GL_POLYGON)# next vertices will represent a single polygon
         for p1, p2 in pairwise(points):
-            glVertex2f(p1.x, p1.y)
-            glVertex2f(p2.x, p2.y)
+            glVertex2f(p1.x / 100, p1.y / 100)
+            glVertex2f(p2.x / 100, p2.y / 100)
         glEnd()# end glBegin(GL_POLYGON)
 
 
@@ -48,7 +48,7 @@ class OpenGLCanvas(ICanvas):
         glMatrixMode(GL_PROJECTION)# load projection matrix
         glLoadIdentity()# make projection matrix := eye()
         #              angleY, aspect, zNear, zFar
-        gluPerspective(90.0,   aspect, 0.1,   100.0)# perspective projection matrix
+        gluPerspective(110.0,   aspect, 0.1,   100.0)# perspective projection matrix
         glMatrixMode(GL_MODELVIEW)# load model view
 
 
