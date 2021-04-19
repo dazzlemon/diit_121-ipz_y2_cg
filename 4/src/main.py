@@ -5,6 +5,10 @@ CG4 Main
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from forms_py        import Ui_MainWindow
 from gl_widget       import *
+from peppe_frog      import PeppeFrog
+
+from graphics.items  import GraphicsPoint
+from PyQt5.QtGui     import QColor
 
 class Cg4(QApplication):
     """Main class"""
@@ -15,9 +19,24 @@ class Cg4(QApplication):
         self._main_ui     = Ui_MainWindow()
         self._main_ui.setupUi(self._main_window)
 
-        self._main_ui.openGLWidget.resizeGL = resize_gl
+        self.frog = PeppeFrog()
+        self.gl_canvas = OpenGLCanvas()
+
+        def paint_gl():
+            """TMP"""
+            glClearColor(1, 1, 1, 1)
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            glLoadIdentity()# identity matrix
+            glTranslatef(-2.5, 0.5, -6.0)# move (0, 0, 0)
+            
+            self.frog.paint(self.gl_canvas)# idk doesnt work
+            self.gl_canvas.paint_gl()
+
+            glFlush()
+
+        self._main_ui.openGLWidget.resizeGL = OpenGLCanvas.resize_gl
         self._main_ui.openGLWidget.paintGL = paint_gl
-        self._main_ui.openGLWidget.initializeGL = initialize_gl
+        self._main_ui.openGLWidget.initializeGL = OpenGLCanvas.initialize_gl
         self._main_ui.openGLWidget.setMinimumSize(640, 480)
 
 
