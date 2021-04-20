@@ -21,6 +21,11 @@ class Cg4(QApplication):
         self._main_ui.setupUi(self._main_window)
 
         self.frog = PeppeFrog()
+        self.x_angle = 0
+        self.y_angle = 0
+        self.z_angle = 0
+        
+        self._init_signals()
 
         def paint_gl():
             """TMP"""
@@ -30,6 +35,10 @@ class Cg4(QApplication):
             glTranslatef(3, 3, -3)# move (0, 0, 0)
             glScalef(0.01, 0.01, 0.01)
             
+            glRotatef(self.x_angle, 1, 0, 0)
+            glRotatef(self.y_angle, 0, 1, 0)
+            glRotatef(self.z_angle, 0, 0, 1)
+
             self.frog.paint()
 
             glFlush()
@@ -39,6 +48,17 @@ class Cg4(QApplication):
         self._main_ui.openGLWidget.initializeGL = initialize_gl
         self._main_ui.openGLWidget.setMinimumSize(640, 480)
 
+
+    def _init_signals(self):
+        def rotate(axis):
+            def rot(val):
+                setattr(self, axis + "_angle", val)
+                self._main_ui.openGLWidget.update()
+            return rot
+        self._main_ui.xDial.valueChanged.connect(rotate("x"))
+        self._main_ui.yDial.valueChanged.connect(rotate("y"))
+        self._main_ui.zDial.valueChanged.connect(rotate("z"))
+            
 
     def exec_(self):
         """QApplication.exec_ override to show window before start"""
