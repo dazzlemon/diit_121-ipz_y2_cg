@@ -4,19 +4,65 @@ from OpenGL.GLU      import *
 from OpenGL.GLUT     import *
 from PyQt5.QtOpenGL  import *
 
+def gl_color(color: QColor):
+    """wrapper to use with QColor"""
+    glColor3f(
+        color.red() / 255,
+        color.green() / 255,
+        color.blue() / 255
+    )
+
+
+def gl_translate(point: QVector3D):
+    """wrapper to use with QVector3D"""
+    glTranslatef(
+        point.x(),
+        point.y(),
+        point.z()
+    )
+
+
+def gl_scale(scale: QVector3D):
+    """wrapper to use with QVector3D"""
+    glScalef(
+        scale.x(),
+        scale.y(),
+        scale.z()
+    )
+
+
 class Ellipsoid:
-    def __init__(self, origin: QVector3D, params: QVector3D, color: QColor):
+    def __init__(self, origin: QVector3D, radiuses: QVector3D, color: QColor):
         """
-        params = (a, b, c) > 0
+        radiuses = (radX, radY, radZ)
         origin is the center
         """
         self.origin = origin
-        self.params = params
+        self.radiuses = radiuses
         self.color  = color
 
 
     def paint(self):
-        pass
+        max_rad = max(
+            self.radiuses.x(),
+            self.radiuses.y(),
+            self.radiuses.z()
+        )
+
+        scales = QVector3D(
+            self.radiuses.x() / max_rad,
+            self.radiuses.y() / max_rad,
+            self.radiuses.z() / max_rad
+        )
+
+        sphere = gluNewQuadric()
+        gl_color(self.color)
+
+        gl_translate(-self.origin)
+        gl_scale(scales)
+        gluSphere(sphere, max_rad, 50, 50)
+        gl_scale(QVector3D(1, 1, 1) / scales)
+        gl_translate(self.origin)
 
 
 class Sphere:
@@ -29,12 +75,10 @@ class Sphere:
 
     def paint(self):
         sphere = gluNewQuadric()
-        glColor3f(
-            self.color.red() / 255,
-            self.color.green() / 255,
-            self.color.blue() / 255
-        )
+        gl_color(self.color)
+        gl_translate(-self.origin)
         gluSphere(sphere, self.radius, 50, 50)
+        gl_translate(self.origin)
 
 
 class RectangularPrism:
