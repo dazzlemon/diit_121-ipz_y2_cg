@@ -15,7 +15,6 @@ class Cg4(QApplication):
     """Main class"""
     def __init__(self, argv):
         QApplication.__init__(self, argv)
-        #glutInit(argv)
 
         self._main_window = QMainWindow()
         self._main_ui     = Ui_MainWindow()

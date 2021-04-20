@@ -113,4 +113,8 @@ class Line3D:
 
 
     def paint(self):
-        pass
+        gl_color(self.color)
+        glBegin(GL_LINES)
+        glVertex3f(self.start.x(), self.start.y(), self.start.z())
+        glVertex3f(self.end.x(), self.end.y(), self.end.z())
+        glEnd()
