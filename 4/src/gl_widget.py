@@ -12,7 +12,7 @@ def _init_gl(aspect):
     glMatrixMode(GL_PROJECTION)# load projection matrix
     glLoadIdentity()# make projection matrix := eye()
     #              angleY, aspect, zNear, zFar
-    gluPerspective(90.0,   aspect, 0.1,   100.0)# perspective projection matrix
+    gluPerspective(90.0,   aspect, 0.1,   1000.0)# perspective projection matrix
     glMatrixMode(GL_MODELVIEW)# load model view
 
 

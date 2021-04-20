@@ -27,7 +27,7 @@ class Cg4(QApplication):
             glClearColor(1, 1, 1, 1)
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()# identity matrix
-            glTranslatef(-2.5, 0.5, -6.0)# move (0, 0, 0)
+            glTranslatef(3, 3, -3)# move (0, 0, 0)
             glScalef(0.01, 0.01, 0.01)
             
             self.frog.paint()
