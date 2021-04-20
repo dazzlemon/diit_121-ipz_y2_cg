@@ -70,10 +70,10 @@ class PeppeMouth(CompoundGraphics):
                 QColor(30, 80, 0)
             ),# lips
             Line3D(
-                QVector3D(500, 580, 580),
-                QVector3D(300, 580, 580),
+                QVector3D(-150, -400, 25),
+                QVector3D(-400, -400, 25),
                 QColor(0, 0, 0)
-            ),# lip line# no way to work?????
+            ),# lip line
         ])
 
 
