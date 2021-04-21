@@ -75,7 +75,6 @@ class Cg4(QApplication):
             self._main_ui.openGLWidget.update()
 
         self._main_ui.rotateButton.pressed.connect(rotate)
-        self._main_ui.rotateButton.setAutoRepeat(True)
             
             
 
