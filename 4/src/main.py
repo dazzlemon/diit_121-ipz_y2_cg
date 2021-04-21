@@ -50,14 +50,33 @@ class Cg4(QApplication):
 
 
     def _init_signals(self):
-        def rotate(axis):
-            def rot(val):
-                setattr(self, axis + "_angle", val)
-                self._main_ui.openGLWidget.update()
-            return rot
-        self._main_ui.xDial.valueChanged.connect(rotate("x"))
-        self._main_ui.yDial.valueChanged.connect(rotate("y"))
-        self._main_ui.zDial.valueChanged.connect(rotate("z"))
+        def update_rot(axis):
+            step = 5
+            k = 0
+            
+            if getattr(self._main_ui, axis + "Clock").isChecked():
+                k = -1
+            elif getattr(self._main_ui, axis + "AntiClock").isChecked():
+                k = 1
+
+            new_val = getattr(self, axis + "_angle") + step * k
+            if new_val > 360:
+                new_val -= 360
+            if new_val < 0:
+                new_val += 360
+
+            setattr(self, axis + "_angle", new_val)
+
+
+        def rotate():
+            update_rot("x")
+            update_rot("y")
+            update_rot("z")
+            self._main_ui.openGLWidget.update()
+
+        self._main_ui.rotateButton.pressed.connect(rotate)
+        self._main_ui.rotateButton.setAutoRepeat(True)
+            
             
 
     def exec_(self):
