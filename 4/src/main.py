@@ -21,10 +21,15 @@ class Cg4(QApplication):
         self._main_ui.setupUi(self._main_window)
 
         self.frog = PeppeFrog()
+        
         self.x_angle = 0
         self.y_angle = 0
         self.z_angle = 0
         
+        self.dx = 0
+        self.dy = 0
+        self.dz = 0
+
         self._init_signals()
 
         def paint_gl():
@@ -32,7 +37,7 @@ class Cg4(QApplication):
             glClearColor(1, 1, 1, 1)
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()# identity matrix
-            glTranslatef(3, 3, -3)# move (0, 0, 0)
+            glTranslatef(3 + self.dx, 3 + self.dy, -3 + self.dz)# move (0, 0, 0)
             glScalef(0.01, 0.01, 0.01)
             
             glRotatef(self.x_angle, 1, 0, 0)
@@ -67,7 +72,6 @@ class Cg4(QApplication):
 
             setattr(self, axis + "_angle", new_val)
 
-
         def rotate():
             update_rot("x")
             update_rot("y")
@@ -75,8 +79,27 @@ class Cg4(QApplication):
             self._main_ui.openGLWidget.update()
 
         self._main_ui.rotateButton.pressed.connect(rotate)
-            
-            
+
+        def update_delta(axis):
+            step = 0.5
+            k = 0
+
+            if getattr(self._main_ui, axis + "Pos").isChecked():
+                k = 1
+            elif getattr(self._main_ui, axis + "Neg").isChecked():
+                k = -1
+
+            new_val = getattr(self, "d" + axis) + k * step
+            setattr(self, "d" + axis, new_val)
+
+        def move():
+            update_delta("x")
+            update_delta("y")
+            update_delta("z")
+            self._main_ui.openGLWidget.update()
+
+        self._main_ui.moveButton.pressed.connect(move)
+
 
     def exec_(self):
         """QApplication.exec_ override to show window before start"""

@@ -239,7 +239,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="moveButton">
         <property name="text">
          <string>move</string>
         </property>
@@ -254,7 +254,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="scaleDown">
+         <widget class="QPushButton" name="scaleUpButton">
           <property name="text">
            <string>scale up</string>
           </property>
@@ -267,7 +267,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="scaleUp">
+         <widget class="QPushButton" name="scaleDownButton">
           <property name="text">
            <string>scale down</string>
           </property>
