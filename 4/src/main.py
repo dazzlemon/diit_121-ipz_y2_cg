@@ -30,6 +30,8 @@ class Cg4(QApplication):
         self.dy = 0
         self.dz = 0
 
+        self.scale = 1
+
         self._init_signals()
 
         def paint_gl():
@@ -38,7 +40,7 @@ class Cg4(QApplication):
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()# identity matrix
             glTranslatef(3 + self.dx, 3 + self.dy, -3 + self.dz)# move (0, 0, 0)
-            glScalef(0.01, 0.01, 0.01)
+            glScalef(0.01 * self.scale, 0.01 * self.scale, 0.01 * self.scale)
             
             glRotatef(self.x_angle, 1, 0, 0)
             glRotatef(self.y_angle, 0, 1, 0)
@@ -99,6 +101,23 @@ class Cg4(QApplication):
             self._main_ui.openGLWidget.update()
 
         self._main_ui.moveButton.pressed.connect(move)
+
+        def scale(up):
+            def s():
+                step = 0.01
+
+                delta = step * (1 if up else -1)
+                self.scale += delta
+                if self.scale < 0:
+                    self.scale = 0.01
+                if self.scale > 10:
+                    self.scale = 10
+
+                self._main_ui.openGLWidget.update()
+            return s
+
+        self._main_ui.scaleDownButton.pressed.connect(scale(False))
+        self._main_ui.scaleUpButton.pressed.connect(scale(True))
 
 
     def exec_(self):
