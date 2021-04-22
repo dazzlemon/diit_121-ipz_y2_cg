@@ -10,7 +10,8 @@ from OpenGL.GLU      import *
 from OpenGL.GLUT     import *
 from PyQt5.QtOpenGL  import *
 from gl_widget       import *
-from PyQt5.QtGui     import QVector3D
+from PyQt5.QtGui     import QVector3D, QColor
+from graphics        import Line3D
 
 class Cg4(QApplication):
     """Main class"""
@@ -22,17 +23,44 @@ class Cg4(QApplication):
         self._main_ui.setupUi(self._main_window)
 
         self.frog = PeppeFrog()
+        self.frog.move(QVector3D(500, 500, 200))
 
         self._init_signals()
 
+        def draw_lines():
+            zero = QVector3D(0, 0, 0)
+
+            x = Line3D(
+                zero,
+                QVector3D(1000, 0, 0),
+                QColor(255, 0, 0)
+            )
+
+            y = Line3D(
+                zero,
+                QVector3D(0, 1000, 0),
+                QColor(0, 255, 0)
+            )
+
+            z = Line3D(
+                zero,
+                QVector3D(0, 0, 1000),
+                QColor(0, 0, 255)
+            )
+
+            x.paint()
+            y.paint()
+            z.paint()
+
+
         def paint_gl():
-            """TMP"""
             glClearColor(1, 1, 1, 1)
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()# identity matrix
-            glTranslatef(3, 3, -3)# move (0, 0, 0)
+            glTranslatef(-1, -1, -6)# move (0, 0, 0)
             glScalef(0.01, 0.01, 0.01)
 
+            draw_lines()
             self.frog.paint()
 
             glFlush()
@@ -69,7 +97,7 @@ class Cg4(QApplication):
         self._main_ui.rotateButton.pressed.connect(rotate)
 
         def move():
-            step = 0.5
+            step = 3
             k = QVector3D(0, 0, 0)
 
             if self._main_ui.xPos.isChecked():
