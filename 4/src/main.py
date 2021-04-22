@@ -59,7 +59,7 @@ class Cg4(QApplication):
             glLoadIdentity()# identity matrix
             glTranslatef(-1, -1, -6)# move (0, 0, 0)
             glScalef(0.01, 0.01, 0.01)
-
+            
             draw_lines()
             self.frog.paint()
 

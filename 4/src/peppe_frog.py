@@ -23,21 +23,21 @@ class CompoundGraphics:
     def paint(self):
         """openGL"""
         for i in self._items:
-            glScalef(self.scale, self.scale, self.scale)
-            gl_translate(self.delta)
-            
             glRotatef(self.rotations.x(), 1, 0, 0)
             glRotatef(self.rotations.y(), 0, 1, 0)
             glRotatef(self.rotations.z(), 0, 0, 1)
 
+            glScalef(self.scale, self.scale, self.scale)
+            gl_translate(self.delta)
+
             i.paint()
+
+            gl_translate(-self.delta)
+            glScalef(1 / self.scale, 1 / self.scale, 1 / self.scale)
 
             glRotatef(-self.rotations.z(), 0, 0, 1)
             glRotatef(-self.rotations.y(), 0, 1, 0)
             glRotatef(-self.rotations.x(), 1, 0, 0)
-
-            gl_translate(-self.delta)
-            glScalef(1 / self.scale, 1 / self.scale, 1 / self.scale)
 
     def move(self, ddelta):
         """TMP"""
