@@ -54,7 +54,7 @@ class Cg4(QApplication):
 
 
         def paint_gl():
-            glClearColor(1, 1, 1, 1)
+            glClearColor(0.85, 0.85, 0.85, 1)
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()# identity matrix
             glTranslatef(-1, -1, -6)# move (0, 0, 0)
