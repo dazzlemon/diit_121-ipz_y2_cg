@@ -68,22 +68,26 @@ class Cg4(QApplication):
 
         self._main_ui.rotateButton.pressed.connect(rotate)
 
-        def update_delta(axis):
-            step = 0.5
-            k = 0
-
-            if getattr(self._main_ui, axis + "Pos").isChecked():
-                k = 1
-            elif getattr(self._main_ui, axis + "Neg").isChecked():
-                k = -1
-
-            new_val = getattr(self, "d" + axis) + k * step
-            setattr(self, "d" + axis, new_val)
-
         def move():
-            update_delta("x")
-            update_delta("y")
-            update_delta("z")
+            step = 0.5
+            k = QVector3D(0, 0, 0)
+
+            if self._main_ui.xPos.isChecked():
+                k.setX(1)
+            elif self._main_ui.xNeg.isChecked():
+                k.setX(-1)
+
+            if self._main_ui.yPos.isChecked():
+                k.setY(1)
+            elif self._main_ui.yNeg.isChecked():
+                k.setY(-1)
+
+            if self._main_ui.zPos.isChecked():
+                k.setZ(1)
+            elif self._main_ui.zNeg.isChecked():
+                k.setZ(-1)
+
+            self.frog.move(k * step)
             self._main_ui.openGLWidget.update()
 
         self._main_ui.moveButton.pressed.connect(move)

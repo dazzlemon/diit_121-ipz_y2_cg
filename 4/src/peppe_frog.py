@@ -32,7 +32,6 @@ class CompoundGraphics:
 
             i.paint()
 
-
             glRotatef(-self.rotations.z(), 0, 0, 1)
             glRotatef(-self.rotations.y(), 0, 1, 0)
             glRotatef(-self.rotations.x(), 1, 0, 0)
