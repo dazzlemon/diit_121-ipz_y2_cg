@@ -10,6 +10,7 @@ from OpenGL.GLU      import *
 from OpenGL.GLUT     import *
 from PyQt5.QtOpenGL  import *
 from gl_widget       import *
+from PyQt5.QtGui     import QVector3D
 
 class Cg4(QApplication):
     """Main class"""
@@ -21,16 +22,6 @@ class Cg4(QApplication):
         self._main_ui.setupUi(self._main_window)
 
         self.frog = PeppeFrog()
-        
-        self.x_angle = 0
-        self.y_angle = 0
-        self.z_angle = 0
-        
-        self.dx = 0
-        self.dy = 0
-        self.dz = 0
-
-        self.scale = 1
 
         self._init_signals()
 
@@ -39,12 +30,8 @@ class Cg4(QApplication):
             glClearColor(1, 1, 1, 1)
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()# identity matrix
-            glTranslatef(3 + self.dx, 3 + self.dy, -3 + self.dz)# move (0, 0, 0)
-            glScalef(0.01 * self.scale, 0.01 * self.scale, 0.01 * self.scale)
-            
-            glRotatef(self.x_angle, 1, 0, 0)
-            glRotatef(self.y_angle, 0, 1, 0)
-            glRotatef(self.z_angle, 0, 0, 1)
+            glTranslatef(3, 3, -3)# move (0, 0, 0)
+            glScalef(0.01, 0.01, 0.01)
 
             self.frog.paint()
 
@@ -57,27 +44,26 @@ class Cg4(QApplication):
 
 
     def _init_signals(self):
-        def update_rot(axis):
-            step = 5
-            k = 0
-            
-            if getattr(self._main_ui, axis + "Clock").isChecked():
-                k = -1
-            elif getattr(self._main_ui, axis + "AntiClock").isChecked():
-                k = 1
-
-            new_val = getattr(self, axis + "_angle") + step * k
-            if new_val > 360:
-                new_val -= 360
-            if new_val < 0:
-                new_val += 360
-
-            setattr(self, axis + "_angle", new_val)
-
         def rotate():
-            update_rot("x")
-            update_rot("y")
-            update_rot("z")
+            step = 5
+            k = QVector3D(0, 0, 0)
+
+            if self._main_ui.xClock.isChecked():
+                k.setX(-1)
+            elif self._main_ui.xAntiClock.isChecked():
+                k.setX(1)
+
+            if self._main_ui.yClock.isChecked():
+                k.setY(-1)
+            elif self._main_ui.yAntiClock.isChecked():
+                k.setY(1)
+
+            if self._main_ui.zClock.isChecked():
+                k.setZ(-1)
+            elif self._main_ui.zAntiClock.isChecked():
+                k.setZ(1)
+
+            self.frog.rotate(k * step)
             self._main_ui.openGLWidget.update()
 
         self._main_ui.rotateButton.pressed.connect(rotate)
@@ -118,6 +104,17 @@ class Cg4(QApplication):
 
         self._main_ui.scaleDownButton.pressed.connect(scale(False))
         self._main_ui.scaleUpButton.pressed.connect(scale(True))
+
+        def modifiable_update(what):
+            def upd(val):
+                self.frog._items[what].is_modifiable = val == 2
+                print("what: %d, val: %s" % (what, val == 2))
+            return upd
+
+        self._main_ui.bodyCheckBox.stateChanged.connect(modifiable_update(0))
+        self._main_ui.lEyeCheckBox.stateChanged.connect(modifiable_update(1))
+        self._main_ui.rEyeCheckBox.stateChanged.connect(modifiable_update(2))
+        self._main_ui.mouthCheckBox.stateChanged.connect(modifiable_update(3))
 
 
     def exec_(self):
