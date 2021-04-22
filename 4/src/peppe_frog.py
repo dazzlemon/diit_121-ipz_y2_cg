@@ -50,7 +50,7 @@ class CompoundGraphics:
         if self.is_modifiable:
             self.scale += dscale
 
-            if self.scale < 0:
+            if self.scale <= 0:
                 self.scale = 0.01
             if self.scale > 10:
                 self.scale = 10

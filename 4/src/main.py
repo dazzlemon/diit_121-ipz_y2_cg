@@ -97,12 +97,8 @@ class Cg4(QApplication):
                 step = 0.01
 
                 delta = step * (1 if up else -1)
-                self.scale += delta
-                if self.scale < 0:
-                    self.scale = 0.01
-                if self.scale > 10:
-                    self.scale = 10
 
+                self.frog.upd_scale(delta)
                 self._main_ui.openGLWidget.update()
             return s
 
