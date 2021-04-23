@@ -161,6 +161,10 @@ class Ui_MainWindow(object):
         self.rEyeCheckBox.setObjectName("rEyeCheckBox")
         self.gridLayout_2.addWidget(self.rEyeCheckBox, 1, 1, 1, 1)
         self.verticalLayout_3.addLayout(self.gridLayout_2)
+        self.axesCheckBox = QtWidgets.QCheckBox(self.centralwidget)
+        self.axesCheckBox.setChecked(True)
+        self.axesCheckBox.setObjectName("axesCheckBox")
+        self.verticalLayout_3.addWidget(self.axesCheckBox)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_3.addItem(spacerItem)
         self.gridLayout.addLayout(self.verticalLayout_3, 0, 1, 1, 1)
@@ -204,6 +208,7 @@ class Ui_MainWindow(object):
         self.lEyeCheckBox.setText(_translate("MainWindow", "left eye"))
         self.mouthCheckBox.setText(_translate("MainWindow", "mouth"))
         self.rEyeCheckBox.setText(_translate("MainWindow", "right eye"))
+        self.axesCheckBox.setText(_translate("MainWindow", "axes(x - red; y - blue; z - green)"))
 
 
 if __name__ == "__main__":

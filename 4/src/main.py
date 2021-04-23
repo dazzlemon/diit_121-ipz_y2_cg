@@ -60,7 +60,8 @@ class Cg4(QApplication):
             glTranslatef(-1, -1, -6)# move (0, 0, 0)
             glScalef(0.01, 0.01, 0.01)
             
-            draw_lines()
+            if self._main_ui.axesCheckBox.isChecked():
+                draw_lines()
             self.frog.paint()
 
             glFlush()
@@ -144,6 +145,7 @@ class Cg4(QApplication):
         self._main_ui.rEyeCheckBox.stateChanged.connect(modifiable_update(2))
         self._main_ui.mouthCheckBox.stateChanged.connect(modifiable_update(3))
 
+        self._main_ui.axesCheckBox.stateChanged.connect(self._main_ui.openGLWidget.update)
 
     def exec_(self):
         """QApplication.exec_ override to show window before start"""
