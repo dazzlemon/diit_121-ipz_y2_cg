@@ -9,6 +9,14 @@ def _init_gl(aspect):
     glEnable(GL_DEPTH_TEST)# enable depth comparisons
     #glShadeModel(GL_SMOOTH)# smooth shading is default
 
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  [ 0.3,  0.3,  0.3, 1])
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  [   1,    1,    1, 1])
+    glLightfv(GL_LIGHT0, GL_POSITION, [1000, 1000, 1000, 0])
+    glEnable(GL_LIGHT0)
+    glEnable(GL_LIGHTING)
+    glEnable(GL_COLOR_MATERIAL)
+    glEnable(GL_NORMALIZE)
+
     glMatrixMode(GL_PROJECTION)# load projection matrix
     glLoadIdentity()# make projection matrix := eye()
     #              angleY, aspect, zNear, zFar
