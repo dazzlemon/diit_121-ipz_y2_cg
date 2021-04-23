@@ -17,6 +17,8 @@ def _init_gl(aspect):
     glEnable(GL_COLOR_MATERIAL)
     glEnable(GL_NORMALIZE)
 
+    glLineWidth(2.5)
+
     glMatrixMode(GL_PROJECTION)# load projection matrix
     glLoadIdentity()# make projection matrix := eye()
     #              angleY, aspect, zNear, zFar
