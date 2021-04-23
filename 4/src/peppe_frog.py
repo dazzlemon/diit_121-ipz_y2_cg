@@ -116,8 +116,8 @@ class PeppeEye(CompoundGraphics):
                 QColor(60, 150, 0)
             ),# eye body
             Ellipsoid(
-                QVector3D(450 + x, 250, 10),
-                QVector3D(80, 35, 10),
+                QVector3D(450 + x, 210, 160),
+                QVector3D(100, 50, 50),
                 QColor(255, 255, 255)
             ),# white
             # Sphere(
@@ -143,13 +143,13 @@ class PeppeMouth(CompoundGraphics):
     def __init__(self):
         CompoundGraphics.__init__(self, [
             Ellipsoid(
-                QVector3D(300, 400, 25),
+                QVector3D(300, 400, 85),
                 QVector3D(200, 25, 25),
                 QColor(30, 80, 0)
             ),# lips
             Line3D(
-                QVector3D(-150, -400, 25),
-                QVector3D(-400, -400, 25),
+                QVector3D(-150, -400, -60),
+                QVector3D(-400, -400, -60),
                 QColor(0, 0, 0)
             ),# lip line
         ], True)
