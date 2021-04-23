@@ -81,9 +81,9 @@ class PeppeFrog(CompoundGraphics):
     """Peppe frog 3d"""
     def __init__(self):
         CompoundGraphics.__init__(self, [
-            #PeppeBody(0, 0, 0),
-            #PeppeMouth(0, 0, 300),
-            #PeppeEye(-100, 200, 200),
+            PeppeBody(0, 0, 0),
+            PeppeMouth(0, 0, 300),
+            PeppeEye(-100, 200, 200),
             PeppeEye(100, 200, 200),
         ], True)
 
@@ -110,31 +110,31 @@ class PeppeEye(CompoundGraphics):
     """Peppe's eye"""
     def __init__(self, x, y, z):
         CompoundGraphics.__init__(self, [
-            # Sphere(
-            #     QVector3D(x, y, z),
-            #     100,
-            #     QColor(60, 150, 0)
-            # ),# eye body
-            # Ellipsoid(
-            #     QVector3D(x, y, z + 100),
-            #     QVector3D(60, 30, 30),
-            #     QColor(255, 255, 255)
-            # ),# white
-            # Sphere(
-            #     QVector3D(x, y, z + 130),
-            #     10,
-            #     QColor(0, 0, 0)
-            # ),# pupil
-            RectangularPrism(
+            Sphere(
                 QVector3D(x, y, z),
-                QVector3D(300, 200, 200),
+                100,
+                QColor(60, 150, 0)
+            ),# eye body
+            Ellipsoid(
+                QVector3D(x, y, z + 100),
+                QVector3D(60, 30, 30),
+                QColor(255, 255, 255)
+            ),# white
+            Sphere(
+                QVector3D(x, y, z + 130),
+                10,
+                QColor(0, 0, 0)
+            ),# pupil
+            RectangularPrism(
+                QVector3D(x + 5, y + 2, z + 137),
+                QVector3D(7, 4, 4),
                 QColor(255, 255, 255)
             ),# flare
-            # Cube(
-            #     QVector3D(x - 100, y - 200, z - 200),
-            #     400,
-            #     QColor(10, 10, 10)
-            # ),# flare shadow
+            Cube(
+                QVector3D(x + 7, y + 3, z + 139),
+                2,
+                QColor(10, 10, 10)
+            ),# flare shadow
         ], True)
 
 
