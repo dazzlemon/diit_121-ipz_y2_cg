@@ -1,5 +1,6 @@
 from OpenGL.GL       import *
 from OpenGL.GLU      import *
+from OpenGL.GLUT     import *
 from PyQt5.QtOpenGL  import *
 
 def _init_gl(aspect):
@@ -9,9 +10,9 @@ def _init_gl(aspect):
     glEnable(GL_DEPTH_TEST)# enable depth comparisons
     #glShadeModel(GL_SMOOTH)# smooth shading is default
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  [ 0.3,  0.3,  0.3, 1])
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  [   1,    1,    1, 1])
-    glLightfv(GL_LIGHT0, GL_POSITION, [1000, 1000, 1000, 0])
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  [0.3, 0.3, 0.3, 1])
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  [  1,   1,   1, 1])
+    glLightfv(GL_LIGHT0, GL_POSITION, [  1,   1,   1, 0])
     glEnable(GL_LIGHT0)
     glEnable(GL_LIGHTING)
     glEnable(GL_COLOR_MATERIAL)

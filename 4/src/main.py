@@ -70,6 +70,12 @@ class Cg4(QApplication):
         self._main_ui.openGLWidget.initializeGL = initialize_gl
         self._main_ui.openGLWidget.setMinimumSize(640, 480)
 
+        glutInit(sys.argv)
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+        glutInitWindowSize(640, 480)
+        glutCreateWindow(b"Safonov CG4")
+        glutDisplayFunc(paint_gl)
+
 
     def _init_signals(self):
         def rotate():

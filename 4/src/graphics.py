@@ -3,6 +3,7 @@ from OpenGL.GL       import *
 from OpenGL.GLU      import *
 from OpenGL.GLUT     import *
 from PyQt5.QtOpenGL  import *
+import numpy as np
 
 def gl_color(color: QColor):
     """wrapper to use with QColor"""
@@ -102,7 +103,9 @@ class Cube:
 
 
     def paint(self):
-        pass
+        glutSolidCube(self.size)
+        glutSwapBuffers()
+
 
 
 class Line3D:
