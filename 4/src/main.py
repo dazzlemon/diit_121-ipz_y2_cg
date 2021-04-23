@@ -7,7 +7,6 @@ from forms_py        import Ui_MainWindow
 from peppe_frog      import PeppeFrog
 from OpenGL.GL       import *
 from OpenGL.GLU      import *
-from OpenGL.GLUT     import *
 from PyQt5.QtOpenGL  import *
 from gl_widget       import *
 from PyQt5.QtGui     import QVector3D, QColor
@@ -70,11 +69,9 @@ class Cg4(QApplication):
         self._main_ui.openGLWidget.initializeGL = initialize_gl
         self._main_ui.openGLWidget.setMinimumSize(640, 480)
 
-        glutInit(sys.argv)
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
-        glutInitWindowSize(640, 480)
-        glutCreateWindow(b"Safonov CG4")
-        glutDisplayFunc(paint_gl)
+        # glutInit(argv)
+        # glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+        # glutCreateWindow(b"Safonov CG4")
 
 
     def _init_signals(self):

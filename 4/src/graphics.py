@@ -103,9 +103,55 @@ class Cube:
 
 
     def paint(self):
-        glutSolidCube(self.size)
-        glutSwapBuffers()
+        glScalef(self.size, self.size, self.size)
+        gl_color(self.color)
+        # glutSolidCube(self.size)
+        glBegin(GL_QUADS)
+        # top
+        glNormal3f( 0.0, 1.0,  0.0)
+        glVertex3f(-0.5, 0.5,  0.5)
+        glVertex3f( 0.5, 0.5,  0.5)
+        glVertex3f( 0.5, 0.5, -0.5)
+        glVertex3f(-0.5, 0.5, -0.5)
 
+        # front
+        glNormal3f( 0.0,  0.0, 1.0)
+        glVertex3f(-0.5, -0.5, 0.5)
+        glVertex3f( 0.5, -0.5, 0.5)
+        glVertex3f( 0.5,  0.5, 0.5)
+        glVertex3f(-0.5,  0.5, 0.5)
+
+        # right
+        glNormal3f(1.0,  0.0,  0.0)
+        glVertex3f(0.5, -0.5,  0.5)
+        glVertex3f(0.5, -0.5, -0.5)
+        glVertex3f(0.5,  0.5, -0.5)
+        glVertex3f(0.5,  0.5,  0.5)
+
+        # left
+        glNormal3f(-1.0,  0.0,  0.0)
+        glVertex3f(-0.5, -0.5,  0.5)
+        glVertex3f(-0.5,  0.5,  0.5)
+        glVertex3f(-0.5,  0.5, -0.5)
+        glVertex3f(-0.5, -0.5, -0.5)
+
+        # bottom
+        glNormal3f( 0.0, -1.0,  0.0)
+        glVertex3f(-0.5, -0.5,  0.5)
+        glVertex3f( 0.5, -0.5,  0.5)
+        glVertex3f( 0.5, -0.5, -0.5)
+        glVertex3f(-0.5, -0.5, -0.5)
+
+        # back
+        glNormal3f( 0.0,  0.0, -1.0)
+        glVertex3f( 0.5,  0.5, -0.5)
+        glVertex3f( 0.5, -0.5, -0.5)
+        glVertex3f(-0.5, -0.5, -0.5)
+        glVertex3f(-0.5,  0.5, -0.5)
+        
+        glEnd()
+
+        glScalef(1 / self.size, 1 / self.size, 1 / self.size)
 
 
 class Line3D:

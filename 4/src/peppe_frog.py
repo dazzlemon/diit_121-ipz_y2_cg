@@ -133,7 +133,7 @@ class PeppeEye(CompoundGraphics):
             Cube(
                 QVector3D(560 + x, 430, 430),
                 400,
-                QColor(0, 0, 0)
+                QColor(10, 10, 10)
             ),# flare shadow
         ], True)
 
