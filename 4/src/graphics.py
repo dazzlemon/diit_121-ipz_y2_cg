@@ -58,11 +58,11 @@ class Ellipsoid:
         sphere = gluNewQuadric()
         gl_color(self.color)
 
-        gl_translate(-self.origin)
+        gl_translate(self.origin)
         gl_scale(scales)
         gluSphere(sphere, max_rad, 50, 50)
         gl_scale(QVector3D(1, 1, 1) / scales)
-        gl_translate(self.origin)
+        gl_translate(-self.origin)
 
 
 class Sphere:
@@ -76,9 +76,9 @@ class Sphere:
     def paint(self):
         sphere = gluNewQuadric()
         gl_color(self.color)
-        gl_translate(-self.origin)
-        gluSphere(sphere, self.radius, 50, 50)
         gl_translate(self.origin)
+        gluSphere(sphere, self.radius, 50, 50)
+        gl_translate(-self.origin)
 
 
 class RectangularPrism:

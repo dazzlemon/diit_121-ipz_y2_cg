@@ -23,7 +23,6 @@ class Cg4(QApplication):
         self._main_ui.setupUi(self._main_window)
 
         self.frog = PeppeFrog()
-        self.frog.move(QVector3D(500, 500, 200))
 
         self._init_signals()
 
@@ -141,9 +140,9 @@ class Cg4(QApplication):
             return upd
 
         self._main_ui.bodyCheckBox.stateChanged.connect(modifiable_update(0))
-        self._main_ui.lEyeCheckBox.stateChanged.connect(modifiable_update(1))
-        self._main_ui.rEyeCheckBox.stateChanged.connect(modifiable_update(2))
-        self._main_ui.mouthCheckBox.stateChanged.connect(modifiable_update(3))
+        self._main_ui.mouthCheckBox.stateChanged.connect(modifiable_update(1))
+        self._main_ui.lEyeCheckBox.stateChanged.connect(modifiable_update(2))
+        self._main_ui.rEyeCheckBox.stateChanged.connect(modifiable_update(3))
 
         self._main_ui.axesCheckBox.stateChanged.connect(self._main_ui.openGLWidget.update)
 

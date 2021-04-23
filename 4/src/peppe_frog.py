@@ -81,10 +81,10 @@ class PeppeFrog(CompoundGraphics):
     """Peppe frog 3d"""
     def __init__(self):
         CompoundGraphics.__init__(self, [
-            PeppeBody(),
-            PeppeEye(-50),
-            PeppeEye(-200),
-            PeppeMouth()
+            PeppeBody(0, 0, 0),
+            PeppeMouth(0, 0, 300),
+            PeppeEye(-100, 200, 200),
+            PeppeEye(100, 200, 200),
         ], True)
 
 
@@ -108,23 +108,23 @@ class PeppeFrog(CompoundGraphics):
 
 class PeppeEye(CompoundGraphics):
     """Peppe's eye"""
-    def __init__(self, x: float):
+    def __init__(self, x, y, z):
         CompoundGraphics.__init__(self, [
             Sphere(
-                QVector3D(450 + x, 250, 350),
-                200,
+                QVector3D(x, y, z),
+                100,
                 QColor(60, 150, 0)
             ),# eye body
             Ellipsoid(
-                QVector3D(450 + x, 210, 160),
-                QVector3D(100, 50, 50),
+                QVector3D(x, y, z + 100),
+                QVector3D(60, 30, 30),
                 QColor(255, 255, 255)
             ),# white
-            # Sphere(
-            #     QVector3D(550 + x, 420, 420),
-            #     50,
-            #     QColor(0, 0, 0)
-            # ),# pupil
+            Sphere(
+                QVector3D(x, y, z + 130),
+                10,
+                QColor(0, 0, 0)
+            ),# pupil
             # RectangularPrism(
             #     QVector3D(560 + x, 430, 430),
             #     QVector3D(30, 20, 20),
@@ -140,16 +140,16 @@ class PeppeEye(CompoundGraphics):
 
 class PeppeMouth(CompoundGraphics):
     """Peppe's mouth"""
-    def __init__(self):
+    def __init__(self, x, y, z):
         CompoundGraphics.__init__(self, [
             Ellipsoid(
-                QVector3D(300, 400, 85),
+                QVector3D(x, y, z),
                 QVector3D(200, 25, 25),
                 QColor(30, 80, 0)
             ),# lips
             Line3D(
-                QVector3D(-150, -400, -60),
-                QVector3D(-400, -400, -60),
+                QVector3D(x - 160, y, z + 25),
+                QVector3D(x + 160, y, z + 25),
                 QColor(0, 0, 0)
             ),# lip line
         ], True)
@@ -157,10 +157,10 @@ class PeppeMouth(CompoundGraphics):
 
 class PeppeBody(CompoundGraphics):
     """Peppe's head(body of the head)"""
-    def __init__(self):
+    def __init__(self, x, y, z):
         CompoundGraphics.__init__(self, [
             Ellipsoid(
-                QVector3D(400, 400, 400),
+                QVector3D(x, y, z),
                 QVector3D(400, 300, 300),
                 QColor(60, 150, 0)
             )
