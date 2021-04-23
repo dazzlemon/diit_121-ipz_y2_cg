@@ -91,7 +91,57 @@ class RectangularPrism:
 
 
     def paint(self):
-        pass
+        gl_translate(self.origin)
+        gl_scale(self.size)
+        gl_color(self.color)
+        # glutSolidCube(self.size)
+        glBegin(GL_QUADS)
+        # top
+        glNormal3f( 0.0, 1.0,  0.0)
+        glVertex3f(-0.5, 0.5,  0.5)
+        glVertex3f( 0.5, 0.5,  0.5)
+        glVertex3f( 0.5, 0.5, -0.5)
+        glVertex3f(-0.5, 0.5, -0.5)
+
+        # front
+        glNormal3f( 0.0,  0.0, 1.0)
+        glVertex3f(-0.5, -0.5, 0.5)
+        glVertex3f( 0.5, -0.5, 0.5)
+        glVertex3f( 0.5,  0.5, 0.5)
+        glVertex3f(-0.5,  0.5, 0.5)
+
+        # right
+        glNormal3f(1.0,  0.0,  0.0)
+        glVertex3f(0.5, -0.5,  0.5)
+        glVertex3f(0.5, -0.5, -0.5)
+        glVertex3f(0.5,  0.5, -0.5)
+        glVertex3f(0.5,  0.5,  0.5)
+
+        # left
+        glNormal3f(-1.0,  0.0,  0.0)
+        glVertex3f(-0.5, -0.5,  0.5)
+        glVertex3f(-0.5,  0.5,  0.5)
+        glVertex3f(-0.5,  0.5, -0.5)
+        glVertex3f(-0.5, -0.5, -0.5)
+
+        # bottom
+        glNormal3f( 0.0, -1.0,  0.0)
+        glVertex3f(-0.5, -0.5,  0.5)
+        glVertex3f( 0.5, -0.5,  0.5)
+        glVertex3f( 0.5, -0.5, -0.5)
+        glVertex3f(-0.5, -0.5, -0.5)
+
+        # back
+        glNormal3f( 0.0,  0.0, -1.0)
+        glVertex3f( 0.5,  0.5, -0.5)
+        glVertex3f( 0.5, -0.5, -0.5)
+        glVertex3f(-0.5, -0.5, -0.5)
+        glVertex3f(-0.5,  0.5, -0.5)
+        
+        glEnd()
+
+        gl_scale(QVector3D(1, 1, 1) / self.size)
+        gl_translate(-self.origin)
 
 
 class Cube:
@@ -103,6 +153,7 @@ class Cube:
 
 
     def paint(self):
+        gl_translate(self.origin)
         glScalef(self.size, self.size, self.size)
         gl_color(self.color)
         # glutSolidCube(self.size)
@@ -152,6 +203,7 @@ class Cube:
         glEnd()
 
         glScalef(1 / self.size, 1 / self.size, 1 / self.size)
+        gl_translate(-self.origin)
 
 
 class Line3D:

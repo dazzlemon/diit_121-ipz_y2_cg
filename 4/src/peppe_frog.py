@@ -125,16 +125,16 @@ class PeppeEye(CompoundGraphics):
             #     10,
             #     QColor(0, 0, 0)
             # ),# pupil
-            # RectangularPrism(
-            #     QVector3D(560 + x, 430, 430),
-            #     QVector3D(30, 20, 20),
-            #     QColor(255, 255, 255)
-            # ),# flare
-            Cube(
-                QVector3D(560 + x, 430, 430),
-                400,
-                QColor(10, 10, 10)
-            ),# flare shadow
+            RectangularPrism(
+                QVector3D(x, y, z),
+                QVector3D(300, 200, 200),
+                QColor(255, 255, 255)
+            ),# flare
+            # Cube(
+            #     QVector3D(x - 100, y - 200, z - 200),
+            #     400,
+            #     QColor(10, 10, 10)
+            # ),# flare shadow
         ], True)
 
 
