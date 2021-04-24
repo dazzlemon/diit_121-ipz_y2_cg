@@ -57,7 +57,7 @@ class Cg4(QApplication):
             glLoadIdentity()# identity matrix
             glTranslatef(-1, -1, -6)# move (0, 0, 0)
             glScalef(0.01, 0.01, 0.01)
-            
+
             if self._main_ui.axesCheckBox.isChecked():
                 draw_lines()
             self.frog.paint()
@@ -79,20 +79,11 @@ class Cg4(QApplication):
             step = 5
             k = QVector3D(0, 0, 0)
 
-            if self._main_ui.xClock.isChecked():
-                k.setX(-1)
-            elif self._main_ui.xAntiClock.isChecked():
-                k.setX(1)
-
-            if self._main_ui.yClock.isChecked():
-                k.setY(-1)
-            elif self._main_ui.yAntiClock.isChecked():
-                k.setY(1)
-
-            if self._main_ui.zClock.isChecked():
-                k.setZ(-1)
-            elif self._main_ui.zAntiClock.isChecked():
-                k.setZ(1)
+            for axis in ["x", "y", "z"]:
+                if getattr(self._main_ui, axis + "Clock").isChecked():
+                    getattr(k, "set" + axis.upper())(-1)
+                elif getattr(self._main_ui, axis + "AntiClock").isChecked():
+                    getattr(k, "set" + axis.upper())(1)
 
             self.frog.rotate(k * step)
             self._main_ui.openGLWidget.update()
