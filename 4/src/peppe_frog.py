@@ -61,20 +61,13 @@ class CompoundGraphics:
         if self.is_modifiable:
             self.rotations += drot
 
-            if self.rotations.x() > 360:
-                self.rotations.setX(self.rotations.x() - 360)
-            if self.rotations.x() < 0:
-                self.rotations.setX(self.rotations.x() + 360)
-
-            if self.rotations.y() > 360:
-                self.rotations.setY(self.rotations.y() - 360)
-            if self.rotations.y() < 0:
-                self.rotations.setY(self.rotations.y() + 360)
-
-            if self.rotations.z() > 360:
-                self.rotations.setZ(self.rotations.z() - 360)
-            if self.rotations.z() < 0:
-                self.rotations.setZ(self.rotations.z() + 360)
+            for axis in ["x", "y", "z"]:
+                val = getattr(self.rotations, axis)()
+                if getattr(self.rotations, axis)() > 360:
+                    val -= 360
+                if getattr(self.rotations, axis)() < 0:
+                    val += 360
+                getattr(self.rotations, "set" + axis.upper())(val)
 
 
 class PeppeFrog(CompoundGraphics):
