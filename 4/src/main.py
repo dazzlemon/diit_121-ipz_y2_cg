@@ -94,20 +94,11 @@ class Cg4(QApplication):
             step = 3
             k = QVector3D(0, 0, 0)
 
-            if self._main_ui.xPos.isChecked():
-                k.setX(1)
-            elif self._main_ui.xNeg.isChecked():
-                k.setX(-1)
-
-            if self._main_ui.yPos.isChecked():
-                k.setY(1)
-            elif self._main_ui.yNeg.isChecked():
-                k.setY(-1)
-
-            if self._main_ui.zPos.isChecked():
-                k.setZ(1)
-            elif self._main_ui.zNeg.isChecked():
-                k.setZ(-1)
+            for axis in ["x", "y", "z"]:
+                if getattr(self._main_ui, axis + "Pos").isChecked():
+                    getattr(k, "set" + axis.upper())(1)
+                elif getattr(self._main_ui, axis + "Neg").isChecked():
+                    getattr(k, "set" + axis.upper())(-1)
 
             self.frog.move(k * step)
             self._main_ui.openGLWidget.update()
