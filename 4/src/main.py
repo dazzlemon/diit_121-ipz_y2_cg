@@ -75,34 +75,23 @@ class Cg4(QApplication):
 
 
     def _init_signals(self):
-        def rotate():
-            step = 5
+        def scalable_analog(step, var1, var2, callable_):
             k = QVector3D(0, 0, 0)
-
             for axis in ["x", "y", "z"]:
-                if getattr(self._main_ui, axis + "Clock").isChecked():
+                if getattr(self._main_ui, axis + var1).isChecked():
                     getattr(k, "set" + axis.upper())(-1)
-                elif getattr(self._main_ui, axis + "AntiClock").isChecked():
+                elif getattr(self._main_ui, axis + var2).isChecked():
                     getattr(k, "set" + axis.upper())(1)
 
-            self.frog.rotate(k * step)
+            callable_(k * step)
             self._main_ui.openGLWidget.update()
 
+        def rotate():
+            scalable_analog(5, "Clock", "AntiClock", self.frog.rotate)
         self._main_ui.rotateButton.pressed.connect(rotate)
 
         def move():
-            step = 3
-            k = QVector3D(0, 0, 0)
-
-            for axis in ["x", "y", "z"]:
-                if getattr(self._main_ui, axis + "Pos").isChecked():
-                    getattr(k, "set" + axis.upper())(1)
-                elif getattr(self._main_ui, axis + "Neg").isChecked():
-                    getattr(k, "set" + axis.upper())(-1)
-
-            self.frog.move(k * step)
-            self._main_ui.openGLWidget.update()
-
+            scalable_analog(3, "Neg", "Pos", self.frog.move)
         self._main_ui.moveButton.pressed.connect(move)
 
         def scale(up):
