@@ -66,20 +66,11 @@ class Ellipsoid:
         gl_translate(-self.origin)
 
 
-class Sphere:
+class Sphere(Ellipsoid):
     def __init__(self, origin: QVector3D, radius: float, color: QColor):
         """origin is the center"""
-        self.origin = origin
-        self.radius = radius
-        self.color  = color
-
-
-    def paint(self):
-        sphere = gluNewQuadric()
-        gl_color(self.color)
-        gl_translate(self.origin)
-        gluSphere(sphere, self.radius, 50, 50)
-        gl_translate(-self.origin)
+        Ellipsoid.__init__(self,
+            origin, QVector3D(radius, radius, radius), color)
 
 
 class RectangularPrism:
