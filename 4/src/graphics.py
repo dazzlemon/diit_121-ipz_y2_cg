@@ -135,66 +135,11 @@ class RectangularPrism:
         gl_translate(-self.origin)
 
 
-class Cube:
+class Cube(RectangularPrism):
     def __init__(self, origin: QVector3D, size: float, color: QColor):
         """origin is the point to which size are added, size > 0"""
-        self.origin = origin
-        self.size   = size
-        self.color  = color
-
-
-    def paint(self):
-        gl_translate(self.origin)
-        glScalef(self.size, self.size, self.size)
-        gl_color(self.color)
-        # glutSolidCube(self.size)
-        glBegin(GL_QUADS)
-        # top
-        glNormal3f( 0.0, 1.0,  0.0)
-        glVertex3f(-0.5, 0.5,  0.5)
-        glVertex3f( 0.5, 0.5,  0.5)
-        glVertex3f( 0.5, 0.5, -0.5)
-        glVertex3f(-0.5, 0.5, -0.5)
-
-        # front
-        glNormal3f( 0.0,  0.0, 1.0)
-        glVertex3f(-0.5, -0.5, 0.5)
-        glVertex3f( 0.5, -0.5, 0.5)
-        glVertex3f( 0.5,  0.5, 0.5)
-        glVertex3f(-0.5,  0.5, 0.5)
-
-        # right
-        glNormal3f(1.0,  0.0,  0.0)
-        glVertex3f(0.5, -0.5,  0.5)
-        glVertex3f(0.5, -0.5, -0.5)
-        glVertex3f(0.5,  0.5, -0.5)
-        glVertex3f(0.5,  0.5,  0.5)
-
-        # left
-        glNormal3f(-1.0,  0.0,  0.0)
-        glVertex3f(-0.5, -0.5,  0.5)
-        glVertex3f(-0.5,  0.5,  0.5)
-        glVertex3f(-0.5,  0.5, -0.5)
-        glVertex3f(-0.5, -0.5, -0.5)
-
-        # bottom
-        glNormal3f( 0.0, -1.0,  0.0)
-        glVertex3f(-0.5, -0.5,  0.5)
-        glVertex3f( 0.5, -0.5,  0.5)
-        glVertex3f( 0.5, -0.5, -0.5)
-        glVertex3f(-0.5, -0.5, -0.5)
-
-        # back
-        glNormal3f( 0.0,  0.0, -1.0)
-        glVertex3f( 0.5,  0.5, -0.5)
-        glVertex3f( 0.5, -0.5, -0.5)
-        glVertex3f(-0.5, -0.5, -0.5)
-        glVertex3f(-0.5,  0.5, -0.5)
-        
-        glEnd()
-
-        glScalef(1 / self.size, 1 / self.size, 1 / self.size)
-        gl_translate(-self.origin)
+        RectangularPrism.__init__(self,
+            origin, QVector3D(size, size, size), color)
 
 
 class Line3D:
